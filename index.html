@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gótica SU LDA - Construção Civil de Excelência</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Cores atualizadas conforme solicitado */
+        :root {
+            --primary-color: #1a237e; /* Azul marinho */
+            --secondary-color: #0d1b2a; /* Azul escuro */
+            --accent-color: #b7ff00; /* Verde lima */
+            --highlight-color: #b7ff00; /* Verde floresta */
+            --light-color: #E0E1DD;
+            --dark-color: #0A0A0A;
+            --medium-gray: #8D99AE;
+            --light-gray: #EDF2F4;
+            --success-color: #2A9D8F;
+            --warning-color: #E9C46A;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
+            --lime-green: #b7ff00; /* Verde lima */
+            --navy-blue: #1a237e; /* Azul marinho */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: white;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Estilos do cabeçalho */
+        header {
+            background-color: white;
+            color: var(--dark-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            padding: 0.01rem 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-img {
+            height: 110px;
+            width: auto;
+        }
+        
+       
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.8rem;
+        }
+        
+        nav ul li a {
+            color: var(--navy-blue);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        nav ul li a:hover {
+            color: var(--lime-green);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--lime-green);
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background-color: var(--lime-green);
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            margin-left: 1.5rem;
+            border: 2px solid var(--lime-green);
+            color: white;
+        }
+        
+        .nav-cta:hover {
+            background-color: transparent;
+            color: var(--lime-green);
+        }
+        
+        .nav-cta::after {
+            display: none;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--navy-blue);
+        }
+        
+        /* Estilos do herói com estatísticas */
+        .hero {
+            background: linear-gradient(rgba(13, 27, 42, 0.592), rgba(13, 27, 42, 0.411)), url('imagem_1.jpeg') no-repeat center center/cover;
+            color: white;
+            padding: 10rem 0 6rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: #e2e8f0;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border-radius: var(--border-radius);
+            min-width: 200px;
+
+            border: 1px solid rgb(255, 255, 255);
+            transition: var(--transition);
+        }
+        
+        .hero-stat:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--lime-green);
+            margin-bottom: 1rem;
+        }
+        
+        .hero-stat-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-stat-number::after {
+            content: '+';
+            color: var(--lime-green);
+            margin-left: 5px;
+        }
+        
+        .hero-stat-text {
+            color: var(--light-gray);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--lime-green);
+            color: white;
+            padding: 0.9rem 2.2rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: var(--navy-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--navy-blue);
+        }
+        
+        .btn-accent {
+            background-color: var(--highlight-color);
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background-color: var(--lime-green);
+            color: white;
+        }
+        
+        /* Estilos das seções */
+        section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.4rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+            color: var(--navy-blue);
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--lime-green), var(--highlight-color));
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 1rem auto 0;
+            color: var(--medium-gray);
+            font-size: 1.05rem;
+        }
+        
+        /* Sobre nós */
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-align: justify;
+        }
+        
+        .about-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            background: var(--light-gray);
+            padding: 1.5rem 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon-small {
+            color: var(--lime-green);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy-blue);
+            display: block;
+        }
+        
+        .stat-number::after {
+            content: '+';
+            color: var(--lime-green);
+            margin-left: 2px;
+        }
+        
+        .stat-text {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .about-image img:hover {
+            transform: translateY(-10px);
+        }
+        
+        /* Serviços */
+        .services-section {
+            background-color: white;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .service-card:hover .service-img img {
+            transform: scale(1.05);
+        }
+        
+        .service-content {
+            padding: 1.8rem;
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            background-color: rgba(50, 205, 50, 0.1);
+        }
+        
+        .service-icon i {
+            font-size: 1.8rem;
+            color: var(--lime-green);
+        }
+        
+        .service-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--navy-blue);
+        }
+        
+        .service-content p {
+            color: var(--medium-gray);
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        .service-features {
+            list-style: none;
+            margin-top: 1.2rem;
+        }
+        
+        .service-features li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--lime-green);
+            font-weight: bold;
+        }
+        
+        /* Modal para formulário de orçamento */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(13, 27, 42, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--medium-gray);
+            transition: var(--transition);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            color: var(--lime-green);
+            background-color: var(--light-gray);
+        }
+        
+        .modal-content h2 {
+            color: var(--navy-blue);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .modal-content p {
+            color: var(--medium-gray);
+            margin-bottom: 2rem;
+        }
+        
+        /* Solicitar Orçamento - Modal */
+        .budget-section {
+            background: linear-gradient(rgba(13, 27, 42, 0.471), rgba(13, 27, 42, 0.334)), url('imagem_8.jpeg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+        
+        .budget-section .section-title h2,
+        .budget-section .section-title p {
+            color: white;
+        }
+        
+        .budget-info-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .budget-info-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .budget-info-box ul {
+            list-style: none;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        
+        .budget-info-box ul li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .budget-info-box ul li i {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            color: var(--lime-green);
+        }
+        
+        .budget-form {
+            margin-top: 3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--lime-green);
+            box-shadow: 0 0 0 3px rgba(50, 205, 50, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        /* Missão e Valores - Melhorado */
+        .mission-values-section {
+            background-color: white;
+        }
+        
+        .mission-values-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .mission-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border-top: 4px solid var(--lime-green);
+        }
+        
+        .mission-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mission-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(50, 205, 50, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .mission-icon i {
+            font-size: 2rem;
+            color: var(--lime-green);
+        }
+        
+        .mission-card h3 {
+            color: var(--navy-blue);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .mission-card p {
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .value-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(50, 205, 50, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .value-icon i {
+            font-size: 1.5rem;
+            color: var(--lime-green);
+        }
+        
+        .value-content h4 {
+            color: var(--navy-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .value-content p {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Galeria */
+        .gallery-section {
+            background-color: white;
+        }
+        
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--lime-green);
+            color: white;
+            border-color: var(--lime-green);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            height: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(26, 35, 126, 0.9));
+            color: white;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+        
+        /* Modal para galeria */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-img-content {
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .modal-img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .modal-img-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-img-close:hover {
+            color: var(--lime-green);
+        }
+        
+        .modal-caption {
+            color: white;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Contato */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        
+        .contact-info {
+            background: var(--navy-blue);
+            color: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .contact-details {
+            margin-top: 2rem;
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-detail i {
+            margin-right: 1rem;
+            color: var(--lime-green);
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--lime-green);
+            transform: translateY(-3px);
+        }
+        
+        /* Rodapé - Organizado e estilizado */
+        footer {
+            background-color: var(--navy-blue);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-logo {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo img {
+            height: 150px;
+            width: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo p {
+            color: #cbd5e0;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .footer-links, .footer-services, .footer-contact {
+            padding: 2rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .footer-links h4,
+        .footer-services h4,
+        .footer-contact h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-links ul,
+        .footer-services ul {
+            list-style: none;
+        }
+        
+        .footer-links ul li,
+        .footer-services ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links ul li a,
+        .footer-services ul li a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links ul li a:hover,
+        .footer-services ul li a:hover {
+            color: var(--lime-green);
+            padding-left: 5px;
+        }
+        
+        .footer-links ul li a::before,
+        .footer-services ul li a::before {
+            content: '›';
+            margin-right: 8px;
+            color: var(--lime-green);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-contact i {
+            margin-right: 0.8rem;
+            color: var(--lime-green);
+            width: 20px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .footer-bottom p {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Notificações */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--lime-green);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 1100px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+                color: var(--navy-blue);
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            
+            nav ul.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            nav ul li {
+                margin: 1rem 0;
+            }
+            
+            .nav-cta {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+            
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-stats {
+                gap: 2rem;
+            }
+            
+            .hero-stat {
+                min-width: 180px;
+            }
+            
+            .hero-stat-number {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .about-stats {
+                justify-content: center;
+                gap: 2rem;
+            }
+            
+            .stat-item {
+                min-width: 140px;
+            }
+            
+            .modal-content {
+                padding: 2rem;
+            }
+            
+            .mission-card, .value-card {
+                padding: 2rem;
+            }
+            
+            .service-content {
+                padding: 1.5rem;
+            }
+            
+            .gallery-item {
+                height: 220px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 7rem 0 3rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+            
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .budget-info-box {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#inicio" class="logo">
+                <!-- Substituído por logo.png -->
+                <img src="logo.png" alt="Gótica SU LDA" class="logo-img">
+            </a>
+            
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#orcamento" id="openBudgetBtn">Orçamento</a></li>
+                    <li><a href="#galeria">Projetos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                    <li><a href="#orcamento" class="btn nav-cta" id="openBudgetBtn2">Solicitar Orçamento</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Seção Herói com Estatísticas -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h2>Construindo o Futuro com <span style="color: var(--lime-green);">Qualidade e Excelência</span></h2>
+            <p>A Gótica SU LDA é uma empresa constituída por técnicos altamente qualificados com atividades centradas na construção civil, comprometida com o desenvolvimento sustentável e a satisfação dos clientes.</p>
+              <div class="hero-btns">
+                <a href="#servicos" class="btn btn-accent">Ver Nossos Serviços</a>
+                <a href="#orcamento" class="btn btn-outline" id="openBudgetBtn3">Solicitar Orçamento</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <span class="hero-stat-number" data-count="50">0</span>
+                    <span class="hero-stat-text">Projetos Concluídos</span>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <span class="hero-stat-number" data-count="15">0</span>
+                    <span class="hero-stat-text">Anos de Experiência</span>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <span class="hero-stat-number" data-count="100">0</span>
+                    <span class="hero-stat-text">Clientes Satisfeitos</span>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <span class="hero-stat-number" data-count="30">0</span>
+                    <span class="hero-stat-text">Profissionais</span>
+                </div>
+            </div>
+            
+          
+        </div>
+    </section>
+
+    <!-- Seção Sobre Nós -->
+    <section id="sobre">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sobre Nós</h2>
+                <p>Uma empresa com visão estratégica única e integrada para o futuro, ambicionando tornar-se mais internacional, inovadora e competitiva em escala global.</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p>A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, procurando manter no mercado os standards de rigor, qualidade e capacidade de execução que permitiram afirmar-se a nível nacional e internacional.</p>
+                    <p style="color: var(--lime-green); font-weight: 600;">Com a posição do mercado alinhado com as melhores práticas e uma conduta empresarial assente em princípios éticos e suportados numa visão estratégica única e integrada para o futuro, a Gótica ambiciona tornar-se uma empresa mais internacional, inovadora e competitiva a escala global.</p>
+                    
+
+                </div>
+                <div class="about-image">
+                    <img src="imagem_7.jpeg" alt="Equipe de construção da Gótica">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Serviços -->
+    <section class="services-section" id="servicos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Serviços</h2>
+                <p>Oferecemos uma ampla gama de serviços de construção civil com qualidade superior e soluções técnicas inovadoras.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="Construção de edifícios">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Construção de Edifícios</h3>
+                        <p>Projetamos e construímos edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança.</p>
+                        <ul class="service-features">
+                            <li>Projetos arquitetónicos personalizados</li>
+                            <li>Gestão completa da obra</li>
+                            <li>Materiais de primeira qualidade</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="Pavimentação">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3>Pavimentação</h3>
+                        <p>Execução de pavimentos em betão armado, asfálticos e intertravados para vias públicas, estacionamentos e áreas industriais.</p>
+                        <ul class="service-features">
+                            <li>Pavimentação asfáltica</li>
+                            <li>Pavimentos de betão armado</li>
+                            <li>Pavimentos intertravados</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="Estruturas de betão armado">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>Estruturas de Betão Armado</h3>
+                        <p>Concepção e execução de estruturas em betão armado para edifícios, pontes, barragens e outras infraestruturas.</p>
+                        <ul class="service-features">
+                            <li>Cálculo estrutural especializado</li>
+                            <li>Execução com rigor técnico</li>
+                            <li>Controlo de qualidade rigoroso</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h3>Sistemas de Drenagem</h3>
+                        <p>Projeto e construção de valas de drenagem, sistemas de águas pluviais e soluções para gestão de águas residuais.</p>
+                        <ul class="service-features">
+                            <li>Valas de drenagem</li>
+                            <li>Sistemas de águas pluviais</li>
+                            <li>Soluções personalizadas</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="Instalações hidráulicas">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-faucet"></i>
+                        </div>
+                        <h3>Instalações Hidráulicas</h3>
+                        <p>Instalação completa de sistemas hidráulicos para edifícios residenciais, comerciais e industriais.</p>
+                        <ul class="service-features">
+                            <li>Sistemas de abastecimento de água</li>
+                            <li>Instalações sanitárias</li>
+                            <li>Sistemas de combate a incêndios</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img">
+                        <img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="Vedações e cercas">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Vedações e Cercas Elétricas</h3>
+                        <p>Instalação de vedações perimetrais, muros, cercas elétricas e sistemas de segurança para proteção de propriedades.</p>
+                        <ul class="service-features">
+                            <li>Vedações em diversos materiais</li>
+                            <li>Cercas elétricas de segurança</li>
+                            <li>Portões automatizados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Solicitar Orçamento (Botão para abrir modal) -->
+    <section class="budget-section" id="orcamento">
+        <div class="container">
+            <div class="section-title">
+                <h2>Solicitar Orçamento</h2>
+                <p>Clique no botão abaixo para solicitar um orçamento personalizado para o seu projeto. Responderemos em até 24 horas.</p>
+            </div>
+            
+            <div class="budget-info-box">
+                <h3>Por que escolher a Gótica?</h3>
+                <p>Somos especialistas em construção civil com mais de 15 anos de experiência no mercado. Oferecemos soluções personalizadas, qualidade garantida e cumprimento rigoroso de prazos.</p>
+                
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>Orçamento sem compromisso</strong> - Avaliação gratuita do seu projeto</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Resposta rápida</strong> - Entramos em contato em até 24h</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Transparência total</strong> - Sem custos ocultos ou surpresas</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Equipe especializada</strong> - Técnicos qualificados e experientes</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Garantia nos serviços</strong> - Qualidade assegurada em todas as obras</li>
+                </ul>
+                
+                <div class="budget-form">
+                    <button class="btn btn-accent" id="openBudgetBtn4" style="padding: 1rem 3rem; font-size: 1.1rem;">Solicitar Orçamento Gratuito</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para formulário de orçamento -->
+    <div class="modal-overlay" id="budgetModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeBudgetBtn">&times;</span>
+            <h2>Solicitar Orçamento</h2>
+            <p>Preencha o formulário abaixo e receba um orçamento personalizado para o seu projeto. Responderemos em até 24 horas.</p>
+            
+            <form id="budgetForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nome Completo *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Telefone *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Serviço Desejado *</label>
+                        <select id="service" name="service" required>
+                            <option value="">Selecione um serviço</option>
+                            <option value="construcao">Construção de Edifícios</option>
+                            <option value="pavimentacao">Pavimentação</option>
+                            <option value="estruturas">Estruturas de Betão Armado</option>
+                            <option value="drenagem">Sistemas de Drenagem</option>
+                            <option value="hidraulica">Instalações Hidráulicas</option>
+                            <option value="vedacoes">Vedações e Cercas</option>
+                            <option value="outro">Outro Serviço</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Localização do Projeto *</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Descrição do Projeto *</label>
+                    <textarea id="description" name="description" placeholder="Descreva o seu projeto, área, dimensões, necessidades específicas..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="timeline">Prazo Desejado</label>
+                    <select id="timeline" name="timeline">
+                        <option value="">Sem preferência</option>
+                        <option value="urgente">Urgente (até 1 mês)</option>
+                        <option value="curto">Curto prazo (1-3 meses)</option>
+                        <option value="medio">Médio prazo (3-6 meses)</option>
+                        <option value="longo">Longo prazo (mais de 6 meses)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-accent" style="width: 100%; padding: 1rem;">Solicitar Orçamento Gratuito</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Seção Missão e Valores - Melhorada -->
+    <section class="mission-values-section" id="missao-valores">
+        <div class="container">
+            <div class="section-title">
+                <h2>Missão e Valores</h2>
+                <p>Nossa missão é atender com zelo, dedicação e excelência as demandas dos clientes, gerando riqueza de forma sustentável.</p>
+            </div>
+            
+            <div class="mission-values-container">
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Nossa Missão</h3>
+                    <p>Atender com zelo, dedicação e excelência as demandas dos clientes, pelo desenvolvimento e oferta de produtos e serviços que contribuam para a melhoria de qualidade de vida das pessoas, gerando riqueza de forma sustentável.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Nossa Visão</h3>
+                    <p>Tornar-se uma referência nacional e internacional em construção civil, reconhecida pela qualidade, inovação e compromisso com o desenvolvimento sustentável.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Nosso Compromisso</h3>
+                    <p>Superar expectativas, entregando projetos que unem funcionalidade, durabilidade e design inovador, sempre com foco na segurança e satisfação do cliente.</p>
+                </div>
+            </div>
+            
+            <div class="section-title" style="margin-top: 4rem;">
+                <h3>Nossos Valores</h3>
+                <p>Princípios que guiam todas as nossas ações e decisões</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Integridade</h4>
+                        <p>Atuamos com honestidade e transparência em todas as nossas relações comerciais e profissionais.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Comprometimento</h4>
+                        <p>Dedicação total aos projetos e clientes, honrando prazos, orçamentos e expectativas.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Valorização Humana</h4>
+                        <p>Respeito às pessoas, colaboradores, parceiros e comunidade onde atuamos.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Superação de Resultados</h4>
+                        <p>Busca constante pela excelência em cada detalhe de nossos projetos e serviços.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Melhoria Contínua</h4>
+                        <p>Processos em constante evolução através de aprendizados e inovações.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Inovação</h4>
+                        <p>Adoção de novas tecnologias, materiais e métodos construtivos mais eficientes.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Sustentabilidade</h4>
+                        <p>Práticas ambientalmente responsáveis e eficientes em todos os nossos projetos.</p>
+                    </div>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="value-content">
+                        <h4>Qualidade</h4>
+                        <p>Compromisso com os mais altos padrões de qualidade em todas as etapas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Galeria -->
+    <section class="gallery-section" id="galeria">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Projetos</h2>
+                <p>Conheça alguns dos nossos trabalhos mais recentes e representativos.</p>
+            </div>
+            
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="todos">Todos os Projetos</button>
+                <button class="filter-btn" data-filter="edificios">Edifícios</button>
+                <button class="filter-btn" data-filter="infraestrutura">Infraestrutura</button>
+                <button class="filter-btn" data-filter="pavimentacao">Pavimentação</button>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="edificios">
+                    <img src="imagem_9.jpeg" alt="Obra de restauração Standard Bank-Maputo">
+                    <div class="gallery-item-overlay">
+                        <h4>Obra de restauração Standard Bank-Maputo</h4>
+                        <p>Reforma completa do edifício sede</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="infraestrutura">
+                    <img src="imagem_13.jpeg" alt="Vedação e cerca elétrica">
+                    <div class="gallery-item-overlay">
+                        <h4>Subestação de Muxara e Terminal Petromoc Pemba</h4>
+                        <p>Obra de vedação e cerca eléctrica</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="infraestrutura">
+                    <img src="imagem_18.jpeg" alt="Subestação de Muxara">
+                    <div class="gallery-item-overlay">
+                        <h4>Subestação de Muxara - Pemba</h4>
+                        <p>Vedação e cerca eléctrica</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="infraestrutura">
+                    <img src="imagem_23.jpeg" alt="Subestação de Muxara-Pemba">
+                    <div class="gallery-item-overlay">
+                        <h4>Subestação de Muxara-Pemba</h4>
+                        <p>Construção de estrutura e pavimentos de betão armado</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="edificios">
+                    <img src="imagem_26.jpeg" alt="Trabalhos de picheleiro">
+                    <div class="gallery-item-overlay">
+                        <h4>Trabalhos de picheleiro</h4>
+                        <p>Instalações hidráulicas especializadas</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="pavimentacao">
+                    <img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="Pavimentação de vias">
+                    <div class="gallery-item-overlay">
+                        <h4>Pavimentação de vias urbanas</h4>
+                        <p>Execução de pavimentos asfálticos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal para galeria -->
+        <div class="modal" id="galleryModal">
+            <div class="modal-img-content">
+                <span class="modal-img-close" id="modalClose">&times;</span>
+                <img class="modal-img" id="modalImg" src="" alt="">
+                <div class="modal-caption" id="modalCaption"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section id="contato">
+        <div class="container">
+            <div class="section-title">
+                <h2>Entre em Contato</h2>
+                <p>Estamos à disposição para esclarecer dúvidas e apresentar soluções para o seu projeto.</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Informações de Contato</h3>
+                    <p>Entre em contato conosco através dos canais abaixo ou visite nossas instalações.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Endereço</h4>
+                                <p>Av. 25 de Setembro, Bairro de Cimento, Pemba</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Telefone</h4>
+                                <p>84 263 1768 / 872261200</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>construgotica@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Horário de Funcionamento</h4>
+                                <p>Segunda - Sexta: 8h00 - 18h00<br>Sábado: 8h00 - 13h00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Envie uma Mensagem</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Nome Completo *</label>
+                            <input type="text" id="contactName" name="contactName" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactEmail">E-mail *</label>
+                                <input type="email" id="contactEmail" name="contactEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Telefone</label>
+                                <input type="tel" id="contactPhone" name="contactPhone">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactSubject">Assunto *</label>
+                            <input type="text" id="contactSubject" name="contactSubject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactMessage">Mensagem *</label>
+                            <textarea id="contactMessage" name="contactMessage" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%; padding: 1rem;">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé - Organizado e estilizado -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">
+                <img src="logo.png" alt="Gótica SU LDA">
+                <p>Empresa de Construção Civil comprometida com a qualidade, inovação e desenvolvimento sustentável. Contribuindo para o desenvolvimento com rigor, qualidade e capacidade de execução.</p>
+            </div>
+            
+            <div class="footer-content">
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Início</a></li>
+                        <li><a href="#sobre">Sobre Nós</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="#orcamento">Solicitar Orçamento</a></li>
+                        <li><a href="#galeria">Projetos</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-services">
+                    <h4>Nossos Serviços</h4>
+                    <ul>
+                        <li><a href="#servicos">Construção de Edifícios</a></li>
+                        <li><a href="#servicos">Pavimentação</a></li>
+                        <li><a href="#servicos">Estruturas de Betão Armado</a></li>
+                        <li><a href="#servicos">Sistemas de Drenagem</a></li>
+                        <li><a href="#servicos">Instalações Hidráulicas</a></li>
+                        <li><a href="#servicos">Vedações e Cercas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contacte-nos</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. 25 de Setembro, Bairro de Cimento, Pemba</p>
+                    <p><i class="fas fa-phone"></i> 84 263 1768 / 872261200</p>
+                    <p><i class="fas fa-envelope"></i> construgotica@gmail.com</p>
+                    <p><i class="fas fa-clock"></i> Seg-Sex: 8h-18h | Sáb: 8h-13h</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p>
+                <p>Desenvolvido por HP.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notificação -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Sua mensagem foi enviada com sucesso!</span>
+    </div>
+
+    <script>
+        // Menu responsivo
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            menuToggle.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Fechar menu ao clicar em um link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Contador de estatísticas no herói
+        const heroStats = document.querySelectorAll('.hero-stat-number');
+        const statObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stat = entry.target;
+                    const target = parseInt(stat.getAttribute('data-count'));
+                    const increment = target / 100;
+                    let current = 0;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            stat.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(current);
+                        }
+                    }, 20);
+                    
+                    statObserver.unobserve(stat);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        heroStats.forEach(stat => statObserver.observe(stat));
+        
+        // Contador de estatísticas na seção "Sobre Nós"
+        const stats = document.querySelectorAll('.stat-number');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stat = entry.target;
+                    const target = parseInt(stat.getAttribute('data-count'));
+                    const increment = target / 100;
+                    let current = 0;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            stat.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(current);
+                        }
+                    }, 20);
+                    
+                    observer.unobserve(stat);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        stats.forEach(stat => observer.observe(stat));
+        
+        // Modal de orçamento
+        const budgetModal = document.getElementById('budgetModal');
+        const openBudgetBtns = document.querySelectorAll('#openBudgetBtn, #openBudgetBtn2, #openBudgetBtn3, #openBudgetBtn4');
+        const closeBudgetBtn = document.getElementById('closeBudgetBtn');
+        
+        // Abrir modal
+        openBudgetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                budgetModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Fechar modal
+        closeBudgetBtn.addEventListener('click', () => {
+            budgetModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (e) => {
+            if (e.target === budgetModal) {
+                budgetModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Formulário de orçamento
+        const budgetForm = document.getElementById('budgetForm');
+        budgetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Obter valores do formulário
+            const name = budgetForm.querySelector('#name').value;
+            const service = budgetForm.querySelector('#service').value;
+            
+            // Simular envio
+            showNotification(`Obrigado, ${name}! Sua solicitação de orçamento para ${getServiceName(service)} foi enviada. Entraremos em contato em até 24 horas.`);
+            
+            // Limpar formulário
+            budgetForm.reset();
+            
+            // Fechar modal
+            budgetModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Formulário de contato
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Obter valores do formulário
+            const name = contactForm.querySelector('#contactName').value;
+            
+            // Simular envio
+            showNotification(`Obrigado, ${name}! Sua mensagem foi enviada com sucesso. Responderemos em breve.`);
+            
+            // Limpar formulário
+            contactForm.reset();
+        });
+        
+        // Função para obter nome do serviço
+        function getServiceName(value) {
+            const services = {
+                'construcao': 'Construção de Edifícios',
+                'pavimentacao': 'Pavimentação',
+                'estruturas': 'Estruturas de Betão Armado',
+                'drenagem': 'Sistemas de Drenagem',
+                'hidraulica': 'Instalações Hidráulicas',
+                'vedacoes': 'Vedações e Cercas',
+                'outro': 'Outro Serviço'
+            };
+            return services[value] || 'serviço selecionado';
+        }
+        
+        // Notificação
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Galeria com filtro
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remover active de todos os botões
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Adicionar active ao botão clicado
+                btn.classList.add('active');
+                
+                const filter = btn.getAttribute('data-filter');
+                
+                galleryItems.forEach(item => {
+                    if (filter === 'todos' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Modal da galeria
+        const modal = document.getElementById('galleryModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalCaption = document.getElementById('modalCaption');
+        const modalClose = document.getElementById('modalClose');
+        
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                const caption = item.querySelector('.gallery-item-overlay h4').textContent;
+                const description = item.querySelector('.gallery-item-overlay p')?.textContent || '';
+                
+                modalImg.src = imgSrc;
+                modalCaption.innerHTML = `<strong>${caption}</strong><br>${description}`;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Fechar modal da galeria
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Rolagem suave para âncoras
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Fechar modais com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                budgetModal.style.display = 'none';
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
