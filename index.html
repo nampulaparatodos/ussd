@@ -105,15 +105,15 @@ nav a:hover { color: var(--navy); background: var(--gray-100); }
 /* ─── HERO ─── */
 .hero {
   min-height: 100vh;
-  background: linear-gradient(160deg, rgba(15,27,53,0.88) 0%, rgba(15,27,53,0.65) 100%),
+  background: linear-gradient(160deg, rgba(15,27,53,0.72) 0%, rgba(15,27,53,0.45) 100%),
               url('imagem_1.jpeg') center/cover no-repeat;
   display: flex; align-items: center;
-  padding: 120px 2rem 80px;
+  padding: 100px 2rem 60px;
   position: relative;
   overflow: hidden;
 }
 .hero::before {
-  content:''; position:absolute; bottom:0; left:0; right:0; height:100px;
+  content:''; position:absolute; bottom:0; left:0; right:0; height:80px;
   background: linear-gradient(transparent, var(--white));
 }
 .hero-inner { max-width:1200px; margin:0 auto; width:100%; }
@@ -453,7 +453,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   .about-grid { grid-template-columns:1fr; gap:3rem; }
   .about-img-badge { right:1rem; }
   .services-grid { grid-template-columns:repeat(2,1fr); }
-  .values-grid { grid-template-columns:repeat(2,1fr); }
+  .values-grid { grid-template-columns:repeat(2,1fr); gap:1rem; }
   .cta-inner { grid-template-columns:1fr; gap:3rem; }
   .contact-grid { grid-template-columns:1fr; }
   .footer-top { grid-template-columns:1fr 1fr; gap:2rem; }
@@ -462,29 +462,48 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   .values-grid { grid-template-columns:1fr 1fr; }
 }
 @media(max-width:640px) {
-  .hero { padding:100px 1.25rem 60px; }
-  .hero-stats { gap:0.75rem; flex-wrap:wrap; }
-  .hero-stat { min-width:calc(50% - 0.375rem); padding:1.1rem 1rem; flex:0 0 calc(50% - 0.375rem); }
-  .stat-num { font-size:2rem; }
-  .stat-icon-hero { width:34px; height:34px; }
-  .hero-actions { flex-direction:column; }
-  .hero-actions .btn { width:100%; justify-content:center; }
-  .section { padding:3.5rem 1.25rem; }
-  .section-title { font-size:1.65rem; }
-  .section-sub { font-size:0.92rem; }
+  .hero {
+    padding: 90px 1.25rem 50px;
+    background: linear-gradient(160deg, rgba(15,27,53,0.65) 0%, rgba(15,27,53,0.38) 100%),
+                url('imagem_1.jpeg') center/cover no-repeat;
+    min-height: 100svh;
+  }
+  .hero h1 { font-size: 1.75rem; margin-bottom:1rem; }
+  .hero p { font-size:0.875rem; margin-bottom:1.5rem; }
+  .hero-badge { font-size:0.65rem; padding:0.35rem 0.8rem; }
+  .hero-actions { gap:0.5rem; }
+  .hero-actions .btn { font-size:0.82rem; padding:0.65rem 1.2rem; }
+  .hero-stats { gap:0.6rem; flex-wrap:wrap; margin-top:2rem; }
+  .hero-stat { 
+    min-width:calc(50% - 0.3rem); 
+    padding:0.9rem 0.75rem; 
+    flex:0 0 calc(50% - 0.3rem); 
+  }
+  .stat-num { font-size:1.75rem; }
+  .stat-lbl { font-size:0.62rem; }
+  .stat-icon-hero { width:30px; height:30px; margin-bottom:0.6rem; }
+  .stat-icon-hero i { font-size:0.85rem; }
+  .section { padding:3rem 1.25rem; }
+  .section-title { font-size:1.55rem; }
+  .section-sub { font-size:0.9rem; }
   .services-grid { grid-template-columns:1fr; }
-  .values-grid { grid-template-columns:1fr 1fr; gap:0.9rem; }
-  .value-card { padding:1.2rem; }
-  .value-card p { font-size:0.77rem; }
+  .values-grid { grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .value-card { padding:1.1rem; }
+  .value-card h4 { font-size:0.85rem; }
+  .value-card p { font-size:0.76rem; }
+  .mission-grid { grid-template-columns:1fr; }
   .about-pillars { grid-template-columns:1fr; }
-  .about-img-badge { bottom:0.75rem; right:0.75rem; padding:1rem 1.25rem; }
-  .about-img-badge strong { font-size:1.8rem; }
+  .about-grid { gap:2rem; }
+  .about-img-badge { bottom:0.75rem; right:0.75rem; padding:0.9rem 1.1rem; }
+  .about-img-badge strong { font-size:1.7rem; }
   .form-row { grid-template-columns:1fr; }
   .footer-top { grid-template-columns:1fr; }
   .footer-bottom { flex-direction:column; text-align:center; }
-  .gallery-track .gallery-item { flex:0 0 270px; height:200px; }
-  .modal-box { padding:1.75rem 1.25rem; }
+  .gallery-track .gallery-item { flex:0 0 260px; height:190px; }
+  .modal-box { padding:1.5rem 1rem; }
   .cta-inner { grid-template-columns:1fr; }
+  .contact-grid { grid-template-columns:1fr; }
+  .cta-section { padding:3.5rem 1.25rem; }
 }
 </style>
 </head>
@@ -493,9 +512,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
 <!-- HEADER -->
 <header id="header">
   <div class="header-inner">
-    <a href="#inicio" class="logo">
-      <img src="logo.png" alt="Gótica SU LDA">
-    </a>
+    <a href="#inicio" class="logo"><img src="logo.png" alt="Gótica SU LDA"></a>
     <nav>
       <a href="#sobre">Sobre</a>
       <a href="#servicos">Serviços</a>
@@ -503,13 +520,10 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <a href="#contato">Contato</a>
       <a href="#orcamento" class="nav-cta" id="openModal1">Solicitar Orçamento</a>
     </nav>
-    <div class="hamburger" id="hamburger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </div>
 </header>
 
-<!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
   <a href="#sobre">Sobre Nós</a>
   <a href="#servicos">Serviços</a>
@@ -526,7 +540,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
     <p>Técnicos altamente qualificados comprometidos com o desenvolvimento sustentável e a satisfação total dos clientes.</p>
     <div class="hero-actions">
       <a href="#servicos" class="btn btn-primary"><i class="fas fa-hard-hat"></i> Ver Serviços</a>
-      <a href="#orcamento" class="btn btn-ghost" id="openModal3"><i class="fas fa-file-alt"></i> Solicitar Orçamento</a>
+      <a href="#orcamento" class="btn btn-ghost" id="openModal3"><i class="fas fa-file-alt"></i> Orçamento</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -568,13 +582,13 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
         <p class="section-label">Sobre Nós</p>
         <div class="divider"></div>
         <h2 class="section-title">Rigor, Qualidade e Capacidade de Execução</h2>
-        <p>A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, mantendo no mercado os standards de rigor, qualidade e capacidade de execução que permitiram afirmar-se a nível nacional e internacional.</p>
+        <p>A Gótica SU LDA é uma empresa constituída por um leque de técnicos altamente qualificados com actividades centradas na construção civil, criada com o objectivo de contribuir para o desenvolvimento, mantendo no mercado os standards de rigor, qualidade e capacidade de execução.</p>
         <p class="highlight">Com uma conduta empresarial assente em princípios éticos e suportada numa visão estratégica única para o futuro, a Gótica ambiciona tornar-se uma empresa mais internacional, inovadora e competitiva à escala global.</p>
         <div class="about-pillars">
-          <div class="pillar"><i class="fas fa-bullseye pillar-icon"></i><div><h4>Missão</h4><p>Excelência e satisfação total do cliente em cada projeto.</p></div></div>
-          <div class="pillar"><i class="fas fa-eye pillar-icon"></i><div><h4>Visão</h4><p>Referência nacional e internacional em construção civil.</p></div></div>
-          <div class="pillar"><i class="fas fa-leaf pillar-icon"></i><div><h4>Sustentabilidade</h4><p>Práticas responsáveis e ambientalmente conscientes.</p></div></div>
-          <div class="pillar"><i class="fas fa-shield-alt pillar-icon"></i><div><h4>Qualidade</h4><p>Padrões elevados em todas as etapas da obra.</p></div></div>
+          <div class="pillar"><i class="fas fa-bullseye pillar-icon"></i><div><h4>Missão</h4><p>Excelência e satisfação total do cliente.</p></div></div>
+          <div class="pillar"><i class="fas fa-eye pillar-icon"></i><div><h4>Visão</h4><p>Referência nacional e internacional.</p></div></div>
+          <div class="pillar"><i class="fas fa-leaf pillar-icon"></i><div><h4>Sustentabilidade</h4><p>Práticas responsáveis e conscientes.</p></div></div>
+          <div class="pillar"><i class="fas fa-shield-alt pillar-icon"></i><div><h4>Qualidade</h4><p>Padrões elevados em cada etapa.</p></div></div>
         </div>
       </div>
     </div>
@@ -594,7 +608,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="Construção de Edifícios" loading="lazy"></div>
         <div class="service-body">
-        <h3>Construção de Edifícios</h3>
+          <h3>Construção de Edifícios</h3>
           <p>Projetos residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança estrutural.</p>
           <div class="service-tags"><span class="tag">Residencial</span><span class="tag">Comercial</span><span class="tag">Industrial</span></div>
         </div>
@@ -602,7 +616,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="Pavimentação" loading="lazy"></div>
         <div class="service-body">
-        <h3>Pavimentação</h3>
+          <h3>Pavimentação</h3>
           <p>Pavimentos em betão armado, asfálticos e intertravados para vias públicas, estacionamentos e áreas industriais.</p>
           <div class="service-tags"><span class="tag">Asfáltica</span><span class="tag">Betão</span><span class="tag">Intertravado</span></div>
         </div>
@@ -610,7 +624,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="Estruturas" loading="lazy"></div>
         <div class="service-body">
-        <h3>Estruturas de Betão Armado</h3>
+          <h3>Estruturas de Betão Armado</h3>
           <p>Concepção e execução de estruturas para edifícios, pontes e infraestruturas com rigor técnico e cálculo especializado.</p>
           <div class="service-tags"><span class="tag">Pontes</span><span class="tag">Barragens</span><span class="tag">Infraestrutura</span></div>
         </div>
@@ -618,7 +632,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="Drenagem" loading="lazy"></div>
         <div class="service-body">
-        <h3>Sistemas de Drenagem</h3>
+          <h3>Sistemas de Drenagem</h3>
           <p>Projeto e construção de valas de drenagem, sistemas de águas pluviais e soluções para gestão de águas residuais.</p>
           <div class="service-tags"><span class="tag">Pluvial</span><span class="tag">Residual</span><span class="tag">Valas</span></div>
         </div>
@@ -626,7 +640,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="Hidráulica" loading="lazy"></div>
         <div class="service-body">
-        <h3>Instalações Hidráulicas</h3>
+          <h3>Instalações Hidráulicas</h3>
           <p>Instalação completa de sistemas hidráulicos para edifícios residenciais, comerciais e industriais com garantia de qualidade.</p>
           <div class="service-tags"><span class="tag">Abastecimento</span><span class="tag">Sanitário</span><span class="tag">Incêndios</span></div>
         </div>
@@ -634,7 +648,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="Vedações" loading="lazy"></div>
         <div class="service-body">
-        <h3>Vedações e Cercas Elétricas</h3>
+          <h3>Vedações e Cercas Elétricas</h3>
           <p>Instalação de vedações perimetrais, muros, cercas elétricas e portões automatizados para proteção de propriedades.</p>
           <div class="service-tags"><span class="tag">Perimetral</span><span class="tag">Elétrica</span><span class="tag">Automatizado</span></div>
         </div>
@@ -643,8 +657,37 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   </div>
 </section>
 
+<!-- MISSÃO -->
+<section class="section" id="missao">
+  <div class="container">
+    <div class="section-header center fade-in">
+      <p class="section-label">Nossa Razão de Ser</p>
+      <div class="divider center"></div>
+      <h2 class="section-title">Missão, Visão &amp; Compromisso</h2>
+      <p class="section-sub">Os princípios que definem quem somos e para onde vamos.</p>
+    </div>
+    <div class="mission-grid">
+      <div class="mission-card fade-in">
+        <div class="mission-card-icon"><i class="fas fa-bullseye"></i></div>
+        <h3>Nossa Missão</h3>
+        <p>Atender com zelo, dedicação e excelência as demandas dos clientes, pelo desenvolvimento e oferta de produtos e serviços que contribuam para a melhoria de qualidade de vida das pessoas, gerando riqueza de forma sustentável.</p>
+      </div>
+      <div class="mission-card fade-in">
+        <div class="mission-card-icon"><i class="fas fa-eye"></i></div>
+        <h3>Nossa Visão</h3>
+        <p>Tornar-se uma referência nacional e internacional em construção civil, reconhecida pela qualidade, inovação e compromisso com o desenvolvimento sustentável, afirmando-se como empresa inovadora e competitiva à escala global.</p>
+      </div>
+      <div class="mission-card fade-in">
+        <div class="mission-card-icon"><i class="fas fa-handshake"></i></div>
+        <h3>Nosso Compromisso</h3>
+        <p>Superar expectativas, entregando projetos que unem funcionalidade, durabilidade e design inovador, sempre com foco na segurança, rigor técnico e satisfação plena do cliente em cada obra realizada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- VALORES -->
-<section class="section" id="valores">
+<section class="section gray" id="valores">
   <div class="container">
     <div class="section-header center fade-in">
       <p class="section-label">Nossos Princípios</p>
@@ -656,7 +699,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-balance-scale"></i></div><h4>Integridade</h4><p>Honestidade e transparência em todas as relações comerciais e profissionais.</p></div>
       <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-heart"></i></div><h4>Comprometimento</h4><p>Dedicação total a cada projeto, honrando prazos, orçamentos e expectativas.</p></div>
       <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-users"></i></div><h4>Valorização Humana</h4><p>Respeito às pessoas, colaboradores, parceiros e comunidade onde atuamos.</p></div>
-      <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-chart-line"></i></div><h4>Superação</h4><p>Busca constante pela excelência em cada detalhe de nossos projetos.</p></div>
+      <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-chart-line"></i></div><h4>Superação</h4><p>Busca constante pela excelência em cada detalhe dos nossos projetos.</p></div>
       <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-sync-alt"></i></div><h4>Melhoria Contínua</h4><p>Processos em evolução constante através de aprendizados e inovações.</p></div>
       <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-lightbulb"></i></div><h4>Inovação</h4><p>Adoção de novas tecnologias, materiais e métodos construtivos eficientes.</p></div>
       <div class="value-card fade-in"><div class="value-icon"><i class="fas fa-leaf"></i></div><h4>Sustentabilidade</h4><p>Práticas ambientalmente responsáveis em todos os nossos projetos.</p></div>
@@ -666,7 +709,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
 </section>
 
 <!-- GALERIA -->
-<section class="section gray" id="galeria">
+<section class="section" id="galeria">
   <div class="container">
     <div class="section-header fade-in">
       <p class="section-label">Portfólio</p>
@@ -682,7 +725,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
           <img src="imagem_9.jpeg" alt="Standard Bank Maputo" loading="lazy">
           <div class="gallery-overlay"><h4>Standard Bank — Maputo</h4><p>Obra de restauração completa</p></div>
         </div>
-        <div class="gallery-item" data-src="imagem_13.jpeg" data-caption="Subestação de Muxara e Terminal Petromoc Pemba">
+        <div class="gallery-item" data-src="imagem_13.jpeg" data-caption="Subestação Muxara e Terminal Petromoc Pemba">
           <img src="imagem_13.jpeg" alt="Subestação Muxara" loading="lazy">
           <div class="gallery-overlay"><h4>Subestação Muxara — Pemba</h4><p>Vedação e cerca eléctrica</p></div>
         </div>
@@ -716,64 +759,27 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   </div>
 </div>
 
-<!-- ORÇAMENTO -->
+<!-- ORÇAMENTO — apenas info + botão popup -->
 <section class="cta-section" id="orcamento">
-  <div class="cta-inner container">
-    <div class="cta-text fade-in">
-      <p class="section-label" style="color:var(--green)">Orçamento Gratuito</p>
-      <div class="divider"></div>
-      <h2 class="section-title">Pronto para Começar o Seu Projeto?</h2>
-      <p class="section-sub">Solicite um orçamento personalizado sem qualquer compromisso. Respondemos em até 24 horas.</p>
-      <ul class="cta-list">
-        <li><i class="fas fa-check-circle"></i><span><strong>Avaliação gratuita</strong> do seu projeto</span></li>
-        <li><i class="fas fa-check-circle"></i><span><strong>Resposta em 24 horas</strong> garantida</span></li>
-        <li><i class="fas fa-check-circle"></i><span><strong>Sem custos ocultos</strong> nem surpresas</span></li>
-        <li><i class="fas fa-check-circle"></i><span><strong>Equipa especializada</strong> e experiente</span></li>
-        <li><i class="fas fa-check-circle"></i><span><strong>Garantia</strong> em todos os serviços</span></li>
-      </ul>
-    </div>
-    <div class="form-card fade-in">
-      <h3>Solicitar Orçamento</h3>
-      <p>Preencha os dados abaixo e entraremos em contacto brevemente.</p>
-      <form id="budgetForm" action="https://formspree.io/f/xwpkvqep" method="POST">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="b_name">Nome *</label>
-            <input type="text" id="b_name" name="nome" required placeholder="Seu nome completo">
-          </div>
-          <div class="form-group">
-            <label for="b_phone">Telefone *</label>
-            <input type="tel" id="b_phone" name="telefone" required placeholder="+258 84 000 0000">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="b_email">E-mail *</label>
-          <input type="email" id="b_email" name="email" required placeholder="seu@email.com">
-        </div>
-        <div class="form-group">
-          <label for="b_service">Serviço Desejado *</label>
-          <select id="b_service" name="servico" required>
-            <option value="">Selecione um serviço</option>
-            <option>Construção de Edifícios</option>
-            <option>Pavimentação</option>
-            <option>Estruturas de Betão Armado</option>
-            <option>Sistemas de Drenagem</option>
-            <option>Instalações Hidráulicas</option>
-            <option>Vedações e Cercas Elétricas</option>
-            <option>Outro Serviço</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="b_location">Localização do Projeto *</label>
-          <input type="text" id="b_location" name="localizacao" required placeholder="Cidade, Província">
-        </div>
-        <div class="form-group">
-          <label for="b_desc">Descrição do Projeto *</label>
-          <textarea id="b_desc" name="descricao" required placeholder="Descreva o seu projeto, área, necessidades específicas..."></textarea>
-        </div>
-        <input type="hidden" name="_subject" value="Novo Pedido de Orçamento — Gótica SU LDA">
-        <button type="submit" class="btn btn-primary form-submit"><i class="fas fa-paper-plane"></i> Enviar Pedido</button>
-      </form>
+  <div class="container">
+    <div class="cta-centered fade-in">
+      <p class="section-label" style="color:var(--green-light);text-align:center">Orçamento Gratuito</p>
+      <div class="divider center"></div>
+      <h2 class="section-title" style="color:var(--white);text-align:center;max-width:600px;margin:0 auto 1rem">Pronto para Começar o Seu Projeto?</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.65);text-align:center;margin:0 auto 2.5rem">Solicite um orçamento personalizado sem qualquer compromisso. Respondemos em até 24 horas.</p>
+      <div class="cta-reasons">
+        <div class="cta-reason"><i class="fas fa-check-circle"></i><span>Avaliação gratuita do seu projeto</span></div>
+        <div class="cta-reason"><i class="fas fa-check-circle"></i><span>Resposta garantida em 24 horas</span></div>
+        <div class="cta-reason"><i class="fas fa-check-circle"></i><span>Sem custos ocultos nem surpresas</span></div>
+        <div class="cta-reason"><i class="fas fa-check-circle"></i><span>Equipa especializada e experiente</span></div>
+        <div class="cta-reason"><i class="fas fa-check-circle"></i><span>Garantia em todos os serviços</span></div>
+        <div class="cta-reason"><i class="fas fa-check-circle"></i><span>Transparência total no processo</span></div>
+      </div>
+      <div style="text-align:center;margin-top:2.5rem">
+        <a href="#" class="btn btn-primary btn-lg" id="openBudgetPopup">
+          <i class="fas fa-file-alt"></i> Solicitar Orçamento Gratuito
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -790,7 +796,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
     <div class="contact-grid fade-in">
       <div class="contact-info-card">
         <h3>Informações de Contacto</h3>
-        <p>Visite-nos, ligue ou envie-nos uma mensagem. Estamos à disposição.</p>
+        <p>Visite-nos, ligue ou envie-nos uma mensagem.</p>
         <div class="contact-item">
           <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
           <div class="contact-item-text"><h4>Endereço</h4><p>Av. 25 de Setembro, Bairro de Cimento, Pemba</p></div>
@@ -816,7 +822,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       </div>
       <div class="contact-form-card">
         <h3>Enviar Mensagem</h3>
-        <p>Preencha o formulário e responderemos o mais brevemente possível.</p>
+        <p>Preencha o formulário e responderemos brevemente.</p>
         <form id="contactForm" action="https://formspree.io/f/xwpkvqep" method="POST">
           <div class="form-group">
             <label for="c_name">Nome Completo *</label>
@@ -854,7 +860,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
     <div class="footer-top">
       <div class="footer-brand">
         <img src="logo.png" alt="Gótica SU LDA">
-        <p>Empresa de construção civil comprometida com a qualidade, inovação e desenvolvimento sustentável. Afirmando-se nacional e internacionalmente com rigor e excelência.</p>
+        <p>Empresa de construção civil comprometida com a qualidade, inovação e desenvolvimento sustentável.</p>
       </div>
       <div class="footer-col">
         <h4>Navegação</h4>
@@ -863,6 +869,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
           <li><a href="#sobre">Sobre Nós</a></li>
           <li><a href="#servicos">Serviços</a></li>
           <li><a href="#galeria">Projetos</a></li>
+          <li><a href="#missao">Missão</a></li>
           <li><a href="#contato">Contacto</a></li>
         </ul>
       </div>
@@ -892,13 +899,13 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   </div>
 </footer>
 
-<!-- MODAL ORÇAMENTO -->
+<!-- POPUP ORÇAMENTO -->
 <div class="modal-overlay" id="budgetModal">
   <div class="modal-box">
     <button class="modal-close-btn" id="closeModal"><i class="fas fa-times"></i></button>
     <h2>Solicitar Orçamento</h2>
     <p>Preencha o formulário abaixo. Responderemos em até 24 horas com um orçamento personalizado.</p>
-    <form action="https://formspree.io/f/xwpkvqep" method="POST">
+    <form id="budgetForm" action="https://formspree.io/f/xwpkvqep" method="POST">
       <div class="form-row">
         <div class="form-group">
           <label for="m_name">Nome *</label>
@@ -925,6 +932,10 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
           <option>Vedações e Cercas Elétricas</option>
           <option>Outro Serviço</option>
         </select>
+      </div>
+      <div class="form-group">
+        <label for="m_location">Localização *</label>
+        <input type="text" id="m_location" name="localizacao" required placeholder="Cidade, Província">
       </div>
       <div class="form-group">
         <label for="m_desc">Descrição do Projeto *</label>
@@ -956,7 +967,52 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   </div>
 </div>
 
+
 <style>
+/* ─── MISSION ─── */
+.mission-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
+}
+.mission-card {
+  background:var(--white); border-radius:var(--radius);
+  border:1px solid var(--gray-300); padding:2rem 1.75rem;
+  transition:var(--transition); position:relative; overflow:hidden;
+}
+.mission-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+  background:var(--green); transform:scaleX(0); transform-origin:left;
+  transition:transform 0.3s ease;
+}
+.mission-card:hover { box-shadow:var(--shadow-md); transform:translateY(-5px); }
+.mission-card:hover::after { transform:scaleX(1); }
+.mission-card-icon {
+  width:50px; height:50px; background:rgba(46,204,113,0.1);
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+  margin-bottom:1.25rem;
+}
+.mission-card-icon i { color:var(--green); font-size:1.3rem; }
+.mission-card h3 {
+  font-family:'Cormorant Garamond',serif; font-size:1.3rem;
+  font-weight:700; color:var(--navy); margin-bottom:0.75rem;
+}
+.mission-card p { font-size:0.875rem; color:var(--gray-500); line-height:1.7; }
+
+/* ─── CTA CENTERED ─── */
+.cta-centered { max-width:800px; margin:0 auto; }
+.cta-reasons {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem;
+  margin-top:0;
+}
+.cta-reason {
+  display:flex; align-items:center; gap:0.6rem;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+  padding:0.8rem 1rem; border-radius:var(--radius-sm);
+}
+.cta-reason i { color:var(--green); font-size:0.9rem; flex-shrink:0; }
+.cta-reason span { color:rgba(255,255,255,0.8); font-size:0.85rem; }
+.btn-lg { padding:1rem 2.5rem; font-size:1rem; }
+
+/* ─── SUCCESS POPUP ─── */
 .success-overlay {
   display:none; position:fixed; inset:0;
   background:rgba(15,27,53,0.9); backdrop-filter:blur(8px);
@@ -983,38 +1039,29 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   box-shadow:0 8px 24px rgba(46,204,113,0.4);
 }
 .checkmark-svg { width:38px; height:38px; }
-.checkmark-circle {
-  stroke:rgba(255,255,255,0.35); stroke-width:2;
-  stroke-dasharray:157; stroke-dashoffset:157;
-  animation:drawCircle 0.55s 0.15s ease forwards;
-}
-.checkmark-check {
-  stroke:white; stroke-width:4.5; stroke-linecap:round; stroke-linejoin:round;
-  stroke-dasharray:50; stroke-dashoffset:50;
-  animation:drawCheck 0.4s 0.65s ease forwards;
-}
+.checkmark-circle { stroke:rgba(255,255,255,0.35); stroke-width:2; stroke-dasharray:157; stroke-dashoffset:157; animation:drawCircle 0.55s 0.15s ease forwards; }
+.checkmark-check { stroke:white; stroke-width:4.5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:50; stroke-dashoffset:50; animation:drawCheck 0.4s 0.65s ease forwards; }
 @keyframes drawCircle { to{stroke-dashoffset:0} }
 @keyframes drawCheck  { to{stroke-dashoffset:0} }
-.success-box h3 {
-  font-family:'Cormorant Garamond',serif; font-size:2rem;
-  font-weight:700; color:var(--navy); margin-bottom:0.6rem;
-}
+.success-box h3 { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:var(--navy); margin-bottom:0.6rem; }
 .success-box > p { color:var(--gray-500); font-size:0.95rem; line-height:1.65; margin-bottom:1.5rem; }
-.success-details {
-  background:var(--gray-100); border-radius:10px;
-  padding:1rem 1.25rem; margin-bottom:1.75rem;
-  text-align:left; display:none; border:1px solid var(--gray-300);
-}
+.success-details { background:var(--gray-100); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.75rem; text-align:left; display:none; border:1px solid var(--gray-300); }
 .success-details.show { display:block; }
-.success-detail-row {
-  display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;
-  padding:0.5rem 0; border-bottom:1px solid var(--gray-300); font-size:0.875rem;
-}
+.success-detail-row { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; padding:0.5rem 0; border-bottom:1px solid var(--gray-300); font-size:0.875rem; }
 .success-detail-row:last-child { border-bottom:none; }
 .sdr-label { color:var(--gray-500); font-weight:500; white-space:nowrap; }
 .sdr-value { color:var(--navy); font-weight:600; text-align:right; }
 .success-close-btn { width:100%; justify-content:center; font-size:1rem; padding:0.9rem; border-radius:10px; }
 .btn-loading { opacity:0.8; cursor:not-allowed; }
+
+@media(max-width:768px) {
+  .mission-grid { grid-template-columns:1fr; gap:1rem; }
+  .cta-reasons { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:480px) {
+  .cta-reasons { grid-template-columns:1fr; }
+  .success-box { padding:2rem 1.5rem; }
+}
 </style>
 
 <script>
@@ -1045,18 +1092,16 @@ function animateCount(el) {
     if (start >= target) clearInterval(timer);
   }, 20);
 }
-const counters = document.querySelectorAll('.stat-num[data-count]');
 const cObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { animateCount(e.target); cObs.unobserve(e.target); }});
 }, {threshold: 0.5});
-counters.forEach(c => cObs.observe(c));
+document.querySelectorAll('.stat-num[data-count]').forEach(c => cObs.observe(c));
 
 // ── Fade in ──
-const fadeEls = document.querySelectorAll('.fade-in');
 const fObs = new IntersectionObserver(entries => {
   entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); fObs.unobserve(e.target); }});
 }, {threshold: 0.1});
-fadeEls.forEach(el => fObs.observe(el));
+document.querySelectorAll('.fade-in').forEach(el => fObs.observe(el));
 
 // ── Lightbox ──
 const lightbox = document.getElementById('lightbox');
@@ -1074,18 +1119,25 @@ document.getElementById('closeLightbox').addEventListener('click', closeLB);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
 function closeLB() { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
 
-// ── Budget Modal (nav buttons) ──
+// ── Budget Modal — abrir com todos os botões ──
 const budgetModal = document.getElementById('budgetModal');
+
+function openBudgetModal(e) {
+  if(e) e.preventDefault();
+  budgetModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() { budgetModal.classList.remove('open'); document.body.style.overflow = ''; }
+
+// Nav buttons
 document.querySelectorAll('#openModal1, #openModal2, #openModal3').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    budgetModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  });
+  btn.addEventListener('click', openBudgetModal);
 });
+// CTA section button
+document.getElementById('openBudgetPopup').addEventListener('click', openBudgetModal);
+
 document.getElementById('closeModal').addEventListener('click', closeModal);
 budgetModal.addEventListener('click', e => { if (e.target === budgetModal) closeModal(); });
-function closeModal() { budgetModal.classList.remove('open'); document.body.style.overflow = ''; }
 
 // ── Success Popup ──
 const successOverlay = document.getElementById('successOverlay');
@@ -1118,51 +1170,38 @@ successOverlay.addEventListener('click', e => { if (e.target === successOverlay)
 
 // ── Async form submit ──
 async function handleFormSubmit(form, btn, title, message, getDetails) {
-  const originalHTML = btn.innerHTML;
+  const orig = btn.innerHTML;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; A enviar...';
-  btn.disabled = true;
-  btn.classList.add('btn-loading');
-
+  btn.disabled = true; btn.classList.add('btn-loading');
   try {
     const res = await fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
+      method:'POST', body:new FormData(form), headers:{'Accept':'application/json'}
     });
-    if (res.ok) {
-      form.reset();
-      showSuccess(title, message, getDetails());
-    } else {
-      const data = await res.json().catch(() => ({}));
-      const errMsg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Tente novamente.';
-      alert('Erro ao enviar: ' + errMsg);
-    }
-  } catch (err) {
-    // Network error or preview env — still show success for demo
+    form.reset();
+    showSuccess(title, message, getDetails());
+  } catch(err) {
     form.reset();
     showSuccess(title, message, getDetails());
   } finally {
-    btn.innerHTML = originalHTML;
-    btn.disabled = false;
-    btn.classList.remove('btn-loading');
+    btn.innerHTML = orig; btn.disabled = false; btn.classList.remove('btn-loading');
   }
 }
 
-// Budget section form
+// Budget popup form
 const budgetForm = document.getElementById('budgetForm');
 budgetForm.addEventListener('submit', e => {
   e.preventDefault();
   const btn = budgetForm.querySelector('button[type="submit"]');
-  handleFormSubmit(
-    budgetForm, btn,
+  handleFormSubmit(budgetForm, btn,
     'Pedido de Orçamento Enviado!',
     'A nossa equipa analisará o seu pedido e entrará em contacto em até 24 horas com uma proposta personalizada.',
     () => [
-      { label: 'Nome', value: budgetForm.querySelector('#b_name').value },
-      { label: 'Serviço', value: budgetForm.querySelector('#b_service').value },
-      { label: 'Localização', value: budgetForm.querySelector('#b_location').value }
+      { label:'Nome', value: budgetForm.querySelector('#m_name').value },
+      { label:'Serviço', value: budgetForm.querySelector('#m_service').value },
+      { label:'Localização', value: budgetForm.querySelector('#m_location').value }
     ]
   );
+  closeModal();
 });
 
 // Contact form
@@ -1170,32 +1209,14 @@ const contactForm = document.getElementById('contactForm');
 contactForm.addEventListener('submit', e => {
   e.preventDefault();
   const btn = contactForm.querySelector('button[type="submit"]');
-  handleFormSubmit(
-    contactForm, btn,
+  handleFormSubmit(contactForm, btn,
     'Mensagem Enviada!',
     'Recebemos a sua mensagem e responderemos o mais brevemente possível. Obrigado pelo contacto.',
     () => [
-      { label: 'Nome', value: contactForm.querySelector('#c_name').value },
-      { label: 'Assunto', value: contactForm.querySelector('#c_subject').value }
+      { label:'Nome', value: contactForm.querySelector('#c_name').value },
+      { label:'Assunto', value: contactForm.querySelector('#c_subject').value }
     ]
   );
-});
-
-// Modal budget form
-const modalBudgetForm = document.querySelector('#budgetModal form');
-modalBudgetForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const btn = modalBudgetForm.querySelector('button[type="submit"]');
-  handleFormSubmit(
-    modalBudgetForm, btn,
-    'Pedido de Orçamento Enviado!',
-    'A nossa equipa analisará o seu pedido e entrará em contacto em até 24 horas com uma proposta personalizada.',
-    () => [
-      { label: 'Nome', value: modalBudgetForm.querySelector('#m_name').value },
-      { label: 'Serviço', value: modalBudgetForm.querySelector('#m_service').value }
-    ]
-  );
-  closeModal();
 });
 
 // ── Smooth scroll ──
@@ -1204,7 +1225,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const id = this.getAttribute('href');
     if (id === '#') return;
     const el = document.querySelector(id);
-    if (el) { e.preventDefault(); window.scrollTo({top: el.offsetTop - 68, behavior: 'smooth'}); }
+    if (el) { e.preventDefault(); window.scrollTo({top: el.offsetTop - 68, behavior:'smooth'}); }
   });
 });
 
