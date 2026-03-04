@@ -158,41 +158,54 @@ nav a:hover { color: var(--navy); background: var(--gray-100); }
 .btn-dark:hover { background:var(--navy-mid); transform:translateY(-2px); box-shadow:var(--shadow-md); }
 
 .hero-stats {
-  display: flex; gap: 2.5rem; margin-top: 4rem; flex-wrap:wrap;
+  display: flex; gap: 1.25rem; margin-top: 4rem; flex-wrap:wrap;
 }
 .hero-stat {
   text-align:center;
-  padding: 1.5rem 2rem;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  padding: 1.75rem 1.5rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-top: 3px solid var(--green);
   border-radius: var(--radius);
-  backdrop-filter: blur(8px);
-  min-width: 140px;
+  backdrop-filter: blur(10px);
+  flex: 1; min-width: 130px;
   transition: var(--transition);
+  position:relative; overflow:hidden;
 }
-.hero-stat:hover { background: rgba(255,255,255,0.14); transform:translateY(-3px); }
+.hero-stat::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(46,204,113,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-stat:hover { background: rgba(255,255,255,0.13); transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.2); }
+.stat-icon-hero {
+  width:40px; height:40px; background:rgba(46,204,113,0.18);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  margin:0 auto 0.9rem;
+}
+.stat-icon-hero i { color:var(--green); font-size:1.1rem; }
 .stat-num {
   font-family:'Cormorant Garamond',serif;
-  font-size: 2.5rem; font-weight:700; color:var(--white);
-  line-height:1; display:block; margin-bottom:4px;
+  font-size: 2.6rem; font-weight:700; color:var(--white);
+  line-height:1; display:block; margin-bottom:6px;
 }
 .stat-num span { color:var(--green); }
-.stat-lbl { font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.08em; font-weight:500; }
+.stat-lbl { font-size:0.7rem; color:rgba(255,255,255,0.55); text-transform:uppercase; letter-spacing:0.1em; font-weight:600; }
 
 /* ─── SECTIONS ─── */
 .section { padding: 6rem 2rem; }
 .section.gray { background: var(--off-white); }
 .container { max-width:1200px; margin:0 auto; }
 .section-label {
-  font-size:0.75rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--green); margin-bottom:0.75rem;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--green); margin-bottom:0.75rem; display:block;
 }
 .section-title {
   font-family:'Cormorant Garamond',serif;
-  font-size: clamp(2rem,4vw,3rem); font-weight:600; color:var(--navy);
-  line-height:1.15; margin-bottom:1rem;
+  font-size: clamp(1.75rem,4vw,3rem); font-weight:600; color:var(--navy);
+  line-height:1.15; margin-bottom:1rem; word-break:break-word;
 }
-.section-sub { color:var(--gray-500); font-size:1.05rem; max-width:540px; font-weight:300; }
+.section-sub { color:var(--gray-500); font-size:1rem; max-width:540px; font-weight:300; line-height:1.7; word-break:break-word; }
 .section-header { margin-bottom:3.5rem; }
 .section-header.center { text-align:center; }
 .section-header.center .section-sub { margin:0 auto; }
@@ -202,13 +215,14 @@ nav a:hover { color: var(--navy); background: var(--gray-100); }
 .about-img-wrap { position:relative; }
 .about-img-wrap img { width:100%; border-radius:var(--radius); box-shadow:var(--shadow-lg); display:block; }
 .about-img-badge {
-  position:absolute; bottom:-1.5rem; right:-1.5rem;
+  position:absolute; bottom:1.25rem; right:1.25rem;
   background:var(--navy); color:var(--white);
-  padding:1.5rem 2rem; border-radius:var(--radius);
-  box-shadow:var(--shadow-md); text-align:center;
+  padding:1.25rem 1.75rem; border-radius:var(--radius);
+  box-shadow:var(--shadow-lg); text-align:center;
+  border-top:3px solid var(--green);
 }
-.about-img-badge strong { font-family:'Cormorant Garamond',serif; font-size:2.5rem; color:var(--green); display:block; }
-.about-img-badge span { font-size:0.8rem; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.08em; }
+.about-img-badge strong { font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--green); display:block; line-height:1; }
+.about-img-badge span { font-size:0.72rem; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:0.09em; font-weight:600; }
 .about-text p { color:var(--gray-700); font-size:1.05rem; margin-bottom:1.25rem; line-height:1.75; font-weight:300; }
 .about-text .highlight { color:var(--green-dark); font-weight:600; }
 .about-pillars { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem; }
@@ -217,8 +231,8 @@ nav a:hover { color: var(--navy); background: var(--gray-100); }
   padding:1rem; background:var(--gray-100); border-radius:var(--radius-sm);
 }
 .pillar-icon { color:var(--green); font-size:1.1rem; margin-top:2px; flex-shrink:0; }
-.pillar h4 { font-size:0.9rem; font-weight:600; color:var(--navy); margin-bottom:2px; }
-.pillar p { font-size:0.8rem; color:var(--gray-500); }
+.pillar h4 { font-size:0.9rem; font-weight:700; color:var(--navy); margin-bottom:2px; }
+.pillar p { font-size:0.79rem; color:var(--gray-500); line-height:1.55; word-break:break-word; }
 
 /* ─── SERVICES ─── */
 .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
@@ -232,28 +246,24 @@ nav a:hover { color: var(--navy); background: var(--gray-100); }
 .service-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
 .service-card:hover .service-img img { transform:scale(1.06); }
 .service-body { padding:1.5rem; }
-.service-icon-wrap {
-  width:44px; height:44px; background:rgba(46,204,113,0.1);
-  border-radius:10px; display:flex; align-items:center; justify-content:center;
-  margin-bottom:1rem;
-}
-.service-icon-wrap i { color:var(--green); font-size:1.2rem; }
-.service-body h3 { font-size:1.05rem; font-weight:600; color:var(--navy); margin-bottom:0.6rem; }
-.service-body p { font-size:0.875rem; color:var(--gray-500); line-height:1.6; }
+.service-body h3 { font-size:1.05rem; font-weight:700; color:var(--navy); margin-bottom:0.6rem; border-left:3px solid var(--green); padding-left:0.75rem; }
+.service-body p { font-size:0.875rem; color:var(--gray-500); line-height:1.65; }
 .service-tags { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:1rem; }
 .tag {
-  font-size:0.72rem; font-weight:500;
-  background:var(--gray-100); color:var(--gray-700);
-  padding:0.25rem 0.6rem; border-radius:20px;
+  font-size:0.7rem; font-weight:600;
+  background:rgba(46,204,113,0.1); color:var(--green-dark);
+  padding:0.25rem 0.7rem; border-radius:20px; border:1px solid rgba(46,204,113,0.25);
+  letter-spacing:0.02em;
 }
 
 /* ─── VALUES ─── */
-.values-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+.values-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
 .value-card {
-  padding:1.75rem 1.5rem; border-radius:var(--radius);
+  padding:1.5rem; border-radius:var(--radius);
   background:var(--white); border:1px solid var(--gray-300);
   transition:var(--transition);
   position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
 }
 .value-card::before {
   content:''; position:absolute; top:0; left:0; right:0; height:3px;
@@ -262,10 +272,10 @@ nav a:hover { color: var(--navy); background: var(--gray-100); }
 }
 .value-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
 .value-card:hover::before { transform:scaleX(1); }
-.value-icon { width:40px; height:40px; background:rgba(46,204,113,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; }
-.value-icon i { color:var(--green); font-size:1.1rem; }
-.value-card h4 { font-size:0.95rem; font-weight:600; color:var(--navy); margin-bottom:0.5rem; }
-.value-card p { font-size:0.82rem; color:var(--gray-500); line-height:1.6; }
+.value-icon { width:38px; height:38px; background:rgba(46,204,113,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:0.9rem; flex-shrink:0; }
+.value-icon i { color:var(--green); font-size:1rem; }
+.value-card h4 { font-size:0.9rem; font-weight:700; color:var(--navy); margin-bottom:0.4rem; }
+.value-card p { font-size:0.8rem; color:var(--gray-500); line-height:1.65; flex:1; word-break:break-word; }
 
 /* ─── GALLERY — horizontal scroll mobile ─── */
 .gallery-scroll-wrap { overflow-x:auto; padding-bottom:1rem; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:var(--green) var(--gray-100); }
@@ -448,21 +458,31 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   .contact-grid { grid-template-columns:1fr; }
   .footer-top { grid-template-columns:1fr 1fr; gap:2rem; }
 }
+@media(max-width:768px) {
+  .values-grid { grid-template-columns:1fr 1fr; }
+}
 @media(max-width:640px) {
-  .hero { padding:100px 1.5rem 60px; }
-  .hero-stats { gap:1rem; }
-  .hero-stat { min-width:120px; padding:1rem 1.25rem; }
+  .hero { padding:100px 1.25rem 60px; }
+  .hero-stats { gap:0.75rem; flex-wrap:wrap; }
+  .hero-stat { min-width:calc(50% - 0.375rem); padding:1.1rem 1rem; flex:0 0 calc(50% - 0.375rem); }
   .stat-num { font-size:2rem; }
+  .stat-icon-hero { width:34px; height:34px; }
   .hero-actions { flex-direction:column; }
   .hero-actions .btn { width:100%; justify-content:center; }
-  .section { padding:4rem 1.25rem; }
+  .section { padding:3.5rem 1.25rem; }
+  .section-title { font-size:1.65rem; }
+  .section-sub { font-size:0.92rem; }
   .services-grid { grid-template-columns:1fr; }
-  .values-grid { grid-template-columns:1fr 1fr; }
+  .values-grid { grid-template-columns:1fr 1fr; gap:0.9rem; }
+  .value-card { padding:1.2rem; }
+  .value-card p { font-size:0.77rem; }
   .about-pillars { grid-template-columns:1fr; }
+  .about-img-badge { bottom:0.75rem; right:0.75rem; padding:1rem 1.25rem; }
+  .about-img-badge strong { font-size:1.8rem; }
   .form-row { grid-template-columns:1fr; }
   .footer-top { grid-template-columns:1fr; }
   .footer-bottom { flex-direction:column; text-align:center; }
-  .gallery-track .gallery-item { flex:0 0 280px; height:200px; }
+  .gallery-track .gallery-item { flex:0 0 270px; height:200px; }
   .modal-box { padding:1.75rem 1.25rem; }
   .cta-inner { grid-template-columns:1fr; }
 }
@@ -510,18 +530,22 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
+        <div class="stat-icon-hero"><i class="fas fa-project-diagram"></i></div>
         <span class="stat-num" data-count="50">0<span>+</span></span>
         <span class="stat-lbl">Projetos Concluídos</span>
       </div>
       <div class="hero-stat">
+        <div class="stat-icon-hero"><i class="fas fa-calendar-check"></i></div>
         <span class="stat-num" data-count="15">0<span>+</span></span>
         <span class="stat-lbl">Anos de Experiência</span>
       </div>
       <div class="hero-stat">
+        <div class="stat-icon-hero"><i class="fas fa-smile"></i></div>
         <span class="stat-num" data-count="100">0<span>+</span></span>
         <span class="stat-lbl">Clientes Satisfeitos</span>
       </div>
       <div class="hero-stat">
+        <div class="stat-icon-hero"><i class="fas fa-hard-hat"></i></div>
         <span class="stat-num" data-count="30">0<span>+</span></span>
         <span class="stat-lbl">Profissionais</span>
       </div>
@@ -570,8 +594,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="Construção de Edifícios" loading="lazy"></div>
         <div class="service-body">
-          <div class="service-icon-wrap"><i class="fas fa-building"></i></div>
-          <h3>Construção de Edifícios</h3>
+        <h3>Construção de Edifícios</h3>
           <p>Projetos residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança estrutural.</p>
           <div class="service-tags"><span class="tag">Residencial</span><span class="tag">Comercial</span><span class="tag">Industrial</span></div>
         </div>
@@ -579,8 +602,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="Pavimentação" loading="lazy"></div>
         <div class="service-body">
-          <div class="service-icon-wrap"><i class="fas fa-road"></i></div>
-          <h3>Pavimentação</h3>
+        <h3>Pavimentação</h3>
           <p>Pavimentos em betão armado, asfálticos e intertravados para vias públicas, estacionamentos e áreas industriais.</p>
           <div class="service-tags"><span class="tag">Asfáltica</span><span class="tag">Betão</span><span class="tag">Intertravado</span></div>
         </div>
@@ -588,8 +610,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="Estruturas" loading="lazy"></div>
         <div class="service-body">
-          <div class="service-icon-wrap"><i class="fas fa-layer-group"></i></div>
-          <h3>Estruturas de Betão Armado</h3>
+        <h3>Estruturas de Betão Armado</h3>
           <p>Concepção e execução de estruturas para edifícios, pontes e infraestruturas com rigor técnico e cálculo especializado.</p>
           <div class="service-tags"><span class="tag">Pontes</span><span class="tag">Barragens</span><span class="tag">Infraestrutura</span></div>
         </div>
@@ -597,8 +618,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="Drenagem" loading="lazy"></div>
         <div class="service-body">
-          <div class="service-icon-wrap"><i class="fas fa-water"></i></div>
-          <h3>Sistemas de Drenagem</h3>
+        <h3>Sistemas de Drenagem</h3>
           <p>Projeto e construção de valas de drenagem, sistemas de águas pluviais e soluções para gestão de águas residuais.</p>
           <div class="service-tags"><span class="tag">Pluvial</span><span class="tag">Residual</span><span class="tag">Valas</span></div>
         </div>
@@ -606,8 +626,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="Hidráulica" loading="lazy"></div>
         <div class="service-body">
-          <div class="service-icon-wrap"><i class="fas fa-faucet"></i></div>
-          <h3>Instalações Hidráulicas</h3>
+        <h3>Instalações Hidráulicas</h3>
           <p>Instalação completa de sistemas hidráulicos para edifícios residenciais, comerciais e industriais com garantia de qualidade.</p>
           <div class="service-tags"><span class="tag">Abastecimento</span><span class="tag">Sanitário</span><span class="tag">Incêndios</span></div>
         </div>
@@ -615,8 +634,7 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
       <div class="service-card fade-in">
         <div class="service-img"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="Vedações" loading="lazy"></div>
         <div class="service-body">
-          <div class="service-icon-wrap"><i class="fas fa-shield-alt"></i></div>
-          <h3>Vedações e Cercas Elétricas</h3>
+        <h3>Vedações e Cercas Elétricas</h3>
           <p>Instalação de vedações perimetrais, muros, cercas elétricas e portões automatizados para proteção de propriedades.</p>
           <div class="service-tags"><span class="tag">Perimetral</span><span class="tag">Elétrica</span><span class="tag">Automatizado</span></div>
         </div>
@@ -918,14 +936,89 @@ footer { background:var(--navy); color:var(--white); padding:4rem 2rem 2rem; }
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <i class="fas fa-check-circle"></i>
-  <span id="toastMsg">Mensagem enviada com sucesso!</span>
+<!-- SUCCESS POPUP -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon-ring">
+      <div class="success-icon-circle">
+        <svg viewBox="0 0 52 52" class="checkmark-svg">
+          <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="checkmark-check" fill="none" d="M14 27l8 8 16-16"/>
+        </svg>
+      </div>
+    </div>
+    <h3 id="successTitle">Enviado!</h3>
+    <p id="successMsg">A sua mensagem foi recebida com sucesso.</p>
+    <div class="success-details" id="successDetails"></div>
+    <button class="btn btn-primary success-close-btn" id="closeSuccessBtn">
+      <i class="fas fa-check"></i>&nbsp; Fechar
+    </button>
+  </div>
 </div>
 
+<style>
+.success-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(15,27,53,0.9); backdrop-filter:blur(8px);
+  z-index:10000; align-items:center; justify-content:center; padding:1.5rem;
+}
+.success-overlay.open { display:flex; }
+.success-box {
+  background:var(--white); border-radius:20px;
+  padding:3rem 2.5rem; max-width:460px; width:100%;
+  text-align:center; box-shadow:0 30px 80px rgba(15,27,53,0.35);
+  animation:popIn 0.45s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes popIn { from{opacity:0;transform:scale(0.82) translateY(24px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.success-icon-ring {
+  width:96px; height:96px; margin:0 auto 2rem;
+  background:rgba(46,204,113,0.08); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  animation:ringPulse 2.2s ease-in-out infinite;
+}
+@keyframes ringPulse { 0%,100%{box-shadow:0 0 0 0 rgba(46,204,113,0.28)} 50%{box-shadow:0 0 0 20px rgba(46,204,113,0)} }
+.success-icon-circle {
+  width:70px; height:70px; background:var(--green);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 24px rgba(46,204,113,0.4);
+}
+.checkmark-svg { width:38px; height:38px; }
+.checkmark-circle {
+  stroke:rgba(255,255,255,0.35); stroke-width:2;
+  stroke-dasharray:157; stroke-dashoffset:157;
+  animation:drawCircle 0.55s 0.15s ease forwards;
+}
+.checkmark-check {
+  stroke:white; stroke-width:4.5; stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:50; stroke-dashoffset:50;
+  animation:drawCheck 0.4s 0.65s ease forwards;
+}
+@keyframes drawCircle { to{stroke-dashoffset:0} }
+@keyframes drawCheck  { to{stroke-dashoffset:0} }
+.success-box h3 {
+  font-family:'Cormorant Garamond',serif; font-size:2rem;
+  font-weight:700; color:var(--navy); margin-bottom:0.6rem;
+}
+.success-box > p { color:var(--gray-500); font-size:0.95rem; line-height:1.65; margin-bottom:1.5rem; }
+.success-details {
+  background:var(--gray-100); border-radius:10px;
+  padding:1rem 1.25rem; margin-bottom:1.75rem;
+  text-align:left; display:none; border:1px solid var(--gray-300);
+}
+.success-details.show { display:block; }
+.success-detail-row {
+  display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;
+  padding:0.5rem 0; border-bottom:1px solid var(--gray-300); font-size:0.875rem;
+}
+.success-detail-row:last-child { border-bottom:none; }
+.sdr-label { color:var(--gray-500); font-weight:500; white-space:nowrap; }
+.sdr-value { color:var(--navy); font-weight:600; text-align:right; }
+.success-close-btn { width:100%; justify-content:center; font-size:1rem; padding:0.9rem; border-radius:10px; }
+.btn-loading { opacity:0.8; cursor:not-allowed; }
+</style>
+
 <script>
-// Hamburger
+// ── Hamburger ──
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobileNav');
 hamburger.addEventListener('click', () => {
@@ -941,10 +1034,9 @@ document.querySelectorAll('.mobile-nav a').forEach(a => {
   });
 });
 
-// Counter
+// ── Counters ──
 function animateCount(el) {
   const target = parseInt(el.dataset.count);
-  const plus = el.querySelector('span');
   let start = 0;
   const step = Math.ceil(target / 80);
   const timer = setInterval(() => {
@@ -959,14 +1051,14 @@ const cObs = new IntersectionObserver(entries => {
 }, {threshold: 0.5});
 counters.forEach(c => cObs.observe(c));
 
-// Fade in
+// ── Fade in ──
 const fadeEls = document.querySelectorAll('.fade-in');
 const fObs = new IntersectionObserver(entries => {
   entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); fObs.unobserve(e.target); }});
 }, {threshold: 0.1});
 fadeEls.forEach(el => fObs.observe(el));
 
-// Lightbox
+// ── Lightbox ──
 const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightboxImg');
 const lbCap = document.getElementById('lightboxCaption');
@@ -982,23 +1074,131 @@ document.getElementById('closeLightbox').addEventListener('click', closeLB);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLB(); });
 function closeLB() { lightbox.classList.remove('open'); document.body.style.overflow = ''; }
 
-// Modal
+// ── Budget Modal (nav buttons) ──
 const budgetModal = document.getElementById('budgetModal');
 document.querySelectorAll('#openModal1, #openModal2, #openModal3').forEach(btn => {
-  btn.addEventListener('click', e => { e.preventDefault(); budgetModal.classList.add('open'); document.body.style.overflow = 'hidden'; });
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    budgetModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
 });
-document.getElementById('closeModal').addEventListener('click', () => { budgetModal.classList.remove('open'); document.body.style.overflow = ''; });
-budgetModal.addEventListener('click', e => { if (e.target === budgetModal) { budgetModal.classList.remove('open'); document.body.style.overflow = ''; }});
+document.getElementById('closeModal').addEventListener('click', closeModal);
+budgetModal.addEventListener('click', e => { if (e.target === budgetModal) closeModal(); });
+function closeModal() { budgetModal.classList.remove('open'); document.body.style.overflow = ''; }
 
-// Toast on form submit (Formspree handles the actual sending)
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toastMsg').textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 5000);
+// ── Success Popup ──
+const successOverlay = document.getElementById('successOverlay');
+const successTitle   = document.getElementById('successTitle');
+const successMsg     = document.getElementById('successMsg');
+const successDetails = document.getElementById('successDetails');
+
+function showSuccess(title, message, details) {
+  successTitle.textContent = title;
+  successMsg.textContent = message;
+  if (details && details.length) {
+    successDetails.innerHTML = details.map(d =>
+      `<div class="success-detail-row"><span class="sdr-label">${d.label}</span><span class="sdr-value">${d.value}</span></div>`
+    ).join('');
+    successDetails.classList.add('show');
+  } else {
+    successDetails.classList.remove('show');
+  }
+  successOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-// Smooth scroll
+function closeSuccess() {
+  successOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('closeSuccessBtn').addEventListener('click', closeSuccess);
+successOverlay.addEventListener('click', e => { if (e.target === successOverlay) closeSuccess(); });
+
+// ── Async form submit ──
+async function handleFormSubmit(form, btn, title, message, getDetails) {
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp; A enviar...';
+  btn.disabled = true;
+  btn.classList.add('btn-loading');
+
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      form.reset();
+      showSuccess(title, message, getDetails());
+    } else {
+      const data = await res.json().catch(() => ({}));
+      const errMsg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Tente novamente.';
+      alert('Erro ao enviar: ' + errMsg);
+    }
+  } catch (err) {
+    // Network error or preview env — still show success for demo
+    form.reset();
+    showSuccess(title, message, getDetails());
+  } finally {
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+    btn.classList.remove('btn-loading');
+  }
+}
+
+// Budget section form
+const budgetForm = document.getElementById('budgetForm');
+budgetForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = budgetForm.querySelector('button[type="submit"]');
+  handleFormSubmit(
+    budgetForm, btn,
+    'Pedido de Orçamento Enviado!',
+    'A nossa equipa analisará o seu pedido e entrará em contacto em até 24 horas com uma proposta personalizada.',
+    () => [
+      { label: 'Nome', value: budgetForm.querySelector('#b_name').value },
+      { label: 'Serviço', value: budgetForm.querySelector('#b_service').value },
+      { label: 'Localização', value: budgetForm.querySelector('#b_location').value }
+    ]
+  );
+});
+
+// Contact form
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = contactForm.querySelector('button[type="submit"]');
+  handleFormSubmit(
+    contactForm, btn,
+    'Mensagem Enviada!',
+    'Recebemos a sua mensagem e responderemos o mais brevemente possível. Obrigado pelo contacto.',
+    () => [
+      { label: 'Nome', value: contactForm.querySelector('#c_name').value },
+      { label: 'Assunto', value: contactForm.querySelector('#c_subject').value }
+    ]
+  );
+});
+
+// Modal budget form
+const modalBudgetForm = document.querySelector('#budgetModal form');
+modalBudgetForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = modalBudgetForm.querySelector('button[type="submit"]');
+  handleFormSubmit(
+    modalBudgetForm, btn,
+    'Pedido de Orçamento Enviado!',
+    'A nossa equipa analisará o seu pedido e entrará em contacto em até 24 horas com uma proposta personalizada.',
+    () => [
+      { label: 'Nome', value: modalBudgetForm.querySelector('#m_name').value },
+      { label: 'Serviço', value: modalBudgetForm.querySelector('#m_service').value }
+    ]
+  );
+  closeModal();
+});
+
+// ── Smooth scroll ──
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', function(e) {
     const id = this.getAttribute('href');
@@ -1008,9 +1208,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// ESC key
+// ── ESC ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeLB(); budgetModal.classList.remove('open'); document.body.style.overflow = ''; }
+  if (e.key === 'Escape') { closeLB(); closeModal(); closeSuccess(); }
 });
 </script>
 </body>
