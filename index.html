@@ -8,1034 +8,503 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!-- ═══════════════════════════════════════════
-     FORMSPREE — CONFIGURAÇÃO DE EMAIL
-     
-     1. Vai a formspree.io → cria conta grátis
-     2. Clica "New Form" → dá
-
 <style>
-/* ═══════════════════════════════════
-   DESIGN SYSTEM
-═══════════════════════════════════ */
 :root {
-  --c-green:    #009943;
-  --c-green-lt: #00b34f;
-  --c-green-bg: rgba(0,153,67,0.06);
-  --c-navy:     #0b1d35;
-  --c-navy-mid: #16305a;
-  --c-ink:      #141414;
-  --c-text:     #4a4a5a;
-  --c-muted:    #9098a9;
-  --c-line:     #e9ecf0;
-  --c-bg:       #ffffff;
-  --c-soft:     #f8f9fb;
-  --c-warm:     #fafaf8;
+  --g: #009943; --gl: #00b34f; --gb: rgba(0,153,67,0.07);
+  --navy: #0b1d35; --ink: #141414; --txt: #4a4a5a;
+  --muted: #9098a9; --line: #e9ecf0; --bg: #fff; --soft: #f8f9fb; --warm: #fafaf8;
+  --serif: 'Cormorant Garamond',Georgia,serif; --body: 'Outfit',sans-serif;
+  --r: 8px; --rl: 16px; --ease: cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--txt);background:var(--bg);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font-family:var(--body);cursor:pointer;border:none;background:none}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--g)}
 
-  --f-display: 'Cormorant Garamond', Georgia, serif;
-  --f-body:    'Outfit', sans-serif;
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+section{padding:100px 0}
 
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 20px;
+/* EYEBROW */
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:.7rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--g)}
+.eyebrow::after{content:'';flex:1;min-width:32px;height:1px;background:var(--g)}
 
-  --sh-sm: 0 2px 12px rgba(0,0,0,0.06);
-  --sh-md: 0 8px 32px rgba(0,0,0,0.08);
-  --sh-lg: 0 20px 60px rgba(0,0,0,0.1);
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-size:.875rem;font-weight:500;transition:all .3s var(--ease);cursor:pointer;border:none}
+.btn-solid{background:var(--g);color:#fff;padding:.875rem 2rem;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,153,67,.25)}
+.btn-solid:hover{background:var(--gl);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,153,67,.35)}
+.btn-outline{color:var(--navy);border:1.5px solid var(--line);padding:.875rem 2rem;border-radius:var(--r)}
+.btn-outline:hover{border-color:var(--g);color:var(--g)}
+.btn-ghost{color:#fff;border:1.5px solid rgba(255,255,255,.3);padding:.875rem 2rem;border-radius:var(--r)}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn-arrow{color:var(--g);font-size:.875rem;font-weight:500;gap:8px}
+.btn-arrow i{font-size:.75rem;transition:transform .3s}
+.btn-arrow:hover i{transform:translateX(4px)}
+.btn-loading{pointer-events:none;opacity:.75;position:relative}
+.btn-loading::after{content:'';position:absolute;right:14px;top:50%;transform:translateY(-50%);width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
 
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-}
+/* FIELDS */
+.field{margin-bottom:1.2rem}
+.field label{display:block;font-size:.78rem;font-weight:500;letter-spacing:.05em;color:var(--navy);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:.8rem 1rem;border:1.5px solid var(--line);border-radius:var(--r);font-family:var(--body);font-size:.92rem;color:var(--ink);background:var(--bg);transition:border-color .25s,box-shadow .25s}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);font-weight:300}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(0,153,67,.1)}
+.field textarea{min-height:130px;resize:vertical}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239098a9' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 
-/* ─── RESET ─── */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; font-size:16px; }
-body {
-  font-family: var(--f-body);
-  color: var(--c-text);
-  background: var(--c-bg);
-  overflow-x: hidden;
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-}
+/* HEADER */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:900;transition:all .4s var(--ease)}
+.hi{display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 40px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s;max-width:100%;margin:0 auto}
+#hdr.scrolled .hi{border-color:var(--line);box-shadow:0 4px 30px rgba(0,0,0,.06)}
+.logo-img{height:38px}
+.nav-links{display:flex;list-style:none;gap:2.5rem}
+.nav-links a{font-size:.85rem;font-weight:400;color:var(--txt);position:relative;padding-bottom:2px;transition:color .25s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--g);transition:width .3s}
+.nav-links a:hover{color:var(--navy)}
+.nav-links a:hover::after{width:100%}
+.ham{display:none;flex-direction:column;gap:6px;width:36px;height:36px;justify-content:center}
+.ham span{display:block;height:1.5px;background:var(--navy);border-radius:2px;transition:all .35s;transform-origin:center}
+.ham span:nth-child(1){width:24px;margin-left:auto}
+.ham span:nth-child(3){width:16px;margin-left:auto}
+.ham.open span:nth-child(1){width:22px;transform:translateY(7.5px) rotate(45deg);margin-left:0}
+.ham.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham.open span:nth-child(3){width:22px;transform:translateY(-7.5px) rotate(-45deg);margin-left:0}
+#mob{position:fixed;top:68px;left:0;right:0;bottom:0;background:var(--bg);z-index:800;display:flex;flex-direction:column;justify-content:center;padding:40px;clip-path:inset(0 0 100% 0);transition:clip-path .5s var(--ease)}
+#mob.open{clip-path:inset(0 0 0% 0)}
+#mob .ml{font-family:var(--serif);font-size:2.6rem;font-weight:300;color:var(--navy);padding:.5rem 0;border-bottom:1px solid var(--line);display:block;transition:color .2s}
+#mob .ml:hover{color:var(--g)}
+#mob .mc{margin-top:2.5rem}
 
-img { display:block; max-width:100%; }
-button { font-family:var(--f-body); cursor:pointer; border:none; background:none; }
-a { text-decoration:none; color:inherit; }
+/* HERO */
+.hero{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding-top:68px;overflow:hidden;background:var(--navy)}
+.hl{padding:80px 60px 80px 40px;position:relative;z-index:2}
+.hr{position:relative;height:100%;min-height:100svh}
+.hi-img{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;opacity:.55}
+.hi-ov{position:absolute;inset:0;background:linear-gradient(to right,var(--navy) 0%,rgba(11,29,53,.4) 60%,transparent)}
+.kicker{display:inline-flex;align-items:center;gap:10px;background:rgba(0,153,67,.15);border:1px solid rgba(0,153,67,.25);color:rgba(0,220,100,.9);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;padding:.4rem 1rem;border-radius:100px;margin-bottom:2rem}
+.kicker span{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2s ease infinite}
+.hero h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.6rem,4.5vw,4.2rem);color:#fff;line-height:1.1;margin-bottom:1.6rem}
+.hero h1 strong{font-weight:600;display:block}
+.hero h1 em{font-style:italic;color:var(--g)}
+.hsub{color:rgba(255,255,255,.58);font-size:1rem;font-weight:300;max-width:440px;line-height:1.75;margin-bottom:2.5rem}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem}
+.hstats{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.12);padding-top:2.5rem}
+.hs{padding-right:2.5rem}
+.hs+.hs{padding-left:2.5rem;border-left:1px solid rgba(255,255,255,.12)}
+.hs-n{font-family:var(--serif);font-size:2.6rem;font-weight:300;color:#fff;line-height:1;margin-bottom:4px}
+.hs-n em{color:var(--g);font-style:normal}
+.hs-l{font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.05em}
+.hbadge{position:absolute;bottom:60px;left:-40px;z-index:10;background:#fff;border-radius:var(--rl);padding:1.4rem 1.8rem;box-shadow:0 20px 60px rgba(0,0,0,.15);min-width:220px}
+.hbadge-ic{width:40px;height:40px;border-radius:var(--r);background:var(--gb);display:flex;align-items:center;justify-content:center;margin-bottom:.8rem}
+.hbadge-ic i{color:var(--g);font-size:1.1rem}
+.hbadge p{font-size:.78rem;color:var(--muted);margin-bottom:2px}
+.hbadge strong{font-size:1rem;color:var(--navy);font-weight:600}
 
-::-webkit-scrollbar { width:3px; }
-::-webkit-scrollbar-thumb { background:var(--c-green); }
-::-webkit-scrollbar-track { background:transparent; }
+/* MARQUEE */
+.mq{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--soft);overflow:hidden;padding:0}
+.mq-track{display:flex;white-space:nowrap;animation:mq 30s linear infinite}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mq-item{display:inline-flex;align-items:center;gap:1.5rem;padding:1.2rem 3rem;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.mq-dot{width:4px;height:4px;border-radius:50%;background:var(--g)}
 
-/* ─── LAYOUT ─── */
-.wrap { max-width:1200px; margin:0 auto; padding:0 40px; }
-@media(max-width:640px){ .wrap { padding:0 20px; } }
+/* ABOUT */
+.about{background:var(--bg)}
+.ag{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:center}
+.av{position:relative}
+.ami{width:100%;border-radius:var(--rl);aspect-ratio:3/4;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,.12)}
+.ama{position:absolute;bottom:-32px;right:-32px;width:55%;border-radius:var(--rl);aspect-ratio:4/3;object-fit:cover;box-shadow:0 20px 60px rgba(0,0,0,.12);border:5px solid var(--bg)}
+.ayr{position:absolute;top:32px;left:-24px;background:var(--g);color:#fff;padding:1.2rem 1.4rem;border-radius:var(--rl);text-align:center;box-shadow:0 12px 36px rgba(0,153,67,.3)}
+.ayr strong{font-family:var(--serif);font-size:2rem;display:block;line-height:1}
+.ayr span{font-size:.72rem;opacity:.85;letter-spacing:.05em;text-transform:uppercase}
+.at h2{font-family:var(--serif);font-size:clamp(2rem,3vw,3rem);font-weight:300;color:var(--navy);margin:1rem 0 1.5rem;line-height:1.15}
+.at h2 em{font-style:italic;color:var(--g)}
+.at p{color:var(--txt);font-weight:300;margin-bottom:1.2rem;line-height:1.8}
+.at p b{color:var(--navy);font-weight:500}
+.adiv{width:48px;height:2px;background:var(--g);margin:2rem 0}
+.pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.pill{background:var(--gb);border:1px solid rgba(0,153,67,.15);color:var(--g);font-size:.8rem;font-weight:500;padding:.4rem 1rem;border-radius:100px}
 
-section { padding:100px 0; }
+/* SERVICES */
+.services{background:var(--soft)}
+.sh{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px}
+.sh h2{font-family:var(--serif);font-size:clamp(2rem,3vw,3rem);font-weight:300;color:var(--navy);max-width:360px;line-height:1.15}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--line);border-radius:var(--rl);overflow:hidden}
+.svc{background:var(--bg);padding:2.2rem;position:relative;overflow:hidden;transition:background .3s}
+.svc::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.svc:hover{background:var(--warm)}
+.svc:hover::before{transform:scaleX(1)}
+.svc-n{font-family:var(--serif);font-size:3rem;font-weight:300;color:var(--line);line-height:1;margin-bottom:1.2rem;transition:color .3s}
+.svc:hover .svc-n{color:rgba(0,153,67,.1)}
+.svc-ic{width:44px;height:44px;border-radius:var(--r);background:var(--gb);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
+.svc-ic i{color:var(--g);font-size:1.1rem}
+.svc h3{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--navy);margin-bottom:.7rem}
+.svc p{font-size:.88rem;color:var(--txt);line-height:1.7;font-weight:300}
+.svc-img{margin-top:1.4rem;border-radius:var(--r);overflow:hidden;height:140px}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.svc:hover .svc-img img{transform:scale(1.06)}
 
-/* ─── TYPOGRAPHY SYSTEM ─── */
-.eyebrow {
-  display:inline-flex; align-items:center; gap:12px;
-  font-size:0.7rem; font-weight:500; letter-spacing:0.2em;
-  text-transform:uppercase; color:var(--c-green);
-}
-.eyebrow::after { content:''; flex:1; min-width:32px; height:1px; background:var(--c-green); }
+/* NUMBERS */
+.nums{background:var(--navy);padding:80px 0}
+.ng{display:grid;grid-template-columns:repeat(4,1fr)}
+.ni{padding:40px;border-right:1px solid rgba(255,255,255,.08);text-align:center;transition:background .3s}
+.ni:last-child{border-right:none}
+.ni:hover{background:rgba(255,255,255,.03)}
+.nv{font-family:var(--serif);font-size:3.5rem;font-weight:300;color:#fff;line-height:1;margin-bottom:.5rem}
+.nv em{color:var(--g);font-style:normal}
+.nl{font-size:.78rem;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase}
 
-.display-title {
-  font-family: var(--f-display);
-  font-weight: 300;
-  color: var(--c-navy);
-  line-height: 1.1;
-}
-.display-title strong { font-weight:600; }
-.display-title em { font-style:italic; color:var(--c-green); }
+/* GALLERY */
+.gallery{background:var(--bg)}
+.gah{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px}
+.gah h2{font-family:var(--serif);font-size:clamp(2rem,3vw,3rem);font-weight:300;color:var(--navy)}
+.gfbar{display:flex;gap:.5rem}
+.gfb{padding:.45rem 1.1rem;border-radius:100px;font-size:.8rem;font-weight:500;font-family:var(--body);border:1.5px solid var(--line);background:var(--bg);color:var(--muted);transition:all .25s;cursor:pointer}
+.gfb:hover,.gfb.active{background:var(--g);color:#fff;border-color:var(--g)}
+.gagr{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.gi{position:relative;border-radius:var(--rl);overflow:hidden;cursor:zoom-in;aspect-ratio:4/3;background:var(--soft)}
+.gi img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease),filter .4s}
+.gi:hover img{transform:scale(1.07);filter:brightness(.85)}
+.gc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;background:linear-gradient(to top,rgba(11,29,53,.85) 0%,transparent 55%);opacity:0;transition:opacity .35s}
+.gi:hover .gc{opacity:1}
+.gc h4{font-family:var(--serif);font-size:1.1rem;color:#fff;margin-bottom:3px}
+.gc p{font-size:.8rem;color:rgba(255,255,255,.65)}
 
-/* ─── BUTTONS ─── */
-.btn {
-  display:inline-flex; align-items:center; gap:10px;
-  font-family:var(--f-body); font-size:0.875rem; font-weight:500;
-  padding:0 0; border:none; cursor:pointer; transition:all 0.3s var(--ease);
-}
-.btn-solid {
-  background:var(--c-green); color:#fff;
-  padding:0.875rem 2rem; border-radius:var(--r-sm);
-  box-shadow:0 4px 20px rgba(0,153,67,0.28);
-}
-.btn-solid:hover { background:var(--c-green-lt); transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,153,67,0.38); }
-.btn-outline {
-  color:var(--c-navy); border:1.5px solid var(--c-line);
-  padding:0.875rem 2rem; border-radius:var(--r-sm);
-}
-.btn-outline:hover { border-color:var(--c-green); color:var(--c-green); }
-.btn-ghost-white {
-  color:#fff; border:1.5px solid rgba(255,255,255,0.3);
-  padding:0.875rem 2rem; border-radius:var(--r-sm);
-}
-.btn-ghost-white:hover { border-color:#fff; background:rgba(255,255,255,0.08); }
-.btn-arrow { color:var(--c-green); font-size:0.875rem; font-weight:500; gap:8px; }
-.btn-arrow i { font-size:0.75rem; transition:transform 0.3s var(--ease); }
-.btn-arrow:hover i { transform:translateX(4px); }
+/* MISSION */
+.mission{background:var(--soft)}
+.mg{display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start}
+.ml2 h2{font-family:var(--serif);font-size:clamp(2rem,3vw,3rem);font-weight:300;color:var(--navy);margin:1rem 0 1.5rem;position:sticky;top:100px;line-height:1.15}
+.ml2 h2 em{font-style:italic;color:var(--g)}
+.mcards{display:flex;flex-direction:column;gap:1.2rem}
+.mc{background:var(--bg);border-radius:var(--rl);padding:2rem;border:1.5px solid var(--line);transition:border-color .3s,box-shadow .3s;display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:start}
+.mc:hover{border-color:var(--g);box-shadow:0 8px 32px rgba(0,153,67,.08)}
+.mc-ic{width:48px;height:48px;border-radius:var(--r);background:var(--gb);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mc-ic i{color:var(--g);font-size:1.2rem}
+.mc h3{font-family:var(--serif);font-size:1.25rem;color:var(--navy);margin-bottom:.5rem}
+.mc p{font-size:.9rem;color:var(--txt);line-height:1.7;font-weight:300}
+.vrow{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-top:1.2rem}
+.vc{display:flex;align-items:center;gap:.7rem;padding:.8rem 1rem;border-radius:var(--r);background:var(--bg);border:1.5px solid var(--line);transition:border-color .25s,box-shadow .25s}
+.vc:hover{border-color:var(--g);box-shadow:0 4px 16px rgba(0,153,67,.1)}
+.vc i{color:var(--g);font-size:.9rem}
+.vc span{font-size:.82rem;font-weight:500;color:var(--navy)}
 
-/* ─── FORM ELEMENTS ─── */
-.field { margin-bottom:1.2rem; }
-.field label {
-  display:block; font-size:0.78rem; font-weight:500;
-  letter-spacing:0.05em; color:var(--c-navy); margin-bottom:6px;
-}
-.field input, .field select, .field textarea {
-  width:100%; padding:0.8rem 1rem;
-  border:1.5px solid var(--c-line); border-radius:var(--r-sm);
-  font-family:var(--f-body); font-size:0.92rem; color:var(--c-ink);
-  background:var(--c-bg); transition:border-color 0.25s, box-shadow 0.25s;
-}
-.field input::placeholder, .field textarea::placeholder { color:var(--c-muted); font-weight:300; }
-.field input:focus, .field select:focus, .field textarea:focus {
-  outline:none; border-color:var(--c-green);
-  box-shadow:0 0 0 3px rgba(0,153,67,0.1);
-}
-.field textarea { min-height:130px; resize:vertical; }
-.field select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239098a9' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+/* CTA */
+.cta{padding:120px 0;background:var(--navy);position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:url('imagem_8.jpeg') center/cover no-repeat;opacity:.12}
+.cta-geo{position:absolute;right:0;top:50%;transform:translateY(-50%);width:45%;height:110%;background:rgba(0,153,67,.04);clip-path:polygon(20% 0,100% 0,100% 100%,0% 100%)}
+.ci{position:relative;z-index:1;max-width:640px}
+.ci h2{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.4rem);font-weight:300;color:#fff;margin:1rem 0 1.2rem;line-height:1.15}
+.ci h2 em{font-style:italic;color:var(--g)}
+.ci>p{color:rgba(255,255,255,.55);font-weight:300;font-size:1rem;margin-bottom:2.5rem;line-height:1.8}
+.cpts{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:3rem}
+.cpt{display:flex;align-items:center;gap:.7rem;color:rgba(255,255,255,.75);font-size:.85rem}
+.cpt i{color:var(--g);font-size:.85rem}
+.cbtns{display:flex;gap:1rem;flex-wrap:wrap}
 
-/* ─── HEADER ─── */
-#hdr {
-  position:fixed; top:0; left:0; right:0; z-index:900;
-  transition:all 0.4s var(--ease);
-}
-.hdr-inner {
-  display:flex; align-items:center; justify-content:space-between;
-  height:68px; padding:0 40px;
-  background:rgba(255,255,255,0.97);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid transparent;
-  transition:border-color 0.3s, box-shadow 0.3s;
-}
-#hdr.scrolled .hdr-inner {
-  border-color:var(--c-line);
-  box-shadow:0 4px 30px rgba(0,0,0,0.06);
-}
-.logo-img { height:38px; }
-.nav-links {
-  display:flex; list-style:none; align-items:center;
-  gap:2.5rem; margin:0;
-}
-.nav-links a {
-  font-size:0.85rem; font-weight:400; color:var(--c-text);
-  position:relative; padding-bottom:2px; transition:color 0.25s;
-}
-.nav-links a::after {
-  content:''; position:absolute; bottom:0; left:0;
-  width:0; height:1px; background:var(--c-green); transition:width 0.3s var(--ease);
-}
-.nav-links a:hover { color:var(--c-navy); }
-.nav-links a:hover::after { width:100%; }
-.hdr-cta { margin-left:1rem; }
-.ham {
-  display:none; flex-direction:column; justify-content:center;
-  gap:6px; width:36px; height:36px;
-}
-.ham span {
-  display:block; height:1.5px; background:var(--c-navy);
-  border-radius:2px; transition:all 0.35s var(--ease);
-  transform-origin:center;
-}
-.ham span:nth-child(1) { width:24px; margin-left:auto; }
-.ham span:nth-child(3) { width:16px; margin-left:auto; }
-.ham.open span:nth-child(1) { width:22px; transform:translateY(7.5px) rotate(45deg); margin-left:0; }
-.ham.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
-.ham.open span:nth-child(3) { width:22px; transform:translateY(-7.5px) rotate(-45deg); margin-left:0; }
+/* CONTACT */
+.contact{background:var(--bg)}
+.cgrid{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;margin-top:60px;align-items:start}
+.cpanel{position:sticky;top:100px}
+.cpanel h3{font-family:var(--serif);font-size:1.8rem;color:var(--navy);margin-bottom:.5rem}
+.cpanel>p{color:var(--txt);font-weight:300;margin-bottom:2.5rem;font-size:.95rem}
+.cii{display:flex;gap:1rem;margin-bottom:1.5rem}
+.cii-ic{width:42px;height:42px;min-width:42px;border-radius:var(--r);background:var(--gb);display:flex;align-items:center;justify-content:center}
+.cii-ic i{color:var(--g);font-size:1rem}
+.cii-t h4{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.cii-t p,.cii-t a{font-size:.92rem;color:var(--navy)}
+.socrow{display:flex;gap:.6rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--line)}
+.soc{width:38px;height:38px;border-radius:var(--r);border:1.5px solid var(--line);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .25s}
+.soc:hover{border-color:var(--g);color:var(--g);background:var(--gb)}
+.fcard{background:var(--soft);border-radius:var(--rl);padding:2.5rem;border:1.5px solid var(--line)}
+.fcard h3{font-family:var(--serif);font-size:1.6rem;color:var(--navy);margin-bottom:1.8rem}
 
-/* MOBILE NAV */
-#mob-nav {
-  position:fixed; top:68px; left:0; right:0; bottom:0;
-  background:var(--c-bg); z-index:800;
-  display:flex; flex-direction:column; justify-content:center;
-  padding:40px;
-  clip-path:inset(0 0 100% 0);
-  transition:clip-path 0.5s var(--ease);
-}
-#mob-nav.open { clip-path:inset(0 0 0% 0); }
-#mob-nav .mob-link {
-  font-family:var(--f-display); font-size:2.4rem; font-weight:300;
-  color:var(--c-navy); padding:0.5rem 0;
-  border-bottom:1px solid var(--c-line);
-  display:block; transition:color 0.2s;
-}
-#mob-nav .mob-link:hover { color:var(--c-green); }
-#mob-nav .mob-cta { margin-top:2.5rem; }
+/* Form status */
+.fstatus{display:none;padding:.9rem 1.2rem;border-radius:var(--r);font-size:.86rem;font-weight:500;margin-bottom:1.2rem;align-items:center;gap:10px}
+.fstatus.ok{display:flex;background:#f0faf4;border:1px solid rgba(0,153,67,.2);color:var(--g)}
+.fstatus.err{display:flex;background:#fff5f5;border:1px solid rgba(220,0,0,.15);color:#c0392b}
 
-/* ─── HERO ─── */
-.hero {
-  min-height:100svh; display:grid;
-  grid-template-columns:1fr 1fr;
-  align-items:center; padding-top:68px;
-  overflow:hidden; position:relative;
-  background:var(--c-navy);
-}
-.hero-left {
-  padding:80px 60px 80px 40px;
-  position:relative; z-index:2;
-}
-.hero-right {
-  position:relative; height:100%;
-  min-height:100svh;
-}
-.hero-img {
-  position:absolute; inset:0;
-  object-fit:cover; width:100%; height:100%;
-  opacity:0.55;
-}
-.hero-img-overlay {
-  position:absolute; inset:0;
-  background:linear-gradient(to right, var(--c-navy) 0%, rgba(11,29,53,0.4) 60%, transparent 100%);
-}
-.hero-kicker {
-  display:inline-flex; align-items:center; gap:10px; margin-bottom:2rem;
-  background:rgba(0,153,67,0.15); border:1px solid rgba(0,153,67,0.25);
-  padding:0.4rem 1rem; border-radius:100px;
-  font-size:0.72rem; font-weight:500; letter-spacing:0.15em;
-  text-transform:uppercase; color:rgba(0,220,100,0.9);
-}
-.hero-kicker span { width:6px; height:6px; border-radius:50%; background:var(--c-green); animation:pulse 2s ease infinite; }
-@keyframes pulse {
-  0%,100%{ opacity:1; transform:scale(1); }
-  50%{ opacity:0.5; transform:scale(0.7); }
-}
-.hero h1 {
-  font-family:var(--f-display); font-weight:300;
-  font-size:clamp(2.6rem,4.5vw,4.2rem);
-  color:#fff; line-height:1.1; margin-bottom:1.6rem;
-}
-.hero h1 strong { font-weight:600; display:block; }
-.hero h1 em { font-style:italic; color:var(--c-green); }
-.hero-sub {
-  color:rgba(255,255,255,0.58); font-size:1rem; font-weight:300;
-  max-width:440px; line-height:1.75; margin-bottom:2.5rem;
-}
-.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:4rem; }
-.hero-stats {
-  display:flex; gap:0; border-top:1px solid rgba(255,255,255,0.12);
-  padding-top:2.5rem;
-}
-.hero-stat { padding-right:2.5rem; }
-.hero-stat + .hero-stat { padding-left:2.5rem; border-left:1px solid rgba(255,255,255,0.12); }
-.hero-stat-n {
-  font-family:var(--f-display); font-size:2.6rem; font-weight:300;
-  color:#fff; line-height:1; margin-bottom:4px;
-}
-.hero-stat-n em { color:var(--c-green); font-style:normal; }
-.hero-stat-l { font-size:0.75rem; color:rgba(255,255,255,0.45); letter-spacing:0.05em; }
+/* FOOTER */
+footer{background:var(--navy);padding:70px 0 30px}
+.fg{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+.fb-logo{margin-bottom:1.4rem}
+.fb-logo img{height:34px}
+.fab2{color:rgba(255,255,255,.38);font-size:.88rem;line-height:1.75;font-weight:300;max-width:280px}
+.fc h4{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;color:rgba(255,255,255,.5);margin-bottom:1.4rem}
+.fc ul{list-style:none}
+.fc li{margin-bottom:.7rem}
+.fc a{font-size:.88rem;color:rgba(255,255,255,.35);transition:color .2s;font-weight:300}
+.fc a:hover{color:rgba(255,255,255,.8)}
+.fc p{font-size:.88rem;color:rgba(255,255,255,.35);line-height:1.9;font-weight:300}
+.fc i{color:var(--g);width:16px;margin-right:6px;font-size:.78rem}
+.fb2{border-top:1px solid rgba(255,255,255,.07);padding-top:28px;display:flex;justify-content:space-between}
+.fb2 p{font-size:.8rem;color:rgba(255,255,255,.22)}
 
-/* Floating card on hero image */
-.hero-badge {
-  position:absolute; bottom:60px; left:-40px; z-index:10;
-  background:#fff; border-radius:var(--r-md); padding:1.4rem 1.8rem;
-  box-shadow:var(--sh-lg); min-width:220px;
-}
-.hero-badge-icon {
-  width:40px; height:40px; border-radius:var(--r-sm); background:var(--c-green-bg);
-  display:flex; align-items:center; justify-content:center; margin-bottom:0.8rem;
-}
-.hero-badge-icon i { color:var(--c-green); font-size:1.1rem; }
-.hero-badge p { font-size:0.78rem; color:var(--c-muted); margin-bottom:2px; }
-.hero-badge strong { font-size:1rem; color:var(--c-navy); font-weight:600; }
+/* MODAL */
+.overlay{position:fixed;inset:0;z-index:1000;background:rgba(8,15,28,.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg);border-radius:var(--rl);width:100%;max-width:660px;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(24px) scale(.98);transition:transform .4s var(--ease);box-shadow:0 40px 100px rgba(0,0,0,.3)}
+.overlay.open .modal{transform:translateY(0) scale(1)}
+.mhdr{padding:2.2rem 2.5rem 0;display:flex;justify-content:space-between;align-items:start}
+.mhdr h2{font-family:var(--serif);font-size:1.9rem;color:var(--navy)}
+.mhdr p{color:var(--muted);font-size:.88rem;margin-top:4px;font-weight:300}
+.mx{width:36px;height:36px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.95rem;flex-shrink:0;margin-left:1rem;transition:all .2s;cursor:pointer}
+.mx:hover{background:var(--g);color:#fff}
+.mbody{padding:1.8rem 2.5rem 2.5rem}
+.mstatus{display:none;padding:.9rem 1.2rem;border-radius:var(--r);font-size:.86rem;font-weight:500;margin-bottom:1.5rem;align-items:center;gap:10px}
+.mstatus.ok{display:flex;background:#f0faf4;border:1px solid rgba(0,153,67,.2);color:var(--g)}
+.mstatus.err{display:flex;background:#fff5f5;border:1px solid rgba(220,0,0,.15);color:#c0392b}
 
-/* ─── MARQUEE ─── */
-.marquee-section {
-  padding:0; border-top:1px solid var(--c-line); border-bottom:1px solid var(--c-line);
-  background:var(--c-soft); overflow:hidden;
-}
-.marquee-track {
-  display:flex; white-space:nowrap;
-  animation:marquee 30s linear infinite;
-}
-@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-.marquee-item {
-  display:inline-flex; align-items:center; gap:1.5rem;
-  padding:1.2rem 3rem; font-size:0.8rem; letter-spacing:0.12em;
-  text-transform:uppercase; color:var(--c-muted); font-weight:500;
-}
-.marquee-dot { width:4px; height:4px; border-radius:50%; background:var(--c-green); }
+/* LIGHTBOX */
+.lb{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+.lb.open{opacity:1;pointer-events:all}
+.lb-img{max-width:900px;width:100%;border-radius:var(--rl)}
+.lb-cap{color:rgba(255,255,255,.6);text-align:center;margin-top:1rem;font-size:.9rem}
+.lb-x{position:absolute;top:24px;right:24px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .2s;cursor:pointer}
+.lb-x:hover{background:var(--g)}
 
-/* ─── ABOUT ─── */
-.about { background:var(--c-bg); }
-.about-grid {
-  display:grid; grid-template-columns:1fr 1.1fr;
-  gap:80px; align-items:center;
-}
-.about-visual { position:relative; }
-.about-img-main {
-  width:100%; border-radius:var(--r-lg);
-  aspect-ratio:3/4; object-fit:cover;
-  box-shadow:var(--sh-lg);
-}
-.about-img-accent {
-  position:absolute; bottom:-32px; right:-32px;
-  width:55%; border-radius:var(--r-md);
-  aspect-ratio:4/3; object-fit:cover;
-  box-shadow:var(--sh-lg);
-  border:5px solid var(--c-bg);
-}
-.about-years {
-  position:absolute; top:32px; left:-24px;
-  background:var(--c-green); color:#fff;
-  padding:1.2rem 1.4rem; border-radius:var(--r-md);
-  text-align:center; box-shadow:0 12px 36px rgba(0,153,67,0.3);
-}
-.about-years strong { font-family:var(--f-display); font-size:2rem; display:block; line-height:1; }
-.about-years span { font-size:0.72rem; opacity:0.85; letter-spacing:0.05em; text-transform:uppercase; }
-.about-text { padding-right:20px; }
-.about-text h2 { font-size:clamp(2rem,3vw,3rem); margin:1rem 0 1.5rem; }
-.about-text p { color:var(--c-text); font-weight:300; margin-bottom:1.2rem; line-height:1.8; }
-.about-text p b { color:var(--c-navy); font-weight:500; }
-.about-divider { width:48px; height:2px; background:var(--c-green); margin:2rem 0; }
-.about-pills { display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.5rem; }
-.pill {
-  background:var(--c-green-bg); border:1px solid rgba(0,153,67,0.15);
-  color:var(--c-green); font-size:0.8rem; font-weight:500;
-  padding:0.4rem 1rem; border-radius:100px;
-}
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;min-width:280px;max-width:380px;z-index:2000;background:var(--navy);color:#fff;padding:1rem 1.4rem;border-radius:var(--rl);box-shadow:0 16px 48px rgba(0,0,0,.2);display:flex;align-items:center;gap:12px;transform:translateY(120%) scale(.96);opacity:0;transition:all .4s cubic-bezier(0,0,.2,1);pointer-events:none;border-left:3px solid var(--g)}
+.toast.show{transform:translateY(0) scale(1);opacity:1}
+.ti{color:var(--g);font-size:1.1rem;flex-shrink:0}
+.tm{font-size:.88rem;line-height:1.5;font-weight:300}
+.tm strong{font-weight:500;display:block;color:#fff}
 
-/* ─── SERVICES ─── */
-.services { background:var(--c-soft); }
-.services-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:60px; }
-.services-header h2 { font-size:clamp(2rem,3vw,3rem); max-width:420px; }
-.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5px; background:var(--c-line); border-radius:var(--r-lg); overflow:hidden; }
-.svc {
-  background:var(--c-bg); padding:2.2rem;
-  transition:background 0.3s, transform 0.3s;
-  position:relative; overflow:hidden;
-}
-.svc::before {
-  content:''; position:absolute; bottom:0; left:0; right:0;
-  height:3px; background:var(--c-green);
-  transform:scaleX(0); transform-origin:left; transition:transform 0.4s var(--ease);
-}
-.svc:hover { background:var(--c-warm); }
-.svc:hover::before { transform:scaleX(1); }
-.svc-num {
-  font-family:var(--f-display); font-size:3rem; font-weight:300;
-  color:var(--c-line); line-height:1; margin-bottom:1.2rem;
-  transition:color 0.3s;
-}
-.svc:hover .svc-num { color:rgba(0,153,67,0.12); }
-.svc-icon {
-  width:44px; height:44px; border-radius:var(--r-sm);
-  background:var(--c-green-bg); display:flex; align-items:center; justify-content:center;
-  margin-bottom:1.2rem; transition:background 0.3s;
-}
-.svc:hover .svc-icon { background:rgba(0,153,67,0.14); }
-.svc-icon i { color:var(--c-green); font-size:1.1rem; }
-.svc h3 {
-  font-family:var(--f-display); font-size:1.3rem; font-weight:400;
-  color:var(--c-navy); margin-bottom:0.7rem;
-}
-.svc p { font-size:0.88rem; color:var(--c-text); line-height:1.7; font-weight:300; }
-.svc-img { margin-top:1.4rem; border-radius:var(--r-sm); overflow:hidden; height:140px; }
-.svc-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s var(--ease); }
-.svc:hover .svc-img img { transform:scale(1.06); }
+/* REVEAL */
+.fu{opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.fi{opacity:0;transition:opacity .7s var(--ease)}
+.fu.v,.fi.v{opacity:1;transform:translateY(0)}
+[data-d="1"]{transition-delay:.1s}[data-d="2"]{transition-delay:.18s}[data-d="3"]{transition-delay:.26s}[data-d="4"]{transition-delay:.34s}
 
-/* ─── NUMBERS ─── */
-.numbers {
-  background:var(--c-navy); padding:80px 0;
-}
-.numbers-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
-.num-item {
-  padding:40px; border-right:1px solid rgba(255,255,255,0.08); text-align:center;
-  transition:background 0.3s;
-}
-.num-item:last-child { border-right:none; }
-.num-item:hover { background:rgba(255,255,255,0.03); }
-.num-val {
-  font-family:var(--f-display); font-size:3.5rem; font-weight:300;
-  color:#fff; line-height:1; margin-bottom:0.5rem;
-}
-.num-val em { color:var(--c-green); font-style:normal; }
-.num-lbl { font-size:0.78rem; color:rgba(255,255,255,0.4); letter-spacing:0.08em; text-transform:uppercase; }
-
-/* ─── GALLERY ─── */
-.gallery { background:var(--c-bg); }
-.gallery-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px; }
-.gallery-header h2 { font-size:clamp(2rem,3vw,3rem); }
-.gf-bar { display:flex; gap:0.5rem; }
-.gf-btn {
-  padding:0.45rem 1.1rem; border-radius:100px;
-  font-size:0.8rem; font-weight:500; font-family:var(--f-body);
-  border:1.5px solid var(--c-line); background:var(--c-bg); color:var(--c-muted);
-  transition:all 0.25s; cursor:pointer;
-}
-.gf-btn:hover, .gf-btn.active { background:var(--c-green); color:#fff; border-color:var(--c-green); }
-
-/* Desktop gallery grid */
-.gal-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:1.2rem;
-}
-.gal-item {
-  position:relative; border-radius:var(--r-md); overflow:hidden; cursor:zoom-in;
-  aspect-ratio:4/3; background:var(--c-soft);
-}
-.gal-item img {
-  width:100%; height:100%; object-fit:cover;
-  transition:transform 0.6s var(--ease), filter 0.4s;
-}
-.gal-item:hover img { transform:scale(1.07); filter:brightness(0.85); }
-.gal-cap {
-  position:absolute; inset:0; display:flex; flex-direction:column;
-  justify-content:flex-end; padding:1.5rem;
-  background:linear-gradient(to top, rgba(11,29,53,0.85) 0%, transparent 55%);
-  opacity:0; transition:opacity 0.35s var(--ease);
-}
-.gal-item:hover .gal-cap { opacity:1; }
-.gal-cap h4 { font-family:var(--f-display); font-size:1.1rem; color:#fff; margin-bottom:3px; }
-.gal-cap p { font-size:0.8rem; color:rgba(255,255,255,0.65); }
-
-/* ─── MISSION ─── */
-.mission { background:var(--c-soft); }
-.mission-grid { display:grid; grid-template-columns:1fr 2fr; gap:80px; align-items:start; }
-.mission-left h2 { font-size:clamp(2rem,3vw,3rem); margin:1rem 0 1.5rem; position:sticky; top:100px; }
-.mission-cards { display:flex; flex-direction:column; gap:1.2rem; }
-.m-card {
-  background:var(--c-bg); border-radius:var(--r-md); padding:2rem;
-  border:1.5px solid var(--c-line); transition:border-color 0.3s, box-shadow 0.3s;
-  display:grid; grid-template-columns:auto 1fr; gap:1.4rem; align-items:start;
-}
-.m-card:hover { border-color:var(--c-green); box-shadow:0 8px 32px rgba(0,153,67,0.08); }
-.m-icon-wrap {
-  width:48px; height:48px; border-radius:var(--r-sm);
-  background:var(--c-green-bg); display:flex; align-items:center; justify-content:center;
-  flex-shrink:0;
-}
-.m-icon-wrap i { color:var(--c-green); font-size:1.2rem; }
-.m-card h3 { font-family:var(--f-display); font-size:1.25rem; color:var(--c-navy); margin-bottom:0.5rem; }
-.m-card p { font-size:0.9rem; color:var(--c-text); line-height:1.7; font-weight:300; }
-.values-row { display:grid; grid-template-columns:repeat(2,1fr); gap:0.8rem; margin-top:1.2rem; }
-.v-chip {
-  display:flex; align-items:center; gap:0.7rem;
-  padding:0.8rem 1rem; border-radius:var(--r-sm);
-  background:var(--c-bg); border:1.5px solid var(--c-line);
-  transition:border-color 0.25s, box-shadow 0.25s;
-}
-.v-chip:hover { border-color:var(--c-green); box-shadow:0 4px 16px rgba(0,153,67,0.1); }
-.v-chip i { color:var(--c-green); font-size:0.9rem; }
-.v-chip span { font-size:0.82rem; font-weight:500; color:var(--c-navy); }
-
-/* ─── CTA SECTION ─── */
-.cta { padding:120px 0; background:var(--c-navy); position:relative; overflow:hidden; }
-.cta::before {
-  content:''; position:absolute; inset:0;
-  background:url('imagem_8.jpeg') center/cover no-repeat;
-  opacity:0.12;
-}
-.cta-geo {
-  position:absolute; right:0; top:50%; transform:translateY(-50%);
-  width:45%; height:110%;
-  background:rgba(0,153,67,0.04);
-  clip-path:polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
-}
-.cta-inner { position:relative; z-index:1; max-width:640px; }
-.cta-inner h2 { font-size:clamp(2.2rem,4vw,3.4rem); color:#fff; margin:1rem 0 1.2rem; }
-.cta-inner p { color:rgba(255,255,255,0.55); font-weight:300; font-size:1rem; margin-bottom:2.5rem; line-height:1.8; }
-.cta-points { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:3rem; }
-.cta-point {
-  display:flex; align-items:center; gap:0.7rem;
-  color:rgba(255,255,255,0.75); font-size:0.85rem;
-}
-.cta-point i { color:var(--c-green); font-size:0.85rem; }
-.cta-btns { display:flex; gap:1rem; flex-wrap:wrap; }
-
-/* ─── CONTACT ─── */
-.contact { background:var(--c-bg); }
-.contact-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:80px; margin-top:60px; align-items:start; }
-
-/* Info panel */
-.contact-panel { position:sticky; top:100px; }
-.contact-panel h3 { font-family:var(--f-display); font-size:1.8rem; color:var(--c-navy); margin-bottom:0.5rem; }
-.contact-panel > p { color:var(--c-text); font-weight:300; margin-bottom:2.5rem; font-size:0.95rem; }
-.c-info-item { display:flex; gap:1rem; margin-bottom:1.5rem; }
-.c-info-icon {
-  width:42px; height:42px; min-width:42px; border-radius:var(--r-sm);
-  background:var(--c-green-bg); display:flex; align-items:center; justify-content:center;
-}
-.c-info-icon i { color:var(--c-green); font-size:1rem; }
-.c-info-text h4 { font-size:0.78rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--c-muted); margin-bottom:3px; }
-.c-info-text p, .c-info-text a { font-size:0.92rem; color:var(--c-navy); font-weight:400; }
-.social-strip { display:flex; gap:0.6rem; margin-top:2rem; padding-top:2rem; border-top:1px solid var(--c-line); }
-.soc {
-  width:38px; height:38px; border-radius:var(--r-sm);
-  border:1.5px solid var(--c-line); color:var(--c-muted);
-  display:flex; align-items:center; justify-content:center;
-  font-size:0.85rem; transition:all 0.25s;
-}
-.soc:hover { border-color:var(--c-green); color:var(--c-green); background:var(--c-green-bg); }
-
-/* Form area */
-.form-card {
-  background:var(--c-soft); border-radius:var(--r-lg);
-  padding:2.5rem; border:1.5px solid var(--c-line);
-}
-.form-card h3 { font-family:var(--f-display); font-size:1.6rem; color:var(--c-navy); margin-bottom:1.8rem; }
-.form-status {
-  display:none; padding:1rem 1.2rem; border-radius:var(--r-sm);
-  font-size:0.88rem; font-weight:500; margin-bottom:1.2rem; align-items:center; gap:10px;
-}
-.form-status.success { display:flex; background:#f0faf4; border:1px solid rgba(0,153,67,0.2); color:var(--c-green); }
-.form-status.error { display:flex; background:#fff5f5; border:1px solid rgba(220,0,0,0.15); color:#c0392b; }
-
-/* ─── FOOTER ─── */
-footer { background:var(--c-navy); padding:70px 0 30px; }
-.footer-grid { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:60px; margin-bottom:60px; }
-.ft-logo { margin-bottom:1.4rem; }
-.ft-logo img { height:34px; }
-.ft-about { color:rgba(255,255,255,0.38); font-size:0.88rem; line-height:1.75; font-weight:300; max-width:280px; }
-.ft-col h4 {
-  font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase;
-  font-weight:500; color:rgba(255,255,255,0.5); margin-bottom:1.4rem;
-}
-.ft-col ul { list-style:none; }
-.ft-col li { margin-bottom:0.7rem; }
-.ft-col a { font-size:0.88rem; color:rgba(255,255,255,0.35); transition:color 0.2s; font-weight:300; }
-.ft-col a:hover { color:rgba(255,255,255,0.8); }
-.ft-col p { font-size:0.88rem; color:rgba(255,255,255,0.35); line-height:1.9; font-weight:300; }
-.ft-col i { color:var(--c-green); width:16px; margin-right:6px; font-size:0.78rem; }
-.footer-bottom { border-top:1px solid rgba(255,255,255,0.07); padding-top:28px; display:flex; justify-content:space-between; }
-.footer-bottom p { font-size:0.8rem; color:rgba(255,255,255,0.22); }
-
-/* ─── MODALS ─── */
-.overlay {
-  position:fixed; inset:0; z-index:1000;
-  background:rgba(8,15,28,0.85); backdrop-filter:blur(10px);
-  display:flex; align-items:center; justify-content:center; padding:24px;
-  opacity:0; pointer-events:none; transition:opacity 0.35s var(--ease);
-}
-.overlay.open { opacity:1; pointer-events:all; }
-.modal {
-  background:var(--c-bg); border-radius:var(--r-lg);
-  padding:0; width:100%; max-width:660px; max-height:90vh;
-  overflow-y:auto; position:relative;
-  transform:translateY(24px) scale(0.98);
-  transition:transform 0.4s var(--ease);
-  box-shadow:0 40px 100px rgba(0,0,0,0.3);
-}
-.overlay.open .modal { transform:translateY(0) scale(1); }
-.modal-header {
-  padding:2.2rem 2.5rem 0;
-  display:flex; justify-content:space-between; align-items:start;
-}
-.modal-header h2 { font-family:var(--f-display); font-size:1.9rem; color:var(--c-navy); }
-.modal-header p { color:var(--c-muted); font-size:0.88rem; margin-top:4px; font-weight:300; }
-.modal-x {
-  width:36px; height:36px; border-radius:50%; background:var(--c-soft);
-  display:flex; align-items:center; justify-content:center;
-  color:var(--c-muted); font-size:0.95rem; flex-shrink:0; margin-left:1rem;
-  transition:all 0.2s;
-}
-.modal-x:hover { background:var(--c-green); color:#fff; }
-.modal-body { padding:1.8rem 2.5rem 2.5rem; }
-.modal-status {
-  display:none; padding:1rem 1.2rem; border-radius:var(--r-sm);
-  font-size:0.88rem; font-weight:500; margin-bottom:1.5rem;
-  align-items:center; gap:10px;
-}
-.modal-status.success { display:flex; background:#f0faf4; border:1px solid rgba(0,153,67,0.2); color:var(--c-green); }
-.modal-status.error { display:flex; background:#fff5f5; border:1px solid rgba(220,0,0,0.15); color:#c0392b; }
-
-/* Image lightbox */
-.lightbox {
-  position:fixed; inset:0; z-index:1100;
-  background:rgba(0,0,0,0.95); display:flex;
-  align-items:center; justify-content:center; padding:24px;
-  opacity:0; pointer-events:none; transition:opacity 0.3s;
-}
-.lightbox.open { opacity:1; pointer-events:all; }
-.lb-img { max-width:900px; width:100%; border-radius:var(--r-md); }
-.lb-cap { color:rgba(255,255,255,0.6); text-align:center; margin-top:1rem; font-size:0.9rem; }
-.lb-close {
-  position:absolute; top:24px; right:24px;
-  width:40px; height:40px; border-radius:50%;
-  background:rgba(255,255,255,0.1); color:#fff; font-size:1.1rem;
-  display:flex; align-items:center; justify-content:center; transition:all 0.2s;
-}
-.lb-close:hover { background:var(--c-green); }
-
-/* ─── TOAST ─── */
-.toast {
-  position:fixed; bottom:28px; right:28px;
-  min-width:280px; max-width:380px; z-index:2000;
-  background:var(--c-navy); color:#fff;
-  padding:1rem 1.4rem; border-radius:var(--r-md);
-  box-shadow:0 16px 48px rgba(0,0,0,0.2);
-  display:flex; align-items:center; gap:12px;
-  transform:translateY(120%) scale(0.96); opacity:0;
-  transition:all 0.4s var(--ease-out); pointer-events:none;
-  border-left:3px solid var(--c-green);
-}
-.toast.show { transform:translateY(0) scale(1); opacity:1; }
-.toast-icon { color:var(--c-green); font-size:1.1rem; flex-shrink:0; }
-.toast-msg { font-size:0.88rem; line-height:1.5; font-weight:300; }
-.toast-msg strong { font-weight:500; display:block; color:#fff; }
-
-/* ─── REVEAL ANIMATIONS ─── */
-.fade-up {
-  opacity:0; transform:translateY(30px);
-  transition:opacity 0.7s var(--ease), transform 0.7s var(--ease);
-}
-.fade-up.visible { opacity:1; transform:translateY(0); }
-.fade-in {
-  opacity:0;
-  transition:opacity 0.7s var(--ease);
-}
-.fade-in.visible { opacity:1; }
-[data-delay="1"] { transition-delay:0.1s; }
-[data-delay="2"] { transition-delay:0.18s; }
-[data-delay="3"] { transition-delay:0.26s; }
-[data-delay="4"] { transition-delay:0.34s; }
-
-/* Loading spinner */
-.btn-loading { position:relative; pointer-events:none; opacity:0.75; }
-.btn-loading::after {
-  content:''; position:absolute; right:14px; top:50%; transform:translateY(-50%);
-  width:14px; height:14px; border:2px solid rgba(255,255,255,0.4);
-  border-top-color:#fff; border-radius:50%;
-  animation:spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform:translateY(-50%) rotate(360deg); } }
-
-/* ─── RESPONSIVE ─── */
+/* RESPONSIVE */
 @media(max-width:1024px){
-  .hero { grid-template-columns:1fr; }
-  .hero-right { display:none; }
-  .hero-left { padding:60px 40px; max-width:none; }
-  .hero { background:linear-gradient(135deg,var(--c-navy) 60%, var(--c-navy-mid)); }
-  .about-grid { grid-template-columns:1fr; gap:40px; }
-  .about-img-accent { display:none; }
-  .services-grid { grid-template-columns:repeat(2,1fr); }
-  .numbers-grid { grid-template-columns:repeat(2,1fr); }
-  .num-item:nth-child(2) { border-right:none; }
-  .mission-grid { grid-template-columns:1fr; gap:40px; }
-  .mission-left h2 { position:static; }
-  .contact-grid { grid-template-columns:1fr; gap:40px; }
-  .contact-panel { position:static; }
-  .footer-grid { grid-template-columns:1fr 1fr; gap:40px; }
+  .hero{grid-template-columns:1fr}
+  .hr{display:none}
+  .hl{padding:60px 40px;max-width:none}
+  .hero{background:linear-gradient(135deg,var(--navy) 60%,#16305a)}
+  .ag{grid-template-columns:1fr;gap:40px}
+  .ama{display:none}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .ng{grid-template-columns:repeat(2,1fr)}
+  .ni:nth-child(2){border-right:none}
+  .mg{grid-template-columns:1fr;gap:40px}
+  .ml2 h2{position:static}
+  .cgrid{grid-template-columns:1fr;gap:40px}
+  .cpanel{position:static}
+  .fg{grid-template-columns:1fr 1fr;gap:40px}
 }
-
 @media(max-width:768px){
-  section { padding:70px 0; }
-  .ham { display:flex; }
-  .nav-links, .hdr-cta { display:none; }
-  .hdr-inner { padding:0 20px; }
-  .hero-left { padding:50px 20px; }
-  .hero h1 { font-size:2.3rem; }
-  .hero-stats { flex-direction:column; gap:1.5rem; border-top:none; padding-top:0; }
-  .hero-stat { padding:0; border-left:none !important; }
-  .hero-btns { flex-direction:column; max-width:300px; }
-  .services-header { flex-direction:column; gap:1.5rem; align-items:flex-start; }
-  .services-grid { grid-template-columns:1fr; }
-  .gallery-header { flex-direction:column; gap:1rem; align-items:flex-start; }
-  .gf-bar { flex-wrap:wrap; }
-  .values-row { grid-template-columns:1fr; }
-  .cta-points { grid-template-columns:1fr; }
-  .cta-btns { flex-direction:column; max-width:280px; }
-  .footer-grid { grid-template-columns:1fr; gap:32px; }
-  .footer-bottom { flex-direction:column; gap:8px; text-align:center; }
-  .numbers-grid { grid-template-columns:1fr 1fr; }
-  .grid-2 { grid-template-columns:1fr; }
-  .modal-header, .modal-body { padding-left:1.5rem; padding-right:1.5rem; }
-
-  /* Gallery: horizontal scroll on mobile */
-  .gal-grid {
-    display:flex; overflow-x:auto;
-    scroll-snap-type:x mandatory; gap:1rem;
-    -webkit-overflow-scrolling:touch; padding-bottom:12px;
-    scrollbar-width:thin; scrollbar-color:var(--c-green) transparent;
-  }
-  .gal-grid::-webkit-scrollbar { height:2px; }
-  .gal-grid::-webkit-scrollbar-thumb { background:var(--c-green); }
-  .gal-item {
-    flex:0 0 80vw; max-width:300px; scroll-snap-align:start;
-    aspect-ratio:4/3;
-  }
-  .gal-cap { opacity:1; }
+  section{padding:70px 0}
+  .wrap{padding:0 20px}
+  .ham{display:flex}
+  .nav-links,.hdr-cta-d{display:none}
+  .hi{padding:0 20px}
+  .hl{padding:50px 20px}
+  .hero h1{font-size:2.3rem}
+  .hstats{flex-direction:column;gap:1.5rem;border-top:none;padding-top:0}
+  .hs{padding:0;border-left:none!important}
+  .hbtns{flex-direction:column;max-width:300px}
+  .sh{flex-direction:column;gap:1.5rem;align-items:flex-start}
+  .sg{grid-template-columns:1fr}
+  .gah{flex-direction:column;gap:1rem;align-items:flex-start}
+  .gfbar{flex-wrap:wrap}
+  .vrow{grid-template-columns:1fr}
+  .cpts{grid-template-columns:1fr}
+  .cbtns{flex-direction:column;max-width:280px}
+  .fg{grid-template-columns:1fr;gap:32px}
+  .fb2{flex-direction:column;gap:8px;text-align:center}
+  .ng{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr}
+  .mhdr,.mbody{padding-left:1.5rem;padding-right:1.5rem}
+  /* Gallery mobile horizontal */
+  .gagr{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:1rem;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--g) transparent}
+  .gagr::-webkit-scrollbar{height:2px}
+  .gagr::-webkit-scrollbar-thumb{background:var(--g)}
+  .gi{flex:0 0 80vw;max-width:300px;scroll-snap-align:start;aspect-ratio:4/3}
+  .gc{opacity:1}
 }
-
 @media(max-width:480px){
-  .about-years { left:-12px; }
-  .num-val { font-size:2.8rem; }
-  .numbers-grid { grid-template-columns:1fr 1fr; gap:0; }
-  .num-item { padding:28px 20px; }
+  .ayr{left:-12px}
+  .nv{font-size:2.8rem}
+  .ni{padding:28px 20px}
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     HEADER
-══════════════════════════════════════ -->
+<!-- HEADER -->
 <header id="hdr">
-  <div class="hdr-inner">
+  <div class="hi">
     <a href="#inicio"><img src="logo.png" alt="Gótica SU LDA" class="logo-img"></a>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#sobre">Sobre</a></li>
-        <li><a href="#servicos">Serviços</a></li>
-        <li><a href="#galeria">Projetos</a></li>
-        <li><a href="#missao">Missão</a></li>
-        <li><a href="#contato">Contacto</a></li>
-      </ul>
-    </nav>
-    <button class="btn btn-solid hdr-cta" id="triggerModal">Solicitar Orçamento</button>
-    <button class="ham" id="ham" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <nav><ul class="nav-links">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#galeria">Projetos</a></li>
+      <li><a href="#missao">Missão</a></li>
+      <li><a href="#contato">Contacto</a></li>
+    </ul></nav>
+    <button class="btn btn-solid hdr-cta-d" id="t0">Solicitar Orçamento</button>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<!-- Mobile nav -->
-<div id="mob-nav">
-  <a href="#sobre" class="mob-link">Sobre</a>
-  <a href="#servicos" class="mob-link">Serviços</a>
-  <a href="#galeria" class="mob-link">Projetos</a>
-  <a href="#missao" class="mob-link">Missão</a>
-  <a href="#contato" class="mob-link">Contacto</a>
-  <div class="mob-cta"><button class="btn btn-solid" id="triggerModal2" style="width:100%;justify-content:center;">Solicitar Orçamento</button></div>
+<!-- MOBILE NAV -->
+<div id="mob">
+  <a href="#sobre" class="ml">Sobre</a>
+  <a href="#servicos" class="ml">Serviços</a>
+  <a href="#galeria" class="ml">Projetos</a>
+  <a href="#missao" class="ml">Missão</a>
+  <a href="#contato" class="ml">Contacto</a>
+  <div class="mc"><button class="btn btn-solid" id="t0m" style="width:100%;justify-content:center;">Solicitar Orçamento</button></div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     HERO
-══════════════════════════════════════ -->
+<!-- HERO -->
 <section class="hero" id="inicio">
-  <div class="hero-left">
-    <div class="hero-kicker"><span></span>Construção Civil · Pemba, Moçambique</div>
-    <h1>
-      Construindo<br>
-      <em>futuros</em> com<br>
-      <strong>excelência</strong>
-    </h1>
-    <p class="hero-sub">Empresa constituída por técnicos altamente qualificados, comprometida com o desenvolvimento sustentável e a satisfação total dos nossos clientes.</p>
-    <div class="hero-btns">
-      <button class="btn btn-solid" id="triggerModal3">Solicitar Orçamento</button>
-      <a href="#servicos" class="btn btn-ghost-white">Ver Serviços <i class="fas fa-arrow-right"></i></a>
+  <div class="hl">
+    <div class="kicker"><span></span>Construção Civil · Pemba, Moçambique</div>
+    <h1>Construindo<br><em>futuros</em> com<br><strong>excelência</strong></h1>
+    <p class="hsub">Empresa constituída por técnicos altamente qualificados, comprometida com o desenvolvimento sustentável e a satisfação total dos nossos clientes.</p>
+    <div class="hbtns">
+      <button class="btn btn-solid" id="t1">Solicitar Orçamento</button>
+      <a href="#servicos" class="btn btn-ghost">Ver Serviços <i class="fas fa-arrow-right"></i></a>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-n"><span id="c1">0</span><em>+</em></div>
-        <div class="hero-stat-l">Projetos</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-n"><span id="c2">0</span><em>+</em></div>
-        <div class="hero-stat-l">Anos</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-n"><span id="c3">0</span><em>+</em></div>
-        <div class="hero-stat-l">Clientes</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-n"><span id="c4">0</span><em>+</em></div>
-        <div class="hero-stat-l">Profissionais</div>
-      </div>
+    <div class="hstats">
+      <div class="hs"><div class="hs-n"><span id="c1">0</span><em>+</em></div><div class="hs-l">Projetos</div></div>
+      <div class="hs"><div class="hs-n"><span id="c2">0</span><em>+</em></div><div class="hs-l">Anos</div></div>
+      <div class="hs"><div class="hs-n"><span id="c3">0</span><em>+</em></div><div class="hs-l">Clientes</div></div>
+      <div class="hs"><div class="hs-n"><span id="c4">0</span><em>+</em></div><div class="hs-l">Profissionais</div></div>
     </div>
   </div>
-  <div class="hero-right">
-    <img src="imagem_1.jpeg" alt="Construção" class="hero-img">
-    <div class="hero-img-overlay"></div>
-    <div class="hero-badge">
-      <div class="hero-badge-icon"><i class="fas fa-award"></i></div>
+  <div class="hr">
+    <img src="imagem_1.jpeg" alt="" class="hi-img">
+    <div class="hi-ov"></div>
+    <div class="hbadge">
+      <div class="hbadge-ic"><i class="fas fa-award"></i></div>
       <p>Empresa certificada</p>
       <strong>Qualidade Garantida</strong>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     MARQUEE
-══════════════════════════════════════ -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <!-- duplicado para loop infinito -->
-    <span class="marquee-item">Construção Civil<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Pavimentação<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Betão Armado<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Instalações Hidráulicas<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Sistemas de Drenagem<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Vedações e Cercas<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Gestão de Obras<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Infraestrutura<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Construção Civil<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Pavimentação<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Betão Armado<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Instalações Hidráulicas<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Sistemas de Drenagem<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Vedações e Cercas<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Gestão de Obras<span class="marquee-dot"></span></span>
-    <span class="marquee-item">Infraestrutura<span class="marquee-dot"></span></span>
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-track">
+    <span class="mq-item">Construção Civil<span class="mq-dot"></span></span>
+    <span class="mq-item">Pavimentação<span class="mq-dot"></span></span>
+    <span class="mq-item">Betão Armado<span class="mq-dot"></span></span>
+    <span class="mq-item">Instalações Hidráulicas<span class="mq-dot"></span></span>
+    <span class="mq-item">Sistemas de Drenagem<span class="mq-dot"></span></span>
+    <span class="mq-item">Vedações e Cercas<span class="mq-dot"></span></span>
+    <span class="mq-item">Gestão de Obras<span class="mq-dot"></span></span>
+    <span class="mq-item">Infraestrutura<span class="mq-dot"></span></span>
+    <span class="mq-item">Construção Civil<span class="mq-dot"></span></span>
+    <span class="mq-item">Pavimentação<span class="mq-dot"></span></span>
+    <span class="mq-item">Betão Armado<span class="mq-dot"></span></span>
+    <span class="mq-item">Instalações Hidráulicas<span class="mq-dot"></span></span>
+    <span class="mq-item">Sistemas de Drenagem<span class="mq-dot"></span></span>
+    <span class="mq-item">Vedações e Cercas<span class="mq-dot"></span></span>
+    <span class="mq-item">Gestão de Obras<span class="mq-dot"></span></span>
+    <span class="mq-item">Infraestrutura<span class="mq-dot"></span></span>
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     ABOUT
-══════════════════════════════════════ -->
+<!-- ABOUT -->
 <section class="about" id="sobre">
   <div class="wrap">
-    <div class="about-grid">
-      <div class="about-visual fade-in">
-        <img src="imagem_7.jpeg" alt="Equipa Gótica" class="about-img-main">
-        <img src="imagem_9.jpeg" alt="Projetos" class="about-img-accent">
-        <div class="about-years"><strong>15<sup>+</sup></strong><span>anos de<br>experiência</span></div>
-      </div>
-      <div class="about-text">
-        <span class="eyebrow fade-up">Sobre Nós</span>
-        <h2 class="display-title fade-up" data-delay="1">
-          Uma empresa criada para<br><em>contribuir</em> para o<br>desenvolvimento
-        </h2>
-        <div class="about-divider fade-in" data-delay="2"></div>
-        <p class="fade-up" data-delay="2">A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, procurando manter no mercado os standards de <b>rigor, qualidade e capacidade de execução</b> que permitiram afirmar-se a nível nacional e internacional.</p>
-        <p class="fade-up" data-delay="3">Com a posição do mercado alinhado com as melhores práticas e uma conduta empresarial assente em princípios éticos, a Gótica ambiciona tornar-se uma empresa mais <b>internacional, inovadora e competitiva</b> a escala global.</p>
-        <div class="about-pills fade-up" data-delay="3">
-          <span class="pill">ISO Certificada</span>
-          <span class="pill">Equipa Qualificada</span>
-          <span class="pill">Prazos Cumpridos</span>
-          <span class="pill">Transparência Total</span>
-        </div>
-        <a href="#servicos" class="btn btn-arrow fade-up" data-delay="4" style="margin-top:2rem;">Ver os Nossos Serviços <i class="fas fa-arrow-right"></i></a>
+    <div class="ag">
+      <div class="av fi"><img src="imagem_7.jpeg" alt="Equipa Gótica" class="ami"><img src="imagem_9.jpeg" alt="" class="ama"><div class="ayr"><strong>15<sup>+</sup></strong><span>anos de<br>experiência</span></div></div>
+      <div class="at">
+        <span class="eyebrow fu">Sobre Nós</span>
+        <h2 class="fu" data-d="1">Uma empresa criada para<br><em>contribuir</em> para o desenvolvimento</h2>
+        <div class="adiv fi" data-d="2"></div>
+        <p class="fu" data-d="2">A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, procurando manter no mercado os standards de <b>rigor, qualidade e capacidade de execução</b> que permitiram afirmar-se a nível nacional e internacional.</p>
+        <p class="fu" data-d="3">Com conduta empresarial assente em princípios éticos e uma visão estratégica única, a Gótica ambiciona tornar-se uma empresa mais <b>internacional, inovadora e competitiva</b> à escala global.</p>
+        <div class="pills fu" data-d="3"><span class="pill">Equipa Qualificada</span><span class="pill">Prazos Cumpridos</span><span class="pill">Transparência Total</span><span class="pill">Qualidade Garantida</span></div>
+        <a href="#servicos" class="btn btn-arrow fu" data-d="4" style="margin-top:2rem;">Ver os Nossos Serviços <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     SERVICES
-══════════════════════════════════════ -->
+<!-- SERVICES -->
 <section class="services" id="servicos">
   <div class="wrap">
-    <div class="services-header">
-      <div>
-        <span class="eyebrow fade-up">Serviços</span>
-        <h2 class="display-title fade-up" data-delay="1">O Que<br>Fazemos</h2>
-      </div>
-      <p class="fade-up" data-delay="2" style="max-width:320px;font-weight:300;color:var(--c-text);">Soluções técnicas inovadoras em construção civil, do projeto à entrega final.</p>
+    <div class="sh">
+      <div><span class="eyebrow fu">Serviços</span><h2 class="fu" data-d="1">O Que<br>Fazemos</h2></div>
+      <p class="fu" data-d="2" style="max-width:300px;font-weight:300;">Soluções técnicas inovadoras do projeto à entrega final.</p>
     </div>
-    <div class="services-grid fade-up">
-      <div class="svc">
-        <div class="svc-num">01</div>
-        <div class="svc-icon"><i class="fas fa-building"></i></div>
-        <h3>Construção de Edifícios</h3>
-        <p>Edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança.</p>
-        <div class="svc-img"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="" loading="lazy"></div>
-      </div>
-      <div class="svc">
-        <div class="svc-num">02</div>
-        <div class="svc-icon"><i class="fas fa-road"></i></div>
-        <h3>Pavimentação</h3>
-        <p>Pavimentos asfálticos, betão armado e intertravados para vias públicas e áreas industriais.</p>
-        <div class="svc-img"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="" loading="lazy"></div>
-      </div>
-      <div class="svc">
-        <div class="svc-num">03</div>
-        <div class="svc-icon"><i class="fas fa-layer-group"></i></div>
-        <h3>Estruturas de Betão</h3>
-        <p>Concepção e execução de estruturas para edifícios, pontes, barragens e infraestruturas diversas.</p>
-        <div class="svc-img"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="" loading="lazy"></div>
-      </div>
-      <div class="svc">
-        <div class="svc-num">04</div>
-        <div class="svc-icon"><i class="fas fa-water"></i></div>
-        <h3>Sistemas de Drenagem</h3>
-        <p>Valas de drenagem, águas pluviais e soluções integradas para gestão de águas residuais.</p>
-        <div class="svc-img"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="" loading="lazy"></div>
-      </div>
-      <div class="svc">
-        <div class="svc-num">05</div>
-        <div class="svc-icon"><i class="fas fa-faucet"></i></div>
-        <h3>Instalações Hidráulicas</h3>
-        <p>Sistemas hidráulicos completos para edifícios residenciais, comerciais e industriais.</p>
-        <div class="svc-img"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="" loading="lazy"></div>
-      </div>
-      <div class="svc">
-        <div class="svc-num">06</div>
-        <div class="svc-icon"><i class="fas fa-shield-alt"></i></div>
-        <h3>Vedações e Cercas</h3>
-        <p>Vedações perimetrais, muros, cercas elétricas e portões automatizados para segurança de propriedades.</p>
-        <div class="svc-img"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="" loading="lazy"></div>
-      </div>
+    <div class="sg fu">
+      <div class="svc"><div class="svc-n">01</div><div class="svc-ic"><i class="fas fa-building"></i></div><h3>Construção de Edifícios</h3><p>Edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança.</p><div class="svc-img"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="" loading="lazy"></div></div>
+      <div class="svc"><div class="svc-n">02</div><div class="svc-ic"><i class="fas fa-road"></i></div><h3>Pavimentação</h3><p>Pavimentos asfálticos, betão armado e intertravados para vias públicas e áreas industriais.</p><div class="svc-img"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="" loading="lazy"></div></div>
+      <div class="svc"><div class="svc-n">03</div><div class="svc-ic"><i class="fas fa-layer-group"></i></div><h3>Estruturas de Betão</h3><p>Concepção e execução de estruturas para edifícios, pontes, barragens e infraestruturas diversas.</p><div class="svc-img"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="" loading="lazy"></div></div>
+      <div class="svc"><div class="svc-n">04</div><div class="svc-ic"><i class="fas fa-water"></i></div><h3>Sistemas de Drenagem</h3><p>Valas de drenagem, águas pluviais e soluções integradas para gestão de águas residuais.</p><div class="svc-img"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="" loading="lazy"></div></div>
+      <div class="svc"><div class="svc-n">05</div><div class="svc-ic"><i class="fas fa-faucet"></i></div><h3>Instalações Hidráulicas</h3><p>Sistemas hidráulicos completos para edifícios residenciais, comerciais e industriais.</p><div class="svc-img"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="" loading="lazy"></div></div>
+      <div class="svc"><div class="svc-n">06</div><div class="svc-ic"><i class="fas fa-shield-alt"></i></div><h3>Vedações e Cercas</h3><p>Vedações perimetrais, muros, cercas elétricas e portões automatizados para proteção de propriedades.</p><div class="svc-img"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="" loading="lazy"></div></div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     NUMBERS
-══════════════════════════════════════ -->
-<section class="numbers">
+<!-- NUMBERS -->
+<section class="nums">
   <div class="wrap">
-    <div class="numbers-grid">
-      <div class="num-item fade-up">
-        <div class="num-val"><span id="n1">0</span><em>+</em></div>
-        <div class="num-lbl">Projetos Concluídos</div>
-      </div>
-      <div class="num-item fade-up" data-delay="1">
-        <div class="num-val"><span id="n2">0</span><em>+</em></div>
-        <div class="num-lbl">Anos de Experiência</div>
-      </div>
-      <div class="num-item fade-up" data-delay="2">
-        <div class="num-val"><span id="n3">0</span><em>+</em></div>
-        <div class="num-lbl">Clientes Satisfeitos</div>
-      </div>
-      <div class="num-item fade-up" data-delay="3">
-        <div class="num-val"><span id="n4">0</span><em>+</em></div>
-        <div class="num-lbl">Profissionais</div>
-      </div>
+    <div class="ng">
+      <div class="ni fu"><div class="nv"><span id="n1">0</span><em>+</em></div><div class="nl">Projetos Concluídos</div></div>
+      <div class="ni fu" data-d="1"><div class="nv"><span id="n2">0</span><em>+</em></div><div class="nl">Anos de Experiência</div></div>
+      <div class="ni fu" data-d="2"><div class="nv"><span id="n3">0</span><em>+</em></div><div class="nl">Clientes Satisfeitos</div></div>
+      <div class="ni fu" data-d="3"><div class="nv"><span id="n4">0</span><em>+</em></div><div class="nl">Profissionais</div></div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     GALLERY
-══════════════════════════════════════ -->
+<!-- GALLERY -->
 <section class="gallery" id="galeria">
   <div class="wrap">
-    <div class="gallery-header">
-      <div>
-        <span class="eyebrow fade-up">Portfólio</span>
-        <h2 class="display-title fade-up" data-delay="1">Nossos Projetos</h2>
-      </div>
-      <div class="gf-bar fade-up" data-delay="2">
-        <button class="gf-btn active" data-f="todos">Todos</button>
-        <button class="gf-btn" data-f="edificios">Edifícios</button>
-        <button class="gf-btn" data-f="infra">Infraestrutura</button>
-        <button class="gf-btn" data-f="pav">Pavimentação</button>
+    <div class="gah">
+      <div><span class="eyebrow fu">Portfólio</span><h2 class="fu" data-d="1">Nossos Projetos</h2></div>
+      <div class="gfbar fu" data-d="2">
+        <button class="gfb active" data-f="todos">Todos</button>
+        <button class="gfb" data-f="edificios">Edifícios</button>
+        <button class="gfb" data-f="infra">Infraestrutura</button>
+        <button class="gfb" data-f="pav">Pavimentação</button>
       </div>
     </div>
-    <div class="gal-grid fade-in" data-delay="2" id="galGrid">
-      <div class="gal-item" data-cat="edificios">
-        <img src="imagem_9.jpeg" alt="Standard Bank Maputo" loading="lazy">
-        <div class="gal-cap"><h4>Restauração Standard Bank</h4><p>Maputo — Reforma do edifício sede</p></div>
-      </div>
-      <div class="gal-item" data-cat="infra">
-        <img src="imagem_13.jpeg" alt="Petromoc Pemba" loading="lazy">
-        <div class="gal-cap"><h4>Terminal Petromoc Pemba</h4><p>Obra de vedação e cerca eléctrica</p></div>
-      </div>
-      <div class="gal-item" data-cat="infra">
-        <img src="imagem_18.jpeg" alt="Subestação Muxara" loading="lazy">
-        <div class="gal-cap"><h4>Subestação de Muxara</h4><p>Pemba — Vedação e cerca eléctrica</p></div>
-      </div>
-      <div class="gal-item" data-cat="infra">
-        <img src="imagem_23.jpeg" alt="Subestação Muxara betão" loading="lazy">
-        <div class="gal-cap"><h4>Subestação Muxara-Pemba</h4><p>Estrutura e pavimentos de betão armado</p></div>
-      </div>
-      <div class="gal-item" data-cat="edificios">
-        <img src="imagem_26.jpeg" alt="Instalações hidráulicas" loading="lazy">
-        <div class="gal-cap"><h4>Instalações Hidráulicas</h4><p>Trabalhos de picheleiro especializados</p></div>
-      </div>
-      <div class="gal-item" data-cat="pav">
-        <img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="Pavimentação" loading="lazy">
-        <div class="gal-cap"><h4>Pavimentação Urbana</h4><p>Execução de pavimentos asfálticos</p></div>
-      </div>
+    <div class="gagr fi" data-d="2" id="gg">
+      <div class="gi" data-cat="edificios"><img src="imagem_9.jpeg" alt="" loading="lazy"><div class="gc"><h4>Restauração Standard Bank</h4><p>Maputo — Reforma do edifício sede</p></div></div>
+      <div class="gi" data-cat="infra"><img src="imagem_13.jpeg" alt="" loading="lazy"><div class="gc"><h4>Terminal Petromoc Pemba</h4><p>Vedação e cerca eléctrica</p></div></div>
+      <div class="gi" data-cat="infra"><img src="imagem_18.jpeg" alt="" loading="lazy"><div class="gc"><h4>Subestação de Muxara</h4><p>Pemba — Vedação e cerca eléctrica</p></div></div>
+      <div class="gi" data-cat="infra"><img src="imagem_23.jpeg" alt="" loading="lazy"><div class="gc"><h4>Subestação Muxara-Pemba</h4><p>Estrutura e pavimentos de betão armado</p></div></div>
+      <div class="gi" data-cat="edificios"><img src="imagem_26.jpeg" alt="" loading="lazy"><div class="gc"><h4>Instalações Hidráulicas</h4><p>Trabalhos de picheleiro especializados</p></div></div>
+      <div class="gi" data-cat="pav"><img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="" loading="lazy"><div class="gc"><h4>Pavimentação Urbana</h4><p>Execução de pavimentos asfálticos</p></div></div>
     </div>
   </div>
 </section>
+<div class="lb" id="lb"><button class="lb-x" id="lbx"><i class="fas fa-times"></i></button><div><img class="lb-img" id="lbi" src="" alt=""><div class="lb-cap" id="lbc"></div></div></div>
 
-<!-- Image lightbox -->
-<div class="lightbox" id="lightbox">
-  <button class="lb-close" id="lbClose"><i class="fas fa-times"></i></button>
-  <div>
-    <img class="lb-img" id="lbImg" src="" alt="">
-    <div class="lb-cap" id="lbCap"></div>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════
-     MISSION & VALUES
-══════════════════════════════════════ -->
+<!-- MISSION -->
 <section class="mission" id="missao">
   <div class="wrap">
-    <div class="mission-grid">
-      <div class="mission-left">
-        <span class="eyebrow fade-up">Identidade</span>
-        <h2 class="display-title fade-up" data-delay="1">Missão,<br>Visão &<br><em>Valores</em></h2>
-      </div>
+    <div class="mg">
+      <div class="ml2"><span class="eyebrow fu">Identidade</span><h2 class="fu" data-d="1">Missão,<br>Visão &<br><em>Valores</em></h2></div>
       <div>
-        <div class="mission-cards">
-          <div class="m-card fade-up">
-            <div class="m-icon-wrap"><i class="fas fa-bullseye"></i></div>
-            <div>
-              <h3>Nossa Missão</h3>
-              <p>Atender com zelo, dedicação e excelência as demandas dos clientes, pelo desenvolvimento e oferta de produtos e serviços que contribuam para a melhoria de qualidade de vida das pessoas, gerando riqueza de forma sustentável.</p>
-            </div>
-          </div>
-          <div class="m-card fade-up" data-delay="1">
-            <div class="m-icon-wrap"><i class="fas fa-eye"></i></div>
-            <div>
-              <h3>Nossa Visão</h3>
-              <p>Tornar-nos uma referência nacional e internacional em construção civil, reconhecidos pela qualidade, inovação e compromisso com o desenvolvimento sustentável de Moçambique.</p>
-            </div>
-          </div>
-          <div class="m-card fade-up" data-delay="2">
-            <div class="m-icon-wrap"><i class="fas fa-handshake"></i></div>
-            <div>
-              <h3>Nosso Compromisso</h3>
-              <p>Superar expectativas entregando projetos que unem funcionalidade, durabilidade e design inovador, sempre com foco na segurança e na satisfação total do cliente.</p>
-            </div>
-          </div>
+        <div class="mcards">
+          <div class="mc fu"><div class="mc-ic"><i class="fas fa-bullseye"></i></div><div><h3>Nossa Missão</h3><p>Atender com zelo, dedicação e excelência as demandas dos clientes, contribuindo para a melhoria de qualidade de vida das pessoas e gerando riqueza de forma sustentável.</p></div></div>
+          <div class="mc fu" data-d="1"><div class="mc-ic"><i class="fas fa-eye"></i></div><div><h3>Nossa Visão</h3><p>Tornar-nos referência nacional e internacional em construção civil, reconhecidos pela qualidade, inovação e compromisso com o desenvolvimento sustentável de Moçambique.</p></div></div>
+          <div class="mc fu" data-d="2"><div class="mc-ic"><i class="fas fa-handshake"></i></div><div><h3>Nosso Compromisso</h3><p>Superar expectativas entregando projetos que unem funcionalidade, durabilidade e design inovador, sempre com foco na segurança e satisfação do cliente.</p></div></div>
         </div>
-
-        <div style="margin-top:2rem;" class="fade-up" data-delay="2">
-          <p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--c-muted);margin-bottom:1rem;font-weight:500;">Nossos Valores</p>
-          <div class="values-row">
-            <div class="v-chip"><i class="fas fa-balance-scale"></i><span>Integridade</span></div>
-            <div class="v-chip"><i class="fas fa-heart"></i><span>Comprometimento</span></div>
-            <div class="v-chip"><i class="fas fa-users"></i><span>Valorização Humana</span></div>
-            <div class="v-chip"><i class="fas fa-chart-line"></i><span>Superação</span></div>
-            <div class="v-chip"><i class="fas fa-sync-alt"></i><span>Melhoria Contínua</span></div>
-            <div class="v-chip"><i class="fas fa-lightbulb"></i><span>Inovação</span></div>
-            <div class="v-chip"><i class="fas fa-leaf"></i><span>Sustentabilidade</span></div>
-            <div class="v-chip"><i class="fas fa-shield-alt"></i><span>Qualidade</span></div>
+        <div style="margin-top:2rem" class="fu" data-d="2">
+          <p style="font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:500">Nossos Valores</p>
+          <div class="vrow">
+            <div class="vc"><i class="fas fa-balance-scale"></i><span>Integridade</span></div>
+            <div class="vc"><i class="fas fa-heart"></i><span>Comprometimento</span></div>
+            <div class="vc"><i class="fas fa-users"></i><span>Valorização Humana</span></div>
+            <div class="vc"><i class="fas fa-chart-line"></i><span>Superação</span></div>
+            <div class="vc"><i class="fas fa-sync-alt"></i><span>Melhoria Contínua</span></div>
+            <div class="vc"><i class="fas fa-lightbulb"></i><span>Inovação</span></div>
+            <div class="vc"><i class="fas fa-leaf"></i><span>Sustentabilidade</span></div>
+            <div class="vc"><i class="fas fa-shield-alt"></i><span>Qualidade</span></div>
           </div>
         </div>
       </div>
@@ -1043,105 +512,69 @@ footer { background:var(--c-navy); padding:70px 0 30px; }
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     CTA
-══════════════════════════════════════ -->
+<!-- CTA -->
 <section class="cta">
   <div class="cta-geo"></div>
   <div class="wrap">
-    <div class="cta-inner">
-      <span class="eyebrow fade-up" style="color:rgba(0,210,90,0.85);">Orçamento</span>
-      <h2 class="display-title fade-up" data-delay="1" style="color:#fff;">Pronto para<br>iniciar o seu <em>projeto?</em></h2>
-      <p class="fade-up" data-delay="2">Solicite um orçamento gratuito. A nossa equipa responde em até 24 horas com uma proposta personalizada e sem compromisso.</p>
-      <div class="cta-points fade-up" data-delay="2">
-        <div class="cta-point"><i class="fas fa-check-circle"></i>Orçamento completamente gratuito</div>
-        <div class="cta-point"><i class="fas fa-check-circle"></i>Resposta em até 24 horas</div>
-        <div class="cta-point"><i class="fas fa-check-circle"></i>Sem custos ou compromissos ocultos</div>
-        <div class="cta-point"><i class="fas fa-check-circle"></i>Equipa técnica especializada</div>
+    <div class="ci">
+      <span class="eyebrow fu" style="color:rgba(0,210,90,.85)">Orçamento</span>
+      <h2 class="fu" data-d="1">Pronto para<br>iniciar o seu <em>projeto?</em></h2>
+      <p class="fu" data-d="2">Solicite um orçamento gratuito. A nossa equipa responde em até 24 horas com uma proposta personalizada e sem compromisso.</p>
+      <div class="cpts fu" data-d="2">
+        <div class="cpt"><i class="fas fa-check-circle"></i>Orçamento completamente gratuito</div>
+        <div class="cpt"><i class="fas fa-check-circle"></i>Resposta em até 24 horas</div>
+        <div class="cpt"><i class="fas fa-check-circle"></i>Sem custos ou compromissos ocultos</div>
+        <div class="cpt"><i class="fas fa-check-circle"></i>Equipa técnica especializada</div>
       </div>
-      <div class="cta-btns fade-up" data-delay="3">
-        <button class="btn btn-solid" id="triggerModal4" style="font-size:0.95rem;padding:0.95rem 2.2rem;">Solicitar Orçamento Gratuito</button>
-        <a href="mailto:construgotica@gmail.com" class="btn btn-ghost-white">Enviar Email <i class="fas fa-envelope"></i></a>
+      <div class="cbtns fu" data-d="3">
+        <button class="btn btn-solid" id="t2" style="font-size:.95rem;padding:.95rem 2.2rem">Solicitar Orçamento Gratuito</button>
+        <a href="mailto:construgotica@gmail.com" class="btn btn-ghost">Enviar Email <i class="fas fa-envelope"></i></a>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     CONTACT
-══════════════════════════════════════ -->
+<!-- CONTACT -->
 <section class="contact" id="contato">
   <div class="wrap">
-    <span class="eyebrow fade-up">Contacto</span>
-    <h2 class="display-title fade-up" data-delay="1" style="font-size:clamp(2rem,3vw,3rem);margin-bottom:0;">Entre em<br><em>Contacto</em></h2>
-
-    <div class="contact-grid">
+    <span class="eyebrow fu">Contacto</span>
+    <h2 class="fu" data-d="1" style="font-family:var(--serif);font-size:clamp(2rem,3vw,3rem);font-weight:300;color:var(--navy);margin-bottom:0;line-height:1.15">Entre em<br><em style="font-style:italic;color:var(--g)">Contacto</em></h2>
+    <div class="cgrid">
       <!-- Info -->
-      <div class="contact-panel fade-up">
+      <div class="cpanel fu">
         <h3>Fale connosco</h3>
-        <p>Estamos disponíveis para esclarecer dúvidas e apresentar soluções para o seu projeto.</p>
-        <div class="c-info-item">
-          <div class="c-info-icon"><i class="fas fa-map-marker-alt"></i></div>
-          <div class="c-info-text"><h4>Endereço</h4><p>Av. 25 de Setembro, Bairro de Cimento, Pemba</p></div>
-        </div>
-        <div class="c-info-item">
-          <div class="c-info-icon"><i class="fas fa-phone"></i></div>
-          <div class="c-info-text"><h4>Telefone</h4><a href="tel:+25884263176">84 263 1768 / 872 261 200</a></div>
-        </div>
-        <div class="c-info-item">
-          <div class="c-info-icon"><i class="fas fa-envelope"></i></div>
-          <div class="c-info-text"><h4>Email</h4><a href="mailto:construgotica@gmail.com">construgotica@gmail.com</a></div>
-        </div>
-        <div class="c-info-item">
-          <div class="c-info-icon"><i class="fas fa-clock"></i></div>
-          <div class="c-info-text"><h4>Horário</h4><p>Seg–Sex: 8h00–18h00<br>Sábado: 8h00–13h00</p></div>
-        </div>
-        <div class="social-strip">
-          <a href="#" class="soc" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="soc" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" class="soc" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="soc" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <p>Disponíveis para esclarecer dúvidas e apresentar soluções para o seu projeto.</p>
+        <div class="cii"><div class="cii-ic"><i class="fas fa-map-marker-alt"></i></div><div class="cii-t"><h4>Endereço</h4><p>Av. 25 de Setembro, Bairro de Cimento, Pemba</p></div></div>
+        <div class="cii"><div class="cii-ic"><i class="fas fa-phone"></i></div><div class="cii-t"><h4>Telefone</h4><a href="tel:+25884263176">84 263 1768 / 872 261 200</a></div></div>
+        <div class="cii"><div class="cii-ic"><i class="fas fa-envelope"></i></div><div class="cii-t"><h4>Email</h4><a href="mailto:construgotica@gmail.com">construgotica@gmail.com</a></div></div>
+        <div class="cii"><div class="cii-ic"><i class="fas fa-clock"></i></div><div class="cii-t"><h4>Horário</h4><p>Seg–Sex: 8h00–18h00<br>Sábado: 8h00–13h00</p></div></div>
+        <div class="socrow">
+          <a href="#" class="soc"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="soc"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="soc"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc"><i class="fab fa-whatsapp"></i></a>
         </div>
       </div>
-
-      <!-- Form -->
-      <div class="fade-up" data-delay="1">
-        <div class="form-card">
+      <!-- Contact Form — Formspree -->
+      <div class="fu" data-d="1">
+        <div class="fcard">
           <h3>Envie uma mensagem</h3>
-
-          <!-- Status messages -->
-          <div class="form-status" id="ctxStatus">
-            <i class="fas fa-check-circle"></i><span id="ctxStatusMsg"></span>
-          </div>
-
-          <form id="contactForm" novalidate>
-            <div class="field">
-              <label>Nome Completo *</label>
-              <input type="text" name="from_name" placeholder="O seu nome completo" required>
+          <div class="fstatus" id="cStatus"><i class="fas fa-check-circle"></i><span id="cStatusMsg"></span></div>
+          <!--
+            FORMSPREE: Substitui YOUR_FORM_ID pelo teu ID do Formspree
+            Ex: action="https://formspree.io/f/xpzgkabw"
+          -->
+          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="Nova mensagem — Gótica SU LDA">
+            <input type="hidden" name="_language" value="pt">
+            <div class="field"><label>Nome Completo *</label><input type="text" name="name" placeholder="O seu nome completo" required></div>
+            <div class="g2">
+              <div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="email@exemplo.com" required></div>
+              <div class="field"><label>Telefone</label><input type="tel" name="phone" placeholder="+258 8x xxx xxxx"></div>
             </div>
-            <div class="grid-2">
-              <div class="field">
-                <label>E-mail *</label>
-                <input type="email" name="reply_to" placeholder="email@exemplo.com" required>
-              </div>
-              <div class="field">
-                <label>Telefone</label>
-                <input type="tel" name="phone" placeholder="+258 8x xxx xxxx">
-              </div>
-            </div>
-            <div class="field">
-              <label>Assunto *</label>
-              <input type="text" name="subject" placeholder="Como podemos ajudar?" required>
-            </div>
-            <div class="field">
-              <label>Mensagem *</label>
-              <textarea name="message" placeholder="Descreva a sua necessidade..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-solid" id="ctxSubmit" style="width:100%;justify-content:center;font-size:0.92rem;">
-              Enviar Mensagem
-            </button>
+            <div class="field"><label>Assunto *</label><input type="text" name="subject" placeholder="Como podemos ajudar?" required></div>
+            <div class="field"><label>Mensagem *</label><textarea name="message" placeholder="Descreva a sua necessidade em detalhe..." required></textarea></div>
+            <button type="submit" class="btn btn-solid" id="cBtn" style="width:100%;justify-content:center;font-size:.92rem">Enviar Mensagem</button>
           </form>
         </div>
       </div>
@@ -1149,93 +582,42 @@ footer { background:var(--c-navy); padding:70px 0 30px; }
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     FOOTER
-══════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer>
   <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <div class="ft-logo"><img src="logo.png" alt="Gótica SU LDA"></div>
-        <p class="ft-about">Empresa de Construção Civil comprometida com a qualidade, inovação e desenvolvimento sustentável. Rigor e excelência em cada obra.</p>
-      </div>
-      <div class="ft-col">
-        <h4>Navegação</h4>
-        <ul>
-          <li><a href="#inicio">Início</a></li>
-          <li><a href="#sobre">Sobre Nós</a></li>
-          <li><a href="#servicos">Serviços</a></li>
-          <li><a href="#galeria">Projetos</a></li>
-          <li><a href="#missao">Missão & Valores</a></li>
-          <li><a href="#contato">Contacto</a></li>
-        </ul>
-      </div>
-      <div class="ft-col">
-        <h4>Serviços</h4>
-        <ul>
-          <li><a href="#servicos">Construção de Edifícios</a></li>
-          <li><a href="#servicos">Pavimentação</a></li>
-          <li><a href="#servicos">Betão Armado</a></li>
-          <li><a href="#servicos">Sistemas de Drenagem</a></li>
-          <li><a href="#servicos">Instalações Hidráulicas</a></li>
-          <li><a href="#servicos">Vedações e Cercas</a></li>
-        </ul>
-      </div>
-      <div class="ft-col">
-        <h4>Contacto</h4>
-        <p><i class="fas fa-map-marker-alt"></i>Av. 25 de Setembro, Pemba</p>
-        <p><i class="fas fa-phone"></i>84 263 1768</p>
-        <p><i class="fas fa-phone"></i>872 261 200</p>
-        <p><i class="fas fa-envelope"></i>construgotica@gmail.com</p>
-        <p><i class="fas fa-clock"></i>Seg–Sex 8h–18h | Sáb 8h–13h</p>
-      </div>
+    <div class="fg">
+      <div><div class="fb-logo"><img src="logo.png" alt="Gótica SU LDA"></div><p class="fab2">Empresa de Construção Civil comprometida com qualidade, inovação e desenvolvimento sustentável. Rigor e excelência em cada obra.</p></div>
+      <div class="fc"><h4>Navegação</h4><ul><li><a href="#inicio">Início</a></li><li><a href="#sobre">Sobre Nós</a></li><li><a href="#servicos">Serviços</a></li><li><a href="#galeria">Projetos</a></li><li><a href="#missao">Missão & Valores</a></li><li><a href="#contato">Contacto</a></li></ul></div>
+      <div class="fc"><h4>Serviços</h4><ul><li><a href="#servicos">Construção</a></li><li><a href="#servicos">Pavimentação</a></li><li><a href="#servicos">Betão Armado</a></li><li><a href="#servicos">Drenagem</a></li><li><a href="#servicos">Hidráulica</a></li><li><a href="#servicos">Vedações</a></li></ul></div>
+      <div class="fc"><h4>Contacto</h4><p><i class="fas fa-map-marker-alt"></i>Av. 25 de Setembro, Pemba</p><p><i class="fas fa-phone"></i>84 263 1768 / 872 261 200</p><p><i class="fas fa-envelope"></i>construgotica@gmail.com</p><p><i class="fas fa-clock"></i>Seg-Sex 8h–18h | Sáb 8h–13h</p></div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p>
-      <p>Desenvolvido por HP</p>
-    </div>
+    <div class="fb2"><p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p><p>Desenvolvido por HP</p></div>
   </div>
 </footer>
 
-
-<!-- ══════════════════════════════════════
-     BUDGET MODAL
-══════════════════════════════════════ -->
-<div class="overlay" id="budgetOverlay">
-  <div class="modal" role="dialog" aria-label="Solicitar Orçamento">
-    <div class="modal-header">
-      <div>
-        <h2>Solicitar Orçamento</h2>
-        <p>Resposta em até 24 horas · Completamente gratuito</p>
-      </div>
-      <button class="modal-x" id="modalClose"><i class="fas fa-times"></i></button>
+<!-- BUDGET MODAL — Formspree -->
+<div class="overlay" id="ov">
+  <div class="modal">
+    <div class="mhdr">
+      <div><h2>Solicitar Orçamento</h2><p>Gratuito · Resposta em até 24 horas</p></div>
+      <button class="mx" id="mx"><i class="fas fa-times"></i></button>
     </div>
-    <div class="modal-body">
-
-      <!-- Status -->
-      <div class="modal-status" id="modalStatus">
-        <i class="fas fa-check-circle"></i><span id="modalStatusMsg"></span>
-      </div>
-
-      <form id="budgetForm" novalidate>
-        <div class="grid-2">
-          <div class="field">
-            <label>Nome Completo *</label>
-            <input type="text" name="from_name" placeholder="O seu nome" required>
-          </div>
-          <div class="field">
-            <label>E-mail *</label>
-            <input type="email" name="reply_to" placeholder="email@exemplo.com" required>
-          </div>
+    <div class="mbody">
+      <div class="mstatus" id="mStatus"><i class="fas fa-check-circle"></i><span id="mStatusMsg"></span></div>
+      <!--
+        FORMSPREE: Substitui YOUR_FORM_ID pelo teu ID (pode ser o mesmo ou criar um separado)
+        Ex: action="https://formspree.io/f/xpzgkabw"
+      -->
+      <form id="budgetForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="Pedido de Orçamento — Gótica SU LDA">
+        <input type="hidden" name="_language" value="pt">
+        <div class="g2">
+          <div class="field"><label>Nome Completo *</label><input type="text" name="name" placeholder="O seu nome" required></div>
+          <div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="email@exemplo.com" required></div>
         </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Telefone *</label>
-            <input type="tel" name="phone" placeholder="+258 8x xxx xxxx" required>
-          </div>
-          <div class="field">
-            <label>Serviço Desejado *</label>
+        <div class="g2">
+          <div class="field"><label>Telefone *</label><input type="tel" name="phone" placeholder="+258 8x xxx xxxx" required></div>
+          <div class="field"><label>Serviço Desejado *</label>
             <select name="service" required>
               <option value="">Selecione um serviço</option>
               <option>Construção de Edifícios</option>
@@ -1248,274 +630,200 @@ footer { background:var(--c-navy); padding:70px 0 30px; }
             </select>
           </div>
         </div>
-        <div class="field">
-          <label>Localização do Projeto *</label>
-          <input type="text" name="location" placeholder="Cidade, bairro..." required>
-        </div>
-        <div class="field">
-          <label>Descrição do Projeto *</label>
-          <textarea name="message" placeholder="Descreva o seu projeto: tipo de obra, dimensões, prazo desejado, outros detalhes relevantes..." required></textarea>
-        </div>
-        <div class="field">
-          <label>Prazo Pretendido</label>
+        <div class="field"><label>Localização do Projeto *</label><input type="text" name="location" placeholder="Cidade, bairro ou endereço" required></div>
+        <div class="field"><label>Descrição do Projeto *</label><textarea name="message" placeholder="Tipo de obra, dimensões, materiais preferidos, outros detalhes..." required></textarea></div>
+        <div class="field"><label>Prazo Pretendido</label>
           <select name="timeline">
-            <option value="">Sem preferência definida</option>
+            <option value="">Sem preferência</option>
             <option>Urgente — até 1 mês</option>
             <option>Curto prazo — 1 a 3 meses</option>
             <option>Médio prazo — 3 a 6 meses</option>
             <option>Longo prazo — mais de 6 meses</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-solid" id="budgetSubmit" style="width:100%;justify-content:center;padding:0.95rem;font-size:0.95rem;margin-top:0.5rem;">
-          Enviar Pedido de Orçamento
-        </button>
+        <button type="submit" class="btn btn-solid" id="bBtn" style="width:100%;justify-content:center;padding:.95rem;font-size:.95rem;margin-top:.5rem">Enviar Pedido de Orçamento</button>
       </form>
     </div>
   </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle ti"></i><div class="tm"><strong id="tTitle"></strong><span id="tMsg"></span></div></div>
 
-<!-- ══════════════════════════════════════
-     TOAST
-══════════════════════════════════════ -->
-<div class="toast" id="toast">
-  <i class="fas fa-check-circle toast-icon"></i>
-  <div class="toast-msg">
-    <strong id="toastTitle"></strong>
-    <span id="toastMsg"></span>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════
-     SCRIPTS
-══════════════════════════════════════ -->
 <script>
-/* ══════════════════════════════════════
-   EMAIL FUNCTION — SUBSTITUI AQUI PELA TUA API
-   
-   templateParams contém todos os campos do form:
-   - from_name, reply_to, phone, service,
-     location, message, timeline (budget form)
-   - from_name, reply_to, phone, subject, message (contact form)
-   
-   Para usar EmailJS, descomenta o SDK acima e faz:
-   
-   return emailjs.send(
-     EMAIL_CONFIG.serviceID,
-     EMAIL_CONFIG.templateID,
-     templateParams,
-     EMAIL_CONFIG.publicKey
-   );
-══════════════════════════════════════ */
-async function sendEmail(templateParams, formType) {
-  // ── SIMULAÇÃO (remove quando tiveres a API real) ──
-  await new Promise(r => setTimeout(r, 1400));
-  console.log('📧 Email que seria enviado para', EMAIL_CONFIG.destination);
-  console.log('Formulário:', formType);
-  console.log('Dados:', templateParams);
-  return { status: 200, text: 'OK' };
-  
-  // ── EXEMPLO COM EMAILJS (descomenta quando pronto) ──
-  // return emailjs.send(
-  //   EMAIL_CONFIG.serviceID,
-  //   EMAIL_CONFIG.templateID,
-  //   { ...templateParams, to_email: EMAIL_CONFIG.destination },
-  //   EMAIL_CONFIG.publicKey
-  // );
-  
-  // ── EXEMPLO COM FETCH API PRÓPRIA (descomenta quando pronto) ──
-  // return fetch('/api/send-email', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(templateParams)
-  // });
-}
+// ══════════════════════════════════════════
+//  FORMSPREE INTEGRATION
+//  
+//  Como activar:
+//  1. Vai a formspree.io → cria conta grátis
+//  2. "New Form" → copia o Form ID (ex: xpzgkabw)
+//  3. Substitui YOUR_FORM_ID nos dois <form action="...">
+//  4. Confirma o email que recebes do Formspree
+//  5. Pronto — os emails chegam directamente!
+//
+//  Campos enviados ao teu email:
+//  • Orçamento: name, email, phone, service, location, message, timeline
+//  • Contacto: name, email, phone, subject, message
+// ══════════════════════════════════════════
 
-/* ── SCROLL HEADER ── */
-const hdr = document.getElementById('hdr');
+/* ── HEADER ── */
 window.addEventListener('scroll', () => {
-  hdr.classList.toggle('scrolled', window.scrollY > 30);
+  document.getElementById('hdr').classList.toggle('scrolled', window.scrollY > 30);
 }, {passive:true});
 
 /* ── SMOOTH SCROLL ── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const t = document.querySelector(a.getAttribute('href'));
-    if(t){ e.preventDefault(); window.scrollTo({top: t.offsetTop - 68, behavior:'smooth'}); }
+    if(t){ e.preventDefault(); window.scrollTo({top:t.offsetTop-68,behavior:'smooth'}); }
   });
 });
 
 /* ── HAMBURGER ── */
-const ham = document.getElementById('ham');
-const mobNav = document.getElementById('mob-nav');
+const ham = document.getElementById('ham'), mob = document.getElementById('mob');
 ham.addEventListener('click', () => {
-  ham.classList.toggle('open');
-  mobNav.classList.toggle('open');
-  document.body.style.overflow = mobNav.classList.contains('open') ? 'hidden' : '';
+  ham.classList.toggle('open'); mob.classList.toggle('open');
+  document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
 });
-mobNav.querySelectorAll('a, button').forEach(el => el.addEventListener('click', () => {
-  ham.classList.remove('open'); mobNav.classList.remove('open');
-  document.body.style.overflow = '';
+mob.querySelectorAll('a,.btn').forEach(el => el.addEventListener('click', () => {
+  ham.classList.remove('open'); mob.classList.remove('open'); document.body.style.overflow = '';
 }));
 
-/* ── COUNTER ANIMATION ── */
-function animateCount(el, target, duration) {
-  let start = null;
-  const ease = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-  const step = ts => {
-    if(!start) start = ts;
-    const p = Math.min((ts - start) / duration, 1);
-    el.textContent = Math.round(ease(p) * target);
-    if(p < 1) requestAnimationFrame(step); else el.textContent = target;
-  };
+/* ── COUNT UP ── */
+function countUp(el, target, dur) {
+  let s=null, ease=t=>t<.5?2*t*t:-1+(4-2*t)*t;
+  const step=ts=>{ if(!s)s=ts; const p=Math.min((ts-s)/dur,1); el.textContent=Math.round(ease(p)*target); p<1?requestAnimationFrame(step):el.textContent=target; };
   requestAnimationFrame(step);
 }
 
 /* ── INTERSECTION OBSERVER ── */
+const counters = {c1:50,c2:15,c3:100,c4:30,n1:50,n2:15,n3:100,n4:30};
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if(!e.isIntersecting) return;
-    const el = e.target;
-    el.classList.add('visible');
-
-    // Counters
-    const cmap = { c1:50, c2:15, c3:100, c4:30, n1:50, n2:15, n3:100, n4:30 };
-    if(cmap[el.id]) animateCount(el, cmap[el.id], 1600);
-
-    io.unobserve(el);
+    e.target.classList.add('v');
+    if(counters[e.target.id]) countUp(e.target, counters[e.target.id], 1600);
+    io.unobserve(e.target);
   });
-}, {threshold:0.15, rootMargin:'0px 0px -40px 0px'});
-
-document.querySelectorAll('.fade-up, .fade-in, [id^="c"],[id^="n"]').forEach(el => io.observe(el));
+}, {threshold:.12, rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.fu,.fi,[id^="c"],[id^="n"]').forEach(el => io.observe(el));
 
 /* ── GALLERY FILTER ── */
-document.querySelectorAll('.gf-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.f;
-    document.querySelectorAll('.gal-item').forEach(item => {
-      const show = f === 'todos' || item.dataset.cat === f;
-      item.style.display = show ? 'block' : 'none';
-    });
-    document.getElementById('galGrid').scrollLeft = 0;
+document.querySelectorAll('.gfb').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.gfb').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const f=b.dataset.f;
+    document.querySelectorAll('.gi').forEach(i => { i.style.display=(f==='todos'||i.dataset.cat===f)?'block':'none'; });
+    document.getElementById('gg').scrollLeft=0;
   });
 });
 
 /* ── LIGHTBOX ── */
-const lb = document.getElementById('lightbox');
-const lbImg = document.getElementById('lbImg');
-const lbCap = document.getElementById('lbCap');
-document.querySelectorAll('.gal-item').forEach(item => {
-  item.addEventListener('click', () => {
-    lbImg.src = item.querySelector('img').src;
-    lbCap.textContent = item.querySelector('h4')?.textContent || '';
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
+const lb=document.getElementById('lb'), lbi=document.getElementById('lbi'), lbc=document.getElementById('lbc');
+function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+document.querySelectorAll('.gi').forEach(i => {
+  i.addEventListener('click', () => {
+    lbi.src=i.querySelector('img').src;
+    lbc.textContent=i.querySelector('h4')?.textContent||'';
+    lb.classList.add('open'); document.body.style.overflow='hidden';
   });
 });
-document.getElementById('lbClose').addEventListener('click', closeLb);
-lb.addEventListener('click', e => { if(e.target===lb||e.target===lb.firstElementChild) closeLb(); });
-function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('lbx').addEventListener('click', closeLb);
+lb.addEventListener('click', e=>{ if(e.target===lb||e.target.tagName==='DIV') closeLb(); });
 
-/* ── BUDGET MODAL ── */
-const overlay = document.getElementById('budgetOverlay');
-function openModal(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; }
-function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
-['triggerModal','triggerModal2','triggerModal3','triggerModal4'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el) el.addEventListener('click', openModal);
-});
-document.getElementById('modalClose').addEventListener('click', closeModal);
-overlay.addEventListener('click', e => { if(e.target===overlay) closeModal(); });
+/* ── MODAL ── */
+const ov=document.getElementById('ov');
+function openModal(){ ov.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(){ ov.classList.remove('open'); document.body.style.overflow=''; }
+['t0','t0m','t1','t2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('click',openModal); });
+document.getElementById('mx').addEventListener('click', closeModal);
+ov.addEventListener('click', e=>{ if(e.target===ov) closeModal(); });
 
 /* ── TOAST ── */
-function showToast(title, msg, isError=false) {
-  const t = document.getElementById('toast');
-  document.getElementById('toastTitle').textContent = title;
-  document.getElementById('toastMsg').textContent = msg;
-  t.style.borderColor = isError ? '#c0392b' : 'var(--c-green)';
-  t.querySelector('.toast-icon').style.color = isError ? '#c0392b' : 'var(--c-green)';
+function toast(title, msg, isErr=false) {
+  const t=document.getElementById('toast');
+  document.getElementById('tTitle').textContent=title;
+  document.getElementById('tMsg').textContent=msg;
+  t.style.borderColor=isErr?'#c0392b':'var(--g)';
+  t.querySelector('.ti').style.color=isErr?'#c0392b':'var(--g)';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 5000);
+  setTimeout(()=>t.classList.remove('show'),5000);
 }
 
-/* ── FORM HELPER ── */
-function getFormData(form) {
-  const data = {};
-  new FormData(form).forEach((v, k) => { data[k] = v; });
-  return data;
-}
-function setStatus(el, msgEl, type, msg) {
-  el.className = 'form-status ' + type;
-  msgEl.textContent = msg;
-  el.style.display = 'flex';
-}
-function setModalStatus(type, msg) {
-  const el = document.getElementById('modalStatus');
-  const msgEl = document.getElementById('modalStatusMsg');
-  el.className = 'modal-status ' + type;
-  msgEl.textContent = msg;
-}
+/* ── FORMSPREE SUBMIT HANDLER ── */
+async function handleFormspree(form, btn, statusEl, statusMsgEl, onSuccess) {
+  const data = new FormData(form);
 
-/* ── BUDGET FORM SUBMIT ── */
-document.getElementById('budgetForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('budgetSubmit');
-  const data = getFormData(this);
+  // Validação básica
+  let valid = true;
+  form.querySelectorAll('[required]').forEach(f => {
+    if(!f.value.trim()){ f.style.borderColor='#c0392b'; valid=false; }
+    else f.style.borderColor='';
+  });
+  if(!valid){
+    statusEl.className='fstatus err'; statusMsgEl.textContent='Por favor preencha todos os campos obrigatórios.'; statusEl.style.display='flex';
+    return;
+  }
 
   btn.classList.add('btn-loading');
+  const origText = btn.textContent;
   btn.textContent = 'A enviar...';
-  document.getElementById('modalStatus').style.display = 'none';
+  statusEl.style.display='none';
 
   try {
-    await sendEmail(data, 'orcamento');
-    setModalStatus('success', '✓ Pedido enviado com sucesso! Entramos em contacto em até 24 horas.');
-    this.reset();
-    showToast('Pedido enviado!', 'Entramos em contacto em até 24 horas.');
-    setTimeout(() => closeModal(), 3000);
+    const res = await fetch(form.action, {
+      method:'POST', body:data,
+      headers:{'Accept':'application/json'}
+    });
+    if(res.ok){
+      statusEl.className='fstatus ok'; statusMsgEl.textContent='✓ Mensagem enviada com sucesso!'; statusEl.style.display='flex';
+      form.reset();
+      onSuccess();
+    } else {
+      const json = await res.json().catch(()=>({}));
+      throw new Error(json.error || 'Erro desconhecido');
+    }
   } catch(err) {
     console.error(err);
-    setModalStatus('error', 'Erro ao enviar. Por favor tente novamente ou contacte-nos directamente.');
-    showToast('Erro ao enviar', 'Tente novamente ou ligue-nos directamente.', true);
+    statusEl.className='fstatus err';
+    statusMsgEl.textContent = form.action.includes('YOUR_FORM_ID')
+      ? '⚠ Configura o teu Formspree ID no código HTML (substitui YOUR_FORM_ID).'
+      : 'Erro ao enviar. Tenta novamente ou liga-nos directamente.';
+    statusEl.style.display='flex';
+    toast('Erro ao enviar', 'Contacta-nos directamente pelo telefone ou email.', true);
   } finally {
     btn.classList.remove('btn-loading');
-    btn.textContent = 'Enviar Pedido de Orçamento';
+    btn.textContent = origText;
   }
-});
+}
 
-/* ── CONTACT FORM SUBMIT ── */
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
+/* Budget form */
+document.getElementById('budgetForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  const btn = document.getElementById('ctxSubmit');
-  const statusEl = document.getElementById('ctxStatus');
-  const statusMsg = document.getElementById('ctxStatusMsg');
-  const data = getFormData(this);
-
-  btn.classList.add('btn-loading');
-  btn.textContent = 'A enviar...';
-  statusEl.style.display = 'none';
-
-  try {
-    await sendEmail(data, 'contacto');
-    setStatus(statusEl, statusMsg, 'success', '✓ Mensagem enviada! Respondemos em breve.');
-    this.reset();
-    showToast('Mensagem enviada!', 'Respondemos o mais brevemente possível.');
-  } catch(err) {
-    console.error(err);
-    setStatus(statusEl, statusMsg, 'error', 'Erro ao enviar. Tente novamente ou contacte-nos directamente.');
-    showToast('Erro ao enviar', 'Tente por email: construgotica@gmail.com', true);
-  } finally {
-    btn.classList.remove('btn-loading');
-    btn.textContent = 'Enviar Mensagem';
-  }
+  handleFormspree(
+    this,
+    document.getElementById('bBtn'),
+    document.getElementById('mStatus'),
+    document.getElementById('mStatusMsg'),
+    () => { toast('Pedido enviado!','Entramos em contacto em até 24 horas.'); setTimeout(closeModal,2500); }
+  );
 });
 
-/* ── ESC KEY ── */
-document.addEventListener('keydown', e => {
-  if(e.key==='Escape'){ closeModal(); closeLb(); }
+/* Contact form */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  handleFormspree(
+    this,
+    document.getElementById('cBtn'),
+    document.getElementById('cStatus'),
+    document.getElementById('cStatusMsg'),
+    () => toast('Mensagem enviada!','Respondemos o mais brevemente possível.')
+  );
 });
+
+/* ESC */
+document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeModal(); closeLb(); } });
 </script>
 </body>
 </html>
