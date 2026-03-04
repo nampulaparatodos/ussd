@@ -1,1096 +1,888 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gótica SU LDA - Construção Civil de Excelência</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #1a237e;
-            --secondary-color: #0d1b2a;
-            --accent-color: #00C853;        /* Verde vibrante principal */
-            --highlight-color: #00E676;     /* Verde neon suave para hover */
-            --lime-green: #00C853;          /* Verde bonito */
-            --navy-blue: #1a237e;
-            --light-color: #E0E1DD;
-            --dark-color: #0A0A0A;
-            --medium-gray: #8D99AE;
-            --light-gray: #EDF2F4;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-            --border-radius: 10px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gótica SU LDA — Construção Civil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --green: #00B050;
+  --green-light: #00C85A;
+  --green-dim: rgba(0,176,80,0.08);
+  --navy: #0D1F3C;
+  --ink: #1a1a1a;
+  --muted: #6b7280;
+  --border: #e8ecf0;
+  --bg: #ffffff;
+  --bg-soft: #f7f9fb;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+  --radius: 12px;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--sans); color:var(--ink); background:var(--bg); overflow-x:hidden; line-height:1.65; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:#f0f0f0; }
+::-webkit-scrollbar-thumb { background:var(--green); border-radius:4px; }
+.container { max-width:1160px; margin:0 auto; padding:0 24px; }
+.section-label {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:0.72rem; font-weight:500; letter-spacing:0.15em;
+  text-transform:uppercase; color:var(--green); margin-bottom:1.2rem;
+}
+.section-label::before { content:''; display:block; width:28px; height:2px; background:var(--green); }
+h1,h2,h3 { font-family:var(--serif); line-height:1.2; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        html { scroll-behavior: smooth; }
-        body { line-height: 1.6; color: var(--dark-color); background-color: white; overflow-x: hidden; }
-        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+/* HEADER */
+header {
+  position:fixed; top:0; left:0; right:0; z-index:900;
+  background:rgba(255,255,255,0.96); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border); transition:box-shadow 0.3s var(--ease);
+}
+header.elevated { box-shadow:0 4px 24px rgba(0,0,0,0.07); }
+.header-inner {
+  display:flex; align-items:center; justify-content:space-between;
+  height:62px; padding:0 24px; max-width:1160px; margin:0 auto;
+}
+.logo img { height:40px; display:block; }
+nav { display:flex; align-items:center; }
+.nav-links { display:flex; list-style:none; gap:2rem; margin-right:2rem; }
+.nav-links a {
+  font-size:0.875rem; font-weight:500; color:var(--navy);
+  text-decoration:none; position:relative; padding-bottom:2px; transition:color 0.2s;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:0; left:0;
+  width:0; height:1.5px; background:var(--green); transition:width 0.3s var(--ease);
+}
+.nav-links a:hover { color:var(--green); }
+.nav-links a:hover::after { width:100%; }
+.btn-nav {
+  background:var(--green); color:#fff; padding:0.52rem 1.4rem; border-radius:6px;
+  font-size:0.85rem; font-weight:500; text-decoration:none; border:none; cursor:pointer;
+  transition:background 0.2s, transform 0.15s; white-space:nowrap; font-family:var(--sans);
+}
+.btn-nav:hover { background:var(--green-light); transform:translateY(-1px); }
+.hamburger {
+  display:none; flex-direction:column; gap:5px; cursor:pointer;
+  padding:6px; border:none; background:none;
+}
+.hamburger span {
+  display:block; width:22px; height:1.5px;
+  background:var(--navy); border-radius:2px; transition:all 0.3s var(--ease);
+}
+.hamburger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
 
-        /* ── HEADER COMPACTO ── */
-        header {
-            background-color: white;
-            color: var(--dark-color);
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            transition: var(--transition);
-        }
-        header.scrolled {
-            background-color: rgba(255,255,255,0.98);
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 64px;           /* altura fixa e compacta */
-            padding: 0 20px;
-        }
-        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo-img { height: 46px; width: auto; }   /* logo menor */
+/* HERO */
+.hero {
+  position:relative; min-height:100svh; display:flex; align-items:center;
+  background:#0D1F3C; overflow:hidden; padding-top:62px;
+}
+.hero-bg { position:absolute; inset:0; background:url('imagem_1.jpeg') center/cover no-repeat; opacity:0.22; }
+.hero-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(13,31,60,0.95) 40%, rgba(13,31,60,0.6));
+}
+.hero-content { position:relative; z-index:1; max-width:700px; padding:5rem 0; }
+.hero-tag {
+  display:inline-flex; align-items:center; gap:10px;
+  background:rgba(0,176,80,0.15); border:1px solid rgba(0,176,80,0.3);
+  color:var(--green); font-size:0.75rem; letter-spacing:0.12em;
+  text-transform:uppercase; font-weight:500; padding:0.4rem 1rem;
+  border-radius:100px; margin-bottom:2rem;
+}
+.hero-tag::before { content:'●'; font-size:0.5rem; }
+.hero h1 { font-size:clamp(2.2rem, 5vw, 3.8rem); color:#fff; margin-bottom:1.4rem; font-weight:700; }
+.hero h1 em { color:var(--green); font-style:normal; }
+.hero-desc {
+  color:rgba(255,255,255,0.7); font-size:1.05rem; font-weight:300;
+  max-width:520px; margin-bottom:2.8rem; line-height:1.75;
+}
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:4rem; }
+.btn-primary {
+  background:var(--green); color:#fff; padding:0.85rem 2rem; border-radius:8px;
+  font-size:0.9rem; font-weight:500; text-decoration:none; border:none; cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,176,80,0.35); transition:all 0.25s var(--ease);
+  font-family:var(--sans); display:inline-block;
+}
+.btn-primary:hover { background:var(--green-light); transform:translateY(-2px); box-shadow:0 12px 32px rgba(0,176,80,0.45); }
+.btn-ghost {
+  background:transparent; color:#fff; padding:0.85rem 2rem; border-radius:8px;
+  font-size:0.9rem; font-weight:500; text-decoration:none; border:1.5px solid rgba(255,255,255,0.35);
+  cursor:pointer; transition:all 0.25s var(--ease); font-family:var(--sans);
+}
+.btn-ghost:hover { border-color:#fff; background:rgba(255,255,255,0.07); }
+.hero-stats { display:flex; gap:3rem; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,0.1); padding-top:2.5rem; }
+.hero-stat-val { font-family:var(--serif); font-size:2.4rem; color:#fff; font-weight:700; line-height:1; }
+.hero-stat-val span { color:var(--green); }
+.hero-stat-lbl { font-size:0.8rem; color:rgba(255,255,255,0.5); margin-top:4px; letter-spacing:0.05em; }
 
-        nav ul { display: flex; list-style: none; align-items: center; }
-        nav ul li { margin-left: 1.4rem; }
-        nav ul li a {
-            color: var(--navy-blue);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.4rem 0;
-            transition: var(--transition);
-            position: relative;
-            font-size: 0.88rem;
-            letter-spacing: 0.3px;
-        }
-        nav ul li a:hover { color: var(--lime-green); }
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 2px;
-            background-color: var(--lime-green);
-            transition: width 0.3s;
-        }
-        nav ul li a:hover::after { width: 100%; }
+/* ABOUT */
+.about { padding:7rem 0; background:var(--bg); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; }
+.about-img-wrap { position:relative; }
+.about-img-wrap img {
+  width:100%; border-radius:16px; box-shadow:0 24px 64px rgba(0,0,0,0.12);
+  display:block; aspect-ratio:4/3; object-fit:cover;
+}
+.about-badge {
+  position:absolute; bottom:-1.5rem; right:-1.5rem;
+  background:var(--green); color:#fff; padding:1.4rem 1.8rem;
+  border-radius:12px; box-shadow:0 16px 40px rgba(0,176,80,0.3); text-align:center;
+}
+.about-badge strong { font-family:var(--serif); font-size:2.2rem; display:block; line-height:1; }
+.about-badge span { font-size:0.78rem; opacity:0.85; margin-top:4px; display:block; }
+.about-text h2 { font-size:2.4rem; color:var(--navy); margin-bottom:1.4rem; }
+.about-text p { color:var(--muted); margin-bottom:1.2rem; font-weight:300; font-size:1.02rem; }
+.about-text p strong { color:var(--green); font-weight:500; }
 
-        .nav-cta {
-            background-color: var(--lime-green);
-            padding: 0.5rem 1.2rem;
-            border-radius: 6px;
-            margin-left: 1.2rem;
-            border: 2px solid var(--lime-green);
-            color: white !important;
-            font-size: 0.85rem !important;
-        }
-        .nav-cta:hover { background-color: transparent !important; color: var(--lime-green) !important; }
-        .nav-cta::after { display: none !important; }
+/* SERVICES */
+.services { padding:7rem 0; background:var(--bg-soft); }
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3rem; }
+.svc-card {
+  background:#fff; border-radius:var(--radius); overflow:hidden;
+  border:1px solid var(--border); transition:transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.svc-card:hover { transform:translateY(-6px); box-shadow:0 20px 48px rgba(0,0,0,0.09); }
+.svc-img { height:180px; overflow:hidden; }
+.svc-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s var(--ease); }
+.svc-card:hover .svc-img img { transform:scale(1.06); }
+.svc-body { padding:1.6rem; }
+.svc-icon-wrap {
+  width:44px; height:44px; border-radius:10px; background:var(--green-dim);
+  display:flex; align-items:center; justify-content:center; margin-bottom:1rem;
+}
+.svc-icon-wrap i { color:var(--green); font-size:1.2rem; }
+.svc-body h3 { font-family:var(--serif); font-size:1.15rem; color:var(--navy); margin-bottom:0.6rem; }
+.svc-body p { color:var(--muted); font-size:0.9rem; line-height:1.6; }
+.svc-list { list-style:none; margin-top:1rem; }
+.svc-list li { font-size:0.85rem; color:var(--muted); padding:0.3rem 0 0.3rem 1.2rem; position:relative; }
+.svc-list li::before { content:'→'; position:absolute; left:0; color:var(--green); }
 
-        .menu-toggle { display: none; font-size: 1.4rem; cursor: pointer; color: var(--navy-blue); }
+/* WHY */
+.why { padding:7rem 0; background:var(--navy); }
+.why .section-label { color:rgba(0,210,90,0.9); }
+.why h2 { font-size:2.4rem; color:#fff; margin-bottom:1rem; }
+.why-sub { color:rgba(255,255,255,0.5); font-weight:300; max-width:500px; margin-bottom:4rem; }
+.why-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+.why-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--radius); padding:2rem 1.6rem;
+  transition:background 0.3s, border-color 0.3s;
+}
+.why-card:hover { background:rgba(0,176,80,0.1); border-color:rgba(0,176,80,0.25); }
+.why-num { font-family:var(--serif); font-size:2.8rem; color:var(--green); line-height:1; margin-bottom:1rem; font-weight:700; }
+.why-num sup { font-size:1.2rem; }
+.why-card h4 { color:#fff; font-size:0.95rem; font-weight:500; margin-bottom:0.5rem; }
+.why-card p { color:rgba(255,255,255,0.45); font-size:0.85rem; line-height:1.6; }
 
-        /* ── HERO ── */
-        .hero {
-            background: linear-gradient(rgba(13,27,42,0.6), rgba(13,27,42,0.45)), url('imagem_1.jpeg') no-repeat center center/cover;
-            color: white;
-            padding: 9rem 0 5rem;
-            text-align: center;
-            margin-top: 64px;
-        }
-        .hero h2 { font-size: 3rem; margin-bottom: 1.5rem; line-height: 1.2; }
-        .hero p { font-size: 1.15rem; max-width: 680px; margin: 0 auto 2rem; color: #e2e8f0; }
+/* GALLERY */
+.gallery { padding:7rem 0; background:var(--bg); }
+.gallery-filters { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2.5rem; }
+.gf-btn {
+  padding:0.45rem 1.2rem; border-radius:100px; font-size:0.82rem; font-weight:500;
+  cursor:pointer; border:1px solid var(--border); background:#fff; color:var(--muted);
+  transition:all 0.2s; font-family:var(--sans);
+}
+.gf-btn:hover, .gf-btn.active { background:var(--green); color:#fff; border-color:var(--green); }
+.gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.g-item { position:relative; border-radius:var(--radius); overflow:hidden; cursor:pointer; aspect-ratio:4/3; }
+.g-item img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s var(--ease); display:block; }
+.g-item:hover img { transform:scale(1.08); }
+.g-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(13,31,60,0.85) 0%, transparent 55%);
+  opacity:0; transition:opacity 0.3s var(--ease);
+  display:flex; align-items:flex-end; padding:1.4rem;
+}
+.g-item:hover .g-overlay { opacity:1; }
+.g-overlay h4 { color:#fff; font-family:var(--serif); font-size:1rem; }
+.g-overlay p { color:rgba(255,255,255,0.7); font-size:0.8rem; margin-top:2px; }
 
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin-top: 3rem;
-            flex-wrap: wrap;
-        }
-        .hero-stat {
-            text-align: center;
-            padding: 1.8rem 1.4rem;
-            border-radius: var(--border-radius);
-            min-width: 180px;
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: var(--transition);
-        }
-        .hero-stat:hover { transform: translateY(-5px); background: rgba(255,255,255,0.12); }
-        .stat-icon { font-size: 2.2rem; color: var(--lime-green); margin-bottom: 0.8rem; }
-        .hero-stat-number { font-size: 2.6rem; font-weight: 700; color: white; display: block; margin-bottom: 0.4rem; }
-        .hero-stat-number::after { content: '+'; color: var(--lime-green); margin-left: 4px; }
-        .hero-stat-text { color: #e2e8f0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+/* MISSION */
+.mission { padding:7rem 0; background:var(--bg-soft); }
+.mission-top { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3rem; margin-bottom:4rem; }
+.m-card {
+  background:#fff; border-radius:var(--radius); padding:2.2rem;
+  border:1px solid var(--border); transition:box-shadow 0.3s, transform 0.3s;
+}
+.m-card:hover { box-shadow:0 16px 40px rgba(0,0,0,0.07); transform:translateY(-4px); }
+.m-icon {
+  width:48px; height:48px; border-radius:12px; background:var(--green-dim);
+  display:flex; align-items:center; justify-content:center; margin-bottom:1.2rem;
+}
+.m-icon i { color:var(--green); font-size:1.3rem; }
+.m-card h3 { font-family:var(--serif); color:var(--navy); font-size:1.2rem; margin-bottom:0.8rem; }
+.m-card p { color:var(--muted); font-size:0.92rem; line-height:1.65; }
+.values-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+.v-card {
+  padding:1.4rem; border-radius:var(--radius); border:1px solid var(--border); background:#fff;
+  display:flex; gap:1rem; align-items:flex-start; transition:border-color 0.2s, box-shadow 0.2s;
+}
+.v-card:hover { border-color:var(--green); box-shadow:0 8px 24px rgba(0,176,80,0.1); }
+.v-icon {
+  width:36px; height:36px; min-width:36px; border-radius:8px; background:var(--green-dim);
+  display:flex; align-items:center; justify-content:center;
+}
+.v-icon i { color:var(--green); font-size:1rem; }
+.v-card h4 { font-size:0.9rem; color:var(--navy); font-weight:500; margin-bottom:3px; }
+.v-card p { font-size:0.8rem; color:var(--muted); line-height:1.5; }
 
-        .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2.5rem; }
+/* CTA */
+.cta-section { padding:7rem 0; background:url('imagem_8.jpeg') center/cover no-repeat; position:relative; }
+.cta-section::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(13,31,60,0.93), rgba(0,100,40,0.82));
+}
+.cta-inner { position:relative; z-index:1; max-width:720px; margin:0 auto; text-align:center; }
+.cta-section .section-label { justify-content:center; color:rgba(0,220,100,0.9); }
+.cta-inner h2 { font-size:2.6rem; color:#fff; margin-bottom:1rem; }
+.cta-inner > p { color:rgba(255,255,255,0.65); font-weight:300; margin-bottom:2.5rem; font-size:1.05rem; }
+.cta-features { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:2.8rem; }
+.cta-feat {
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.85); font-size:0.83rem; padding:0.45rem 1rem;
+  border-radius:100px; display:flex; align-items:center; gap:6px;
+}
+.cta-feat i { color:var(--green); }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--lime-green);
-            color: white;
-            padding: 0.85rem 2rem;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 4px 14px rgba(0,200,83,0.25);
-        }
-        .btn:hover { background-color: var(--navy-blue); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        .btn-outline { background-color: transparent; border: 2px solid white; box-shadow: none; }
-        .btn-outline:hover { background-color: white; color: var(--navy-blue); }
-        .btn-accent { background-color: var(--lime-green); color: white; }
-        .btn-accent:hover { background-color: #009c3e; color: white; }
+/* CONTACT */
+.contact { padding:7rem 0; background:var(--bg); }
+.contact-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; align-items:start; margin-top:3rem; }
+.contact-info-box { background:var(--navy); border-radius:16px; padding:2.8rem; }
+.contact-info-box h3 { font-family:var(--serif); color:#fff; font-size:1.5rem; margin-bottom:0.6rem; }
+.contact-info-box > p { color:rgba(255,255,255,0.5); font-size:0.9rem; margin-bottom:2rem; }
+.c-detail { display:flex; gap:1rem; margin-bottom:1.6rem; }
+.c-detail-icon {
+  width:40px; height:40px; min-width:40px; border-radius:10px;
+  background:rgba(0,176,80,0.15); display:flex; align-items:center; justify-content:center;
+}
+.c-detail-icon i { color:var(--green); font-size:1rem; }
+.c-detail h4 { color:#fff; font-size:0.85rem; font-weight:500; margin-bottom:2px; }
+.c-detail p { color:rgba(255,255,255,0.5); font-size:0.85rem; }
+.social-row { display:flex; gap:0.7rem; margin-top:2rem; }
+.soc-btn {
+  width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.6);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; font-size:0.9rem; transition:all 0.2s;
+}
+.soc-btn:hover { background:var(--green); color:#fff; border-color:var(--green); }
+.contact-form-wrap h3 { font-family:var(--serif); color:var(--navy); font-size:1.5rem; margin-bottom:1.8rem; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.fg { margin-bottom:1.2rem; }
+.fg label { display:block; font-size:0.82rem; font-weight:500; color:var(--navy); margin-bottom:6px; }
+.fg input, .fg select, .fg textarea {
+  width:100%; padding:0.75rem 1rem; border:1px solid var(--border); border-radius:8px;
+  font-family:var(--sans); font-size:0.92rem; color:var(--ink); background:#fff;
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus {
+  outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(0,176,80,0.12);
+}
+.fg textarea { min-height:120px; resize:vertical; }
 
-        /* ── SECTIONS ── */
-        section { padding: 5rem 0; }
-        .section-title { text-align: center; margin-bottom: 3.5rem; }
-        .section-title h2 {
-            font-size: 2.4rem;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 14px;
-            color: var(--navy-blue);
-        }
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 70px; height: 4px;
-            background: linear-gradient(to right, var(--lime-green), var(--highlight-color));
-            border-radius: 2px;
-        }
-        .section-title p { max-width: 700px; margin: 1rem auto 0; color: var(--medium-gray); font-size: 1.05rem; }
+/* FOOTER */
+footer { background:var(--navy); color:#fff; padding:4rem 0 2rem; }
+.footer-top { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,0.08); }
+.footer-brand img { height:38px; margin-bottom:1rem; }
+.footer-brand p { color:rgba(255,255,255,0.4); font-size:0.88rem; line-height:1.65; max-width:260px; }
+.footer-col h4 { font-size:0.8rem; font-weight:500; color:rgba(255,255,255,0.6); margin-bottom:1.2rem; letter-spacing:0.07em; text-transform:uppercase; }
+.footer-col ul { list-style:none; }
+.footer-col ul li { margin-bottom:0.6rem; }
+.footer-col ul li a { color:rgba(255,255,255,0.38); font-size:0.88rem; text-decoration:none; transition:color 0.2s; }
+.footer-col ul li a:hover { color:var(--green); }
+.footer-col p { color:rgba(255,255,255,0.38); font-size:0.88rem; line-height:1.8; }
+.footer-col p i { color:var(--green); width:16px; margin-right:6px; }
+.footer-bottom { padding-top:1.8rem; display:flex; justify-content:space-between; align-items:center; }
+.footer-bottom p { color:rgba(255,255,255,0.28); font-size:0.82rem; }
 
-        /* ── SOBRE ── */
-        .about-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; align-items: center; }
-        .about-text p { margin-bottom: 1.5rem; font-size: 1.15rem; text-align: justify; }
-        .about-image img { width: 100%; border-radius: 10px; box-shadow: var(--shadow); transition: var(--transition); }
-        .about-image img:hover { transform: translateY(-8px); }
+/* MODALS */
+.modal-bg {
+  display:none; position:fixed; inset:0;
+  background:rgba(5,10,20,0.88); backdrop-filter:blur(8px);
+  z-index:1000; align-items:center; justify-content:center; padding:1.5rem;
+}
+.modal-bg.open { display:flex; }
+.modal-box {
+  background:#fff; border-radius:16px; padding:2.8rem; width:100%;
+  max-width:640px; max-height:90vh; overflow-y:auto; position:relative;
+  box-shadow:0 32px 80px rgba(0,0,0,0.25);
+}
+.modal-close-btn {
+  position:absolute; top:1.2rem; right:1.2rem; width:32px; height:32px;
+  border:none; background:var(--bg-soft); border-radius:50%; cursor:pointer;
+  color:var(--muted); font-size:1rem; display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s, color 0.2s;
+}
+.modal-close-btn:hover { background:var(--green); color:#fff; }
+.modal-box h2 { font-family:var(--serif); color:var(--navy); font-size:1.7rem; margin-bottom:0.5rem; }
+.modal-box > p { color:var(--muted); font-size:0.92rem; margin-bottom:2rem; }
+.img-modal-bg {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92);
+  z-index:1100; align-items:center; justify-content:center; padding:2rem;
+}
+.img-modal-bg.open { display:flex; }
+.img-modal-inner { position:relative; max-width:800px; width:100%; }
+.img-modal-inner img { width:100%; border-radius:10px; display:block; }
+.img-modal-cap { color:rgba(255,255,255,0.7); text-align:center; margin-top:1rem; font-size:0.92rem; }
+.img-modal-close {
+  position:absolute; top:-3rem; right:0; background:none; border:none;
+  color:#fff; font-size:1.8rem; cursor:pointer; transition:color 0.2s;
+}
+.img-modal-close:hover { color:var(--green); }
 
-        /* ── SERVIÇOS ── */
-        .services-section { background-color: white; }
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-        .service-card {
-            background-color: white; border-radius: var(--border-radius);
-            overflow: hidden; box-shadow: var(--shadow); transition: var(--transition);
-            height: 100%; border: 1px solid var(--light-gray);
-        }
-        .service-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .service-img { height: 200px; overflow: hidden; }
-        .service-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .service-card:hover .service-img img { transform: scale(1.05); }
-        .service-content { padding: 1.8rem; }
-        .service-icon {
-            width: 56px; height: 56px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 1rem; background-color: rgba(0,200,83,0.1);
-        }
-        .service-icon i { font-size: 1.7rem; color: var(--lime-green); }
-        .service-content h3 { font-size: 1.3rem; margin-bottom: 0.9rem; color: var(--navy-blue); }
-        .service-content p { color: var(--medium-gray); margin-bottom: 1.2rem; text-align: justify; }
-        .service-features { list-style: none; margin-top: 1rem; }
-        .service-features li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-        .service-features li::before { content: '✓'; position: absolute; left: 0; color: var(--lime-green); font-weight: bold; }
+/* TOAST */
+.toast {
+  position:fixed; bottom:1.5rem; right:1.5rem; background:var(--green); color:#fff;
+  padding:1rem 1.4rem; border-radius:10px; font-size:0.88rem; font-weight:500;
+  box-shadow:0 8px 28px rgba(0,176,80,0.35); display:flex; align-items:center;
+  gap:10px; max-width:340px; transform:translateY(120%); opacity:0;
+  transition:transform 0.35s var(--ease), opacity 0.35s; z-index:2000; pointer-events:none;
+}
+.toast.show { transform:translateY(0); opacity:1; }
 
-        /* ── MODAL ORÇAMENTO ── */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(13,27,42,0.95);
-            z-index: 2000; justify-content: center; align-items: center; padding: 20px;
-        }
-        .modal-content {
-            background-color: white; padding: 3rem; border-radius: var(--border-radius);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative;
-        }
-        .modal-close {
-            position: absolute; top: 18px; right: 18px;
-            font-size: 1.4rem; cursor: pointer; color: var(--medium-gray);
-            transition: var(--transition); width: 30px; height: 30px;
-            display: flex; align-items: center; justify-content: center; border-radius: 50%;
-        }
-        .modal-close:hover { color: var(--lime-green); background-color: var(--light-gray); }
-        .modal-content h2 { color: var(--navy-blue); margin-bottom: 0.8rem; font-size: 1.7rem; }
-        .modal-content > p { color: var(--medium-gray); margin-bottom: 1.8rem; }
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.reveal.visible { opacity:1; transform:translateY(0); }
 
-        /* ── ORÇAMENTO SECTION ── */
-        .budget-section {
-            background: linear-gradient(rgba(13,27,42,0.5), rgba(13,27,42,0.38)), url('imagem_8.jpeg') no-repeat center center/cover;
-            color: white; text-align: center;
-        }
-        .budget-section .section-title h2, .budget-section .section-title p { color: white; }
-        .budget-info-box {
-            background: rgba(255,255,255,0.1); padding: 3rem; border-radius: var(--border-radius);
-            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
-        }
-        .budget-info-box h3 { font-size: 1.8rem; margin-bottom: 1.5rem; }
-        .budget-info-box ul { list-style: none; margin-top: 1.5rem; text-align: left; }
-        .budget-info-box ul li { margin-bottom: 1rem; padding-left: 2rem; position: relative; }
-        .budget-info-box ul li i { position: absolute; left: 0; top: 5px; color: var(--lime-green); }
-        .budget-form { margin-top: 2.5rem; }
+/* ─── RESPONSIVE ─── */
+@media (max-width:1024px) {
+  .services-grid { grid-template-columns:repeat(2,1fr); }
+  .why-grid { grid-template-columns:repeat(2,1fr); }
+  .values-grid { grid-template-columns:repeat(2,1fr); }
+  .footer-top { grid-template-columns:1fr 1fr; }
+  .gallery-grid { grid-template-columns:repeat(2,1fr); }
+}
 
-        /* ── FORM ── */
-        .form-group { margin-bottom: 1.4rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--dark-color); }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--light-gray);
-            border-radius: 8px; font-size: 1rem; transition: var(--transition); background-color: white;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--lime-green);
-            box-shadow: 0 0 0 3px rgba(0,200,83,0.15);
-        }
-        .form-group textarea { min-height: 140px; resize: vertical; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width:768px) {
+  .hamburger { display:flex; }
+  .nav-links { display:none; }
+  .btn-nav { display:none; }
+  nav.open .nav-links {
+    display:flex; flex-direction:column; list-style:none;
+    position:fixed; top:62px; left:0; right:0;
+    background:#fff; padding:1.2rem 1.5rem 1.8rem;
+    border-bottom:1px solid var(--border); box-shadow:0 16px 32px rgba(0,0,0,0.08);
+    gap:0; z-index:800;
+  }
+  nav.open .nav-links li { border-bottom:1px solid var(--border); }
+  nav.open .nav-links a { display:block; padding:0.85rem 0; font-size:1rem; }
+  nav.open .btn-nav {
+    display:block; margin:1rem 0 0.5rem; text-align:center;
+    padding:0.75rem; border-radius:8px;
+  }
+  .about-grid { grid-template-columns:1fr; gap:2.5rem; }
+  .about-badge { bottom:-1rem; right:0; }
+  .hero h1 { font-size:2.1rem; }
+  .hero-stats { gap:2rem; }
+  .mission-top { grid-template-columns:1fr; }
+  .contact-grid { grid-template-columns:1fr; }
+  .form-row { grid-template-columns:1fr; }
+  .footer-top { grid-template-columns:1fr 1fr; }
+  .footer-bottom { flex-direction:column; gap:0.5rem; text-align:center; }
+  .services-grid { grid-template-columns:1fr; }
+  .why-grid { grid-template-columns:1fr 1fr; }
+  .values-grid { grid-template-columns:1fr 1fr; }
 
-        /* ── MISSÃO E VALORES ── */
-        .mission-values-section { background-color: white; }
-        .mission-values-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-        .mission-card {
-            background: white; padding: 2.5rem; border-radius: var(--border-radius);
-            box-shadow: var(--shadow); text-align: center; transition: var(--transition);
-            border-top: 4px solid var(--lime-green);
-        }
-        .mission-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .mission-icon {
-            width: 68px; height: 68px; background: rgba(0,200,83,0.1); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
-        }
-        .mission-icon i { font-size: 2rem; color: var(--lime-green); }
-        .mission-card h3 { color: var(--navy-blue); margin-bottom: 1rem; font-size: 1.25rem; }
-        .mission-card p { color: var(--medium-gray); line-height: 1.7; }
+  /* Gallery horizontal scroll */
+  .gallery-grid {
+    display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch; gap:1rem; padding-bottom:1rem;
+    scrollbar-width:thin; scrollbar-color:var(--green) #eee;
+  }
+  .gallery-grid::-webkit-scrollbar { height:3px; }
+  .gallery-grid::-webkit-scrollbar-thumb { background:var(--green); border-radius:4px; }
+  .g-item { flex:0 0 78vw; max-width:320px; scroll-snap-align:start; aspect-ratio:4/3; }
+  .g-overlay { opacity:1; background:linear-gradient(to top, rgba(13,31,60,0.8), transparent 60%); }
+}
 
-        .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 2rem; }
-        .value-card {
-            background: white; padding: 2rem; border-radius: var(--border-radius);
-            box-shadow: var(--shadow); display: flex; align-items: flex-start; gap: 1.3rem;
-            transition: var(--transition);
-        }
-        .value-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .value-icon {
-            width: 48px; height: 48px; background: rgba(0,200,83,0.1); border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .value-icon i { font-size: 1.4rem; color: var(--lime-green); }
-        .value-content h4 { color: var(--navy-blue); margin-bottom: 0.4rem; }
-        .value-content p { color: var(--medium-gray); font-size: 0.93rem; }
-
-        /* ── GALERIA ── */
-        .gallery-section { background-color: white; }
-        .gallery-filter { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2.5rem; }
-        .filter-btn {
-            padding: 0.55rem 1.4rem; background-color: white;
-            border: 1px solid var(--light-gray); border-radius: 30px;
-            cursor: pointer; transition: var(--transition); font-weight: 500; font-size: 0.9rem;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background-color: var(--lime-green); color: white; border-color: var(--lime-green);
-        }
-
-        /* Desktop: grid */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        .gallery-item {
-            position: relative; border-radius: var(--border-radius);
-            overflow: hidden; height: 250px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .gallery-item:hover img { transform: scale(1.08); }
-        .gallery-item-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(26,35,126,0.9));
-            color: white; padding: 1.4rem;
-            transform: translateY(100%); transition: transform 0.3s;
-        }
-        .gallery-item:hover .gallery-item-overlay { transform: translateY(0); }
-
-        /* Modal galeria */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.92);
-            z-index: 1100; justify-content: center; align-items: center; padding: 20px;
-        }
-        .modal-img-content { max-width: 800px; width: 100%; position: relative; }
-        .modal-img { width: 100%; border-radius: 8px; }
-        .modal-img-close { position: absolute; top: -40px; right: 0; color: white; font-size: 2rem; cursor: pointer; transition: var(--transition); }
-        .modal-img-close:hover { color: var(--lime-green); }
-        .modal-caption { color: white; text-align: center; margin-top: 1rem; font-size: 1.05rem; }
-
-        /* ── CONTATO ── */
-        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
-        .contact-info { background: var(--navy-blue); color: white; padding: 2.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow); }
-        .contact-info h3 { margin-bottom: 1.4rem; font-size: 1.45rem; }
-        .contact-details { margin-top: 2rem; }
-        .contact-detail { display: flex; align-items: flex-start; margin-bottom: 1.5rem; }
-        .contact-detail i { margin-right: 1rem; color: var(--lime-green); font-size: 1.1rem; margin-top: 4px; }
-        .social-links { display: flex; gap: 1rem; margin-top: 2rem; }
-        .social-link {
-            width: 40px; height: 40px; border-radius: 50%;
-            background-color: rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; transition: var(--transition);
-        }
-        .social-link:hover { background-color: var(--lime-green); transform: translateY(-3px); }
-
-        /* ── FOOTER ── */
-        footer { background-color: var(--navy-blue); color: white; padding: 4rem 0 2rem; }
-        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
-        .footer-logo { grid-column: 1 / -1; text-align: center; margin-bottom: 2rem; }
-        .footer-logo img { height: 130px; width: auto; margin-bottom: 1rem; }
-        .footer-logo p { color: #cbd5e0; margin-bottom: 1.5rem; max-width: 580px; margin-left: auto; margin-right: auto; }
-        .footer-links, .footer-services, .footer-contact { padding: 1.5rem; border-radius: var(--border-radius); }
-        .footer-links h4, .footer-services h4, .footer-contact h4 { color: white; margin-bottom: 1.4rem; font-size: 1.1rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(255,255,255,0.2); }
-        .footer-links ul, .footer-services ul { list-style: none; }
-        .footer-links ul li, .footer-services ul li { margin-bottom: 0.7rem; }
-        .footer-links ul li a, .footer-services ul li a { color: #cbd5e0; text-decoration: none; transition: var(--transition); display: flex; align-items: center; font-size: 0.95rem; }
-        .footer-links ul li a:hover, .footer-services ul li a:hover { color: var(--lime-green); padding-left: 5px; }
-        .footer-links ul li a::before, .footer-services ul li a::before { content: '›'; margin-right: 8px; color: var(--lime-green); }
-        .footer-contact p { margin-bottom: 0.8rem; display: flex; align-items: center; font-size: 0.95rem; }
-        .footer-contact i { margin-right: 0.8rem; color: var(--lime-green); width: 20px; }
-        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.15); color: #94a3b8; font-size: 0.88rem; }
-        .footer-bottom p { margin-bottom: 0.4rem; }
-
-        /* ── NOTIFICAÇÃO ── */
-        .notification {
-            position: fixed; bottom: 20px; right: 20px;
-            background-color: var(--lime-green);
-            color: white; padding: 1rem 1.5rem; border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,200,83,0.35);
-            transform: translateY(100px); opacity: 0;
-            transition: transform 0.3s, opacity 0.3s;
-            z-index: 1200; display: flex; align-items: center; gap: 10px; max-width: 340px;
-        }
-        .notification.show { transform: translateY(0); opacity: 1; }
-
-        /* ═══════════════════════════════════════
-           RESPONSIVO
-        ═══════════════════════════════════════ */
-        @media (max-width: 992px) {
-            .menu-toggle { display: block; }
-            nav ul {
-                position: fixed; top: 64px; left: 0; width: 100%;
-                background-color: white; flex-direction: column; align-items: center;
-                padding: 1.5rem 0;
-                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-                transition: clip-path 0.4s;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1); z-index: 1000;
-            }
-            nav ul.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-            nav ul li { margin: 0.8rem 0; }
-            .nav-cta { margin-left: 0; margin-top: 0.8rem; }
-            .hero { padding: 7rem 0 4rem; }
-            .hero h2 { font-size: 2.2rem; }
-            .section-title h2 { font-size: 2rem; }
-            .form-row { grid-template-columns: 1fr; }
-        }
-
-        /* ── MOBILE: galeria scroll horizontal ── */
-        @media (max-width: 768px) {
-            .hero h2 { font-size: 1.9rem; }
-            .hero p { font-size: 1rem; }
-            .hero-stats { gap: 1.5rem; }
-            .hero-stat { min-width: 150px; }
-            .hero-stat-number { font-size: 2rem; }
-            .section-title h2 { font-size: 1.75rem; }
-            .modal-content { padding: 1.8rem; }
-
-            /* Galeria horizontal no mobile */
-            .gallery-grid {
-                display: flex;
-                flex-direction: row;
-                overflow-x: auto;
-                gap: 1rem;
-                padding-bottom: 1rem;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                /* Esconde scrollbar mas mantém funcionalidade */
-                scrollbar-width: thin;
-                scrollbar-color: var(--lime-green) #f0f0f0;
-            }
-            .gallery-grid::-webkit-scrollbar { height: 4px; }
-            .gallery-grid::-webkit-scrollbar-thumb { background: var(--lime-green); border-radius: 4px; }
-            .gallery-grid::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
-
-            .gallery-item {
-                flex: 0 0 75vw;   /* cada card = 75% da tela */
-                max-width: 320px;
-                height: 220px;
-                scroll-snap-align: start;
-            }
-
-            /* Mostrar overlay sempre visível no mobile (sem hover) */
-            .gallery-item-overlay {
-                transform: translateY(0);
-                background: linear-gradient(transparent, rgba(26,35,126,0.85));
-            }
-
-            .about-stats { justify-content: center; gap: 1.5rem; }
-            .budget-info-box { padding: 2rem 1.5rem; }
-        }
-
-        @media (max-width: 576px) {
-            .hero { padding: 6rem 0 3rem; }
-            .hero h2 { font-size: 1.65rem; }
-            .hero-btns { flex-direction: column; align-items: center; }
-            .btn { width: 100%; max-width: 300px; text-align: center; }
-            .section-title h2 { font-size: 1.5rem; }
-            .hero-stats { flex-direction: column; gap: 1rem; align-items: center; }
-            .hero-stat { width: 100%; max-width: 280px; }
-            .gallery-item { flex: 0 0 85vw; }
-        }
-    </style>
+@media (max-width:480px) {
+  .hero-stats { flex-direction:column; gap:1.5rem; }
+  .hero-actions { flex-direction:column; }
+  .btn-primary, .btn-ghost { text-align:center; width:100%; max-width:300px; }
+  .why-grid { grid-template-columns:1fr; }
+  .values-grid { grid-template-columns:1fr; }
+  .footer-top { grid-template-columns:1fr; }
+  .g-item { flex:0 0 88vw; }
+  .cta-inner h2 { font-size:2rem; }
+  .modal-box { padding:1.8rem; }
+}
+</style>
 </head>
 <body>
 
-    <!-- ── CABEÇALHO ── -->
-    <header id="header">
-        <div class="header-container">
-            <a href="#inicio" class="logo">
-                <img src="logo.png" alt="Gótica SU LDA" class="logo-img">
-            </a>
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav>
-                <ul id="navMenu">
-                    <li><a href="#inicio">Início</a></li>
-                    <li><a href="#sobre">Sobre Nós</a></li>
-                    <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#galeria">Projetos</a></li>
-                    <li><a href="#contato">Contato</a></li>
-                    <li><a href="#orcamento" class="btn nav-cta" id="openBudgetBtn2">Solicitar Orçamento</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<!-- HEADER -->
+<header id="hdr">
+  <div class="header-inner">
+    <a href="#inicio" class="logo"><img src="logo.png" alt="Gótica SU LDA"></a>
+    <nav id="nav">
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#galeria">Projetos</a></li>
+        <li><a href="#missao">Missão</a></li>
+        <li><a href="#contato">Contacto</a></li>
+        <li><button class="btn-nav" id="openModal">Solicitar Orçamento</button></li>
+      </ul>
+      <button class="btn-nav" id="openModalDesktop" style="display:none;">Solicitar Orçamento</button>
+    </nav>
+    <button class="hamburger" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-    <!-- ── HERO ── -->
-    <section class="hero" id="inicio">
-        <div class="container">
-            <h2>Construindo o Futuro com <span style="color: var(--lime-green);">Qualidade e Excelência</span></h2>
-            <p>A Gótica SU LDA é uma empresa constituída por técnicos altamente qualificados com atividades centradas na construção civil, comprometida com o desenvolvimento sustentável e a satisfação dos clientes.</p>
-            <div class="hero-btns">
-                <a href="#servicos" class="btn btn-accent">Ver Nossos Serviços</a>
-                <a href="#orcamento" class="btn btn-outline" id="openBudgetBtn3">Solicitar Orçamento</a>
-            </div>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
-                    <span class="hero-stat-number" data-count="50">0</span>
-                    <span class="hero-stat-text">Projetos Concluídos</span>
-                </div>
-                <div class="hero-stat">
-                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <span class="hero-stat-number" data-count="15">0</span>
-                    <span class="hero-stat-text">Anos de Experiência</span>
-                </div>
-                <div class="hero-stat">
-                    <div class="stat-icon"><i class="fas fa-users"></i></div>
-                    <span class="hero-stat-number" data-count="100">0</span>
-                    <span class="hero-stat-text">Clientes Satisfeitos</span>
-                </div>
-                <div class="hero-stat">
-                    <div class="stat-icon"><i class="fas fa-hard-hat"></i></div>
-                    <span class="hero-stat-number" data-count="30">0</span>
-                    <span class="hero-stat-text">Profissionais</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── SOBRE ── -->
-    <section id="sobre">
-        <div class="container">
-            <div class="section-title">
-                <h2>Sobre Nós</h2>
-                <p>Uma empresa com visão estratégica única e integrada para o futuro, ambicionando tornar-se mais internacional, inovadora e competitiva em escala global.</p>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, procurando manter no mercado os standards de rigor, qualidade e capacidade de execução que permitiram afirmar-se a nível nacional e internacional.</p>
-                    <p style="color: var(--lime-green); font-weight: 600;">Com a posição do mercado alinhado com as melhores práticas e uma conduta empresarial assente em princípios éticos e suportados numa visão estratégica única e integrada para o futuro, a Gótica ambiciona tornar-se uma empresa mais internacional, inovadora e competitiva a escala global.</p>
-                </div>
-                <div class="about-image">
-                    <img src="imagem_7.jpeg" alt="Equipe de construção da Gótica">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── SERVIÇOS ── -->
-    <section class="services-section" id="servicos">
-        <div class="container">
-            <div class="section-title">
-                <h2>Nossos Serviços</h2>
-                <p>Oferecemos uma ampla gama de serviços de construção civil com qualidade superior e soluções técnicas inovadoras.</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-img"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="Construção de edifícios"></div>
-                    <div class="service-content">
-                        <div class="service-icon"><i class="fas fa-building"></i></div>
-                        <h3>Construção de Edifícios</h3>
-                        <p>Projetamos e construímos edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança.</p>
-                        <ul class="service-features">
-                            <li>Projetos arquitetónicos personalizados</li>
-                            <li>Gestão completa da obra</li>
-                            <li>Materiais de primeira qualidade</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-img"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="Pavimentação"></div>
-                    <div class="service-content">
-                        <div class="service-icon"><i class="fas fa-road"></i></div>
-                        <h3>Pavimentação</h3>
-                        <p>Execução de pavimentos em betão armado, asfálticos e intertravados para vias públicas, estacionamentos e áreas industriais.</p>
-                        <ul class="service-features">
-                            <li>Pavimentação asfáltica</li>
-                            <li>Pavimentos de betão armado</li>
-                            <li>Pavimentos intertravados</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-img"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="Estruturas de betão armado"></div>
-                    <div class="service-content">
-                        <div class="service-icon"><i class="fas fa-layer-group"></i></div>
-                        <h3>Estruturas de Betão Armado</h3>
-                        <p>Concepção e execução de estruturas em betão armado para edifícios, pontes, barragens e outras infraestruturas.</p>
-                        <ul class="service-features">
-                            <li>Cálculo estrutural especializado</li>
-                            <li>Execução com rigor técnico</li>
-                            <li>Controlo de qualidade rigoroso</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-img"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="Sistemas de drenagem"></div>
-                    <div class="service-content">
-                        <div class="service-icon"><i class="fas fa-water"></i></div>
-                        <h3>Sistemas de Drenagem</h3>
-                        <p>Projeto e construção de valas de drenagem, sistemas de águas pluviais e soluções para gestão de águas residuais.</p>
-                        <ul class="service-features">
-                            <li>Valas de drenagem</li>
-                            <li>Sistemas de águas pluviais</li>
-                            <li>Soluções personalizadas</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-img"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="Instalações hidráulicas"></div>
-                    <div class="service-content">
-                        <div class="service-icon"><i class="fas fa-faucet"></i></div>
-                        <h3>Instalações Hidráulicas</h3>
-                        <p>Instalação completa de sistemas hidráulicos para edifícios residenciais, comerciais e industriais.</p>
-                        <ul class="service-features">
-                            <li>Sistemas de abastecimento de água</li>
-                            <li>Instalações sanitárias</li>
-                            <li>Sistemas de combate a incêndios</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="service-card">
-                    <div class="service-img"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="Vedações e cercas"></div>
-                    <div class="service-content">
-                        <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
-                        <h3>Vedações e Cercas Elétricas</h3>
-                        <p>Instalação de vedações perimetrais, muros, cercas elétricas e sistemas de segurança para proteção de propriedades.</p>
-                        <ul class="service-features">
-                            <li>Vedações em diversos materiais</li>
-                            <li>Cercas elétricas de segurança</li>
-                            <li>Portões automatizados</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── ORÇAMENTO ── -->
-    <section class="budget-section" id="orcamento">
-        <div class="container">
-            <div class="section-title">
-                <h2>Solicitar Orçamento</h2>
-                <p>Clique no botão abaixo para solicitar um orçamento personalizado para o seu projeto. Responderemos em até 24 horas.</p>
-            </div>
-            <div class="budget-info-box">
-                <h3>Por que escolher a Gótica?</h3>
-                <p>Somos especialistas em construção civil com mais de 15 anos de experiência no mercado. Oferecemos soluções personalizadas, qualidade garantida e cumprimento rigoroso de prazos.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> <strong>Orçamento sem compromisso</strong> - Avaliação gratuita do seu projeto</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Resposta rápida</strong> - Entramos em contato em até 24h</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Transparência total</strong> - Sem custos ocultos ou surpresas</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Equipe especializada</strong> - Técnicos qualificados e experientes</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Garantia nos serviços</strong> - Qualidade assegurada em todas as obras</li>
-                </ul>
-                <div class="budget-form">
-                    <button class="btn btn-accent" id="openBudgetBtn4" style="padding: 1rem 3rem; font-size: 1.05rem;">Solicitar Orçamento Gratuito</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal orçamento -->
-    <div class="modal-overlay" id="budgetModal">
-        <div class="modal-content">
-            <span class="modal-close" id="closeBudgetBtn">&times;</span>
-            <h2>Solicitar Orçamento</h2>
-            <p>Preencha o formulário abaixo e receba um orçamento personalizado para o seu projeto. Responderemos em até 24 horas.</p>
-            <form id="budgetForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name">Nome Completo *</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone">Telefone *</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="service">Serviço Desejado *</label>
-                        <select id="service" name="service" required>
-                            <option value="">Selecione um serviço</option>
-                            <option value="construcao">Construção de Edifícios</option>
-                            <option value="pavimentacao">Pavimentação</option>
-                            <option value="estruturas">Estruturas de Betão Armado</option>
-                            <option value="drenagem">Sistemas de Drenagem</option>
-                            <option value="hidraulica">Instalações Hidráulicas</option>
-                            <option value="vedacoes">Vedações e Cercas</option>
-                            <option value="outro">Outro Serviço</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="location">Localização do Projeto *</label>
-                    <input type="text" id="location" name="location" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Descrição do Projeto *</label>
-                    <textarea id="description" name="description" placeholder="Descreva o seu projeto, área, dimensões, necessidades específicas..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="timeline">Prazo Desejado</label>
-                    <select id="timeline" name="timeline">
-                        <option value="">Sem preferência</option>
-                        <option value="urgente">Urgente (até 1 mês)</option>
-                        <option value="curto">Curto prazo (1-3 meses)</option>
-                        <option value="medio">Médio prazo (3-6 meses)</option>
-                        <option value="longo">Longo prazo (mais de 6 meses)</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-accent" style="width: 100%; padding: 1rem;">Solicitar Orçamento Gratuito</button>
-            </form>
-        </div>
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag">Construção Civil de Excelência</div>
+      <h1>Construindo o Futuro com <em>Qualidade</em> e Precisão</h1>
+      <p class="hero-desc">Técnicos altamente qualificados comprometidos com o desenvolvimento sustentável, a inovação e a satisfação total dos nossos clientes.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" id="openModal2">Solicitar Orçamento</button>
+        <a href="#servicos" class="btn-ghost">Ver Serviços</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hero-stat-val"><span id="sc1">0</span><span>+</span></div><div class="hero-stat-lbl">Projetos Concluídos</div></div>
+        <div><div class="hero-stat-val"><span id="sc2">0</span><span>+</span></div><div class="hero-stat-lbl">Anos de Experiência</div></div>
+        <div><div class="hero-stat-val"><span id="sc3">0</span><span>+</span></div><div class="hero-stat-lbl">Clientes Satisfeitos</div></div>
+        <div><div class="hero-stat-val"><span id="sc4">0</span><span>+</span></div><div class="hero-stat-lbl">Profissionais</div></div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <!-- ── MISSÃO E VALORES ── -->
-    <section class="mission-values-section" id="missao-valores">
-        <div class="container">
-            <div class="section-title">
-                <h2>Missão e Valores</h2>
-                <p>Nossa missão é atender com zelo, dedicação e excelência as demandas dos clientes, gerando riqueza de forma sustentável.</p>
-            </div>
-            <div class="mission-values-container">
-                <div class="mission-card">
-                    <div class="mission-icon"><i class="fas fa-bullseye"></i></div>
-                    <h3>Nossa Missão</h3>
-                    <p>Atender com zelo, dedicação e excelência as demandas dos clientes, pelo desenvolvimento e oferta de produtos e serviços que contribuam para a melhoria de qualidade de vida das pessoas, gerando riqueza de forma sustentável.</p>
-                </div>
-                <div class="mission-card">
-                    <div class="mission-icon"><i class="fas fa-eye"></i></div>
-                    <h3>Nossa Visão</h3>
-                    <p>Tornar-se uma referência nacional e internacional em construção civil, reconhecida pela qualidade, inovação e compromisso com o desenvolvimento sustentável.</p>
-                </div>
-                <div class="mission-card">
-                    <div class="mission-icon"><i class="fas fa-handshake"></i></div>
-                    <h3>Nosso Compromisso</h3>
-                    <p>Superar expectativas, entregando projetos que unem funcionalidade, durabilidade e design inovador, sempre com foco na segurança e satisfação do cliente.</p>
-                </div>
-            </div>
-            <div class="section-title" style="margin-top: 4rem;">
-                <h3 style="font-size:1.8rem; color:var(--navy-blue); position:relative; display:inline-block; padding-bottom:14px;">Nossos Valores</h3>
-                <p>Princípios que guiam todas as nossas ações e decisões</p>
-            </div>
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-balance-scale"></i></div>
-                    <div class="value-content"><h4>Integridade</h4><p>Atuamos com honestidade e transparência em todas as nossas relações comerciais e profissionais.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-heart"></i></div>
-                    <div class="value-content"><h4>Comprometimento</h4><p>Dedicação total aos projetos e clientes, honrando prazos, orçamentos e expectativas.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-users"></i></div>
-                    <div class="value-content"><h4>Valorização Humana</h4><p>Respeito às pessoas, colaboradores, parceiros e comunidade onde atuamos.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-chart-line"></i></div>
-                    <div class="value-content"><h4>Superação de Resultados</h4><p>Busca constante pela excelência em cada detalhe de nossos projetos e serviços.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-sync-alt"></i></div>
-                    <div class="value-content"><h4>Melhoria Contínua</h4><p>Processos em constante evolução através de aprendizados e inovações.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
-                    <div class="value-content"><h4>Inovação</h4><p>Adoção de novas tecnologias, materiais e métodos construtivos mais eficientes.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-leaf"></i></div>
-                    <div class="value-content"><h4>Sustentabilidade</h4><p>Práticas ambientalmente responsáveis e eficientes em todos os nossos projetos.</p></div>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
-                    <div class="value-content"><h4>Qualidade</h4><p>Compromisso com os mais altos padrões de qualidade em todas as etapas.</p></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── GALERIA ── -->
-    <section class="gallery-section" id="galeria">
-        <div class="container">
-            <div class="section-title">
-                <h2>Nossos Projetos</h2>
-                <p>Conheça alguns dos nossos trabalhos mais recentes e representativos.</p>
-            </div>
-            <div class="gallery-filter">
-                <button class="filter-btn active" data-filter="todos">Todos os Projetos</button>
-                <button class="filter-btn" data-filter="edificios">Edifícios</button>
-                <button class="filter-btn" data-filter="infraestrutura">Infraestrutura</button>
-                <button class="filter-btn" data-filter="pavimentacao">Pavimentação</button>
-            </div>
-            <div class="gallery-grid" id="galleryGrid">
-                <div class="gallery-item" data-category="edificios">
-                    <img src="imagem_9.jpeg" alt="Obra de restauração Standard Bank-Maputo">
-                    <div class="gallery-item-overlay">
-                        <h4>Obra de restauração Standard Bank-Maputo</h4>
-                        <p>Reforma completa do edifício sede</p>
-                    </div>
-                </div>
-                <div class="gallery-item" data-category="infraestrutura">
-                    <img src="imagem_13.jpeg" alt="Vedação e cerca elétrica">
-                    <div class="gallery-item-overlay">
-                        <h4>Subestação de Muxara e Terminal Petromoc Pemba</h4>
-                        <p>Obra de vedação e cerca eléctrica</p>
-                    </div>
-                </div>
-                <div class="gallery-item" data-category="infraestrutura">
-                    <img src="imagem_18.jpeg" alt="Subestação de Muxara">
-                    <div class="gallery-item-overlay">
-                        <h4>Subestação de Muxara - Pemba</h4>
-                        <p>Vedação e cerca eléctrica</p>
-                    </div>
-                </div>
-                <div class="gallery-item" data-category="infraestrutura">
-                    <img src="imagem_23.jpeg" alt="Subestação de Muxara-Pemba">
-                    <div class="gallery-item-overlay">
-                        <h4>Subestação de Muxara-Pemba</h4>
-                        <p>Construção de estrutura e pavimentos de betão armado</p>
-                    </div>
-                </div>
-                <div class="gallery-item" data-category="edificios">
-                    <img src="imagem_26.jpeg" alt="Trabalhos de picheleiro">
-                    <div class="gallery-item-overlay">
-                        <h4>Trabalhos de picheleiro</h4>
-                        <p>Instalações hidráulicas especializadas</p>
-                    </div>
-                </div>
-                <div class="gallery-item" data-category="pavimentacao">
-                    <img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="Pavimentação de vias">
-                    <div class="gallery-item-overlay">
-                        <h4>Pavimentação de vias urbanas</h4>
-                        <p>Execução de pavimentos asfálticos</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal galeria -->
-        <div class="modal" id="galleryModal">
-            <div class="modal-img-content">
-                <span class="modal-img-close" id="modalClose">&times;</span>
-                <img class="modal-img" id="modalImg" src="" alt="">
-                <div class="modal-caption" id="modalCaption"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── CONTATO ── -->
-    <section id="contato">
-        <div class="container">
-            <div class="section-title">
-                <h2>Entre em Contato</h2>
-                <p>Estamos à disposição para esclarecer dúvidas e apresentar soluções para o seu projeto.</p>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Informações de Contato</h3>
-                    <p>Entre em contato conosco através dos canais abaixo ou visite nossas instalações.</p>
-                    <div class="contact-details">
-                        <div class="contact-detail">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div><h4>Endereço</h4><p>Av. 25 de Setembro, Bairro de Cimento, Pemba</p></div>
-                        </div>
-                        <div class="contact-detail">
-                            <i class="fas fa-phone"></i>
-                            <div><h4>Telefone</h4><p>84 263 1768 / 872261200</p></div>
-                        </div>
-                        <div class="contact-detail">
-                            <i class="fas fa-envelope"></i>
-                            <div><h4>Email</h4><p>construgotica@gmail.com</p></div>
-                        </div>
-                        <div class="contact-detail">
-                            <i class="fas fa-clock"></i>
-                            <div><h4>Horário de Funcionamento</h4><p>Segunda - Sexta: 8h00 - 18h00<br>Sábado: 8h00 - 13h00</p></div>
-                        </div>
-                    </div>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <h3>Envie uma Mensagem</h3>
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="contactName">Nome Completo *</label>
-                            <input type="text" id="contactName" name="contactName" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="contactEmail">E-mail *</label>
-                                <input type="email" id="contactEmail" name="contactEmail" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contactPhone">Telefone</label>
-                                <input type="tel" id="contactPhone" name="contactPhone">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="contactSubject">Assunto *</label>
-                            <input type="text" id="contactSubject" name="contactSubject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contactMessage">Mensagem *</label>
-                            <textarea id="contactMessage" name="contactMessage" required></textarea>
-                        </div>
-                        <button type="submit" class="btn" style="width: 100%; padding: 1rem;">Enviar Mensagem</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── FOOTER ── -->
-    <footer>
-        <div class="container">
-            <div class="footer-logo">
-                <img src="logo.png" alt="Gótica SU LDA">
-                <p>Empresa de Construção Civil comprometida com a qualidade, inovação e desenvolvimento sustentável. Contribuindo para o desenvolvimento com rigor, qualidade e capacidade de execução.</p>
-            </div>
-            <div class="footer-content">
-                <div class="footer-links">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="#inicio">Início</a></li>
-                        <li><a href="#sobre">Sobre Nós</a></li>
-                        <li><a href="#servicos">Serviços</a></li>
-                        <li><a href="#orcamento">Solicitar Orçamento</a></li>
-                        <li><a href="#galeria">Projetos</a></li>
-                        <li><a href="#contato">Contato</a></li>
-                    </ul>
-                </div>
-                <div class="footer-services">
-                    <h4>Nossos Serviços</h4>
-                    <ul>
-                        <li><a href="#servicos">Construção de Edifícios</a></li>
-                        <li><a href="#servicos">Pavimentação</a></li>
-                        <li><a href="#servicos">Estruturas de Betão Armado</a></li>
-                        <li><a href="#servicos">Sistemas de Drenagem</a></li>
-                        <li><a href="#servicos">Instalações Hidráulicas</a></li>
-                        <li><a href="#servicos">Vedações e Cercas</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h4>Contacte-nos</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Av. 25 de Setembro, Bairro de Cimento, Pemba</p>
-                    <p><i class="fas fa-phone"></i> 84 263 1768 / 872261200</p>
-                    <p><i class="fas fa-envelope"></i> construgotica@gmail.com</p>
-                    <p><i class="fas fa-clock"></i> Seg-Sex: 8h-18h | Sáb: 8h-13h</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p>
-                <p>Desenvolvido por HP.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Notificação -->
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notificationText">Mensagem enviada com sucesso!</span>
+<!-- ABOUT -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <img src="imagem_7.jpeg" alt="Equipa Gótica">
+        <div class="about-badge"><strong>15<sup>+</sup></strong><span>Anos de Experiência</span></div>
+      </div>
+      <div class="reveal" style="transition-delay:0.12s">
+        <span class="section-label">Sobre Nós</span>
+        <h2>Uma empresa criada para contribuir para o desenvolvimento</h2>
+        <p style="margin-top:1.2rem">A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, mantendo no mercado os standards de rigor, qualidade e capacidade de execução que permitiram afirmar-se a nível nacional e internacional.</p>
+        <p><strong>Com os mais altos padrões éticos e uma visão estratégica integrada,</strong> a Gótica ambiciona tornar-se cada vez mais internacional, inovadora e competitiva à escala global.</p>
+        <a href="#servicos" class="btn-primary" style="margin-top:2rem;">Ver os Nossos Serviços</a>
+      </div>
     </div>
+  </div>
+</section>
 
-    <script>
-        // Menu responsivo
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            menuToggle.innerHTML = navMenu.classList.contains('active')
-                ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-        });
-        document.querySelectorAll('nav ul li a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
+<!-- SERVICES -->
+<section class="services" id="servicos">
+  <div class="container">
+    <span class="section-label reveal">O Que Fazemos</span>
+    <h2 class="reveal" style="font-size:2.4rem;color:var(--navy);max-width:500px;margin-bottom:0.5rem;transition-delay:0.05s">Serviços de Construção Civil</h2>
+    <p class="reveal" style="color:var(--muted);max-width:520px;margin-bottom:0;transition-delay:0.1s">Soluções técnicas inovadoras e qualidade superior em cada projeto que executamos.</p>
+    <div class="services-grid">
+      <div class="svc-card reveal">
+        <div class="svc-img"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="Edifícios" loading="lazy"></div>
+        <div class="svc-body">
+          <div class="svc-icon-wrap"><i class="fas fa-building"></i></div>
+          <h3>Construção de Edifícios</h3>
+          <p>Edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança.</p>
+          <ul class="svc-list"><li>Projetos personalizados</li><li>Gestão completa da obra</li><li>Materiais de primeira</li></ul>
+        </div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:0.07s">
+        <div class="svc-img"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="Pavimentação" loading="lazy"></div>
+        <div class="svc-body">
+          <div class="svc-icon-wrap"><i class="fas fa-road"></i></div>
+          <h3>Pavimentação</h3>
+          <p>Pavimentos em betão armado, asfálticos e intertravados para vias públicas e áreas industriais.</p>
+          <ul class="svc-list"><li>Pavimentação asfáltica</li><li>Betão armado</li><li>Pavimentos intertravados</li></ul>
+        </div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:0.14s">
+        <div class="svc-img"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="Betão Armado" loading="lazy"></div>
+        <div class="svc-body">
+          <div class="svc-icon-wrap"><i class="fas fa-layer-group"></i></div>
+          <h3>Estruturas de Betão</h3>
+          <p>Concepção e execução de estruturas para edifícios, pontes, barragens e infraestruturas diversas.</p>
+          <ul class="svc-list"><li>Cálculo estrutural</li><li>Rigor técnico</li><li>Controlo de qualidade</li></ul>
+        </div>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-img"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="Drenagem" loading="lazy"></div>
+        <div class="svc-body">
+          <div class="svc-icon-wrap"><i class="fas fa-water"></i></div>
+          <h3>Sistemas de Drenagem</h3>
+          <p>Valas de drenagem, sistemas de águas pluviais e soluções para gestão de águas residuais.</p>
+          <ul class="svc-list"><li>Valas de drenagem</li><li>Águas pluviais</li><li>Soluções personalizadas</li></ul>
+        </div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:0.07s">
+        <div class="svc-img"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="Hidráulicas" loading="lazy"></div>
+        <div class="svc-body">
+          <div class="svc-icon-wrap"><i class="fas fa-faucet"></i></div>
+          <h3>Instalações Hidráulicas</h3>
+          <p>Sistemas hidráulicos completos para edifícios residenciais, comerciais e industriais.</p>
+          <ul class="svc-list"><li>Abastecimento de água</li><li>Instalações sanitárias</li><li>Combate a incêndios</li></ul>
+        </div>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:0.14s">
+        <div class="svc-img"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="Vedações" loading="lazy"></div>
+        <div class="svc-body">
+          <div class="svc-icon-wrap"><i class="fas fa-shield-alt"></i></div>
+          <h3>Vedações e Cercas</h3>
+          <p>Vedações perimetrais, muros, cercas elétricas e sistemas de segurança para propriedades.</p>
+          <ul class="svc-list"><li>Vários materiais</li><li>Cercas elétricas</li><li>Portões automatizados</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Header scroll
-        window.addEventListener('scroll', () => {
-            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 60);
-        });
+<!-- WHY -->
+<section class="why" id="porque">
+  <div class="container">
+    <span class="section-label reveal">Por Que Nos Escolher</span>
+    <h2 class="reveal" style="transition-delay:0.05s">Comprometidos com a excelência</h2>
+    <p class="why-sub reveal" style="transition-delay:0.1s">Qualidade garantida, prazos cumpridos e total transparência em cada projeto.</p>
+    <div class="why-grid">
+      <div class="why-card reveal"><div class="why-num">50<sup>+</sup></div><h4>Projetos Concluídos</h4><p>Portfólio sólido de obras residenciais, comerciais e de infraestrutura.</p></div>
+      <div class="why-card reveal" style="transition-delay:0.07s"><div class="why-num">15<sup>+</sup></div><h4>Anos de Experiência</h4><p>Mais de uma década afirmando-nos no mercado nacional e internacional.</p></div>
+      <div class="why-card reveal" style="transition-delay:0.14s"><div class="why-num">100<sup>+</sup></div><h4>Clientes Satisfeitos</h4><p>Centenas de clientes que confiam na Gótica pela qualidade e compromisso.</p></div>
+      <div class="why-card reveal" style="transition-delay:0.21s"><div class="why-num">30<sup>+</sup></div><h4>Profissionais</h4><p>Equipa de técnicos altamente qualificados dedicados à excelência.</p></div>
+    </div>
+  </div>
+</section>
 
-        // Contador hero
-        const heroStats = document.querySelectorAll('.hero-stat-number');
-        const statObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const stat = entry.target;
-                    const target = parseInt(stat.getAttribute('data-count'));
-                    let current = 0;
-                    const timer = setInterval(() => {
-                        current += target / 80;
-                        if (current >= target) { stat.textContent = target; clearInterval(timer); }
-                        else stat.textContent = Math.floor(current);
-                    }, 20);
-                    statObserver.unobserve(stat);
-                }
-            });
-        }, { threshold: 0.5 });
-        heroStats.forEach(s => statObserver.observe(s));
+<!-- GALLERY -->
+<section class="gallery" id="galeria">
+  <div class="container">
+    <span class="section-label reveal">Portfólio</span>
+    <h2 class="reveal" style="font-size:2.4rem;color:var(--navy);transition-delay:0.05s">Nossos Projetos</h2>
+    <p class="reveal" style="color:var(--muted);margin-bottom:2rem;transition-delay:0.1s">Conheça alguns dos nossos trabalhos mais recentes.</p>
+    <div class="gallery-filters reveal" style="transition-delay:0.15s">
+      <button class="gf-btn active" data-f="todos">Todos</button>
+      <button class="gf-btn" data-f="edificios">Edifícios</button>
+      <button class="gf-btn" data-f="infraestrutura">Infraestrutura</button>
+      <button class="gf-btn" data-f="pavimentacao">Pavimentação</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="g-item" data-cat="edificios">
+        <img src="imagem_9.jpeg" alt="Standard Bank" loading="lazy">
+        <div class="g-overlay"><div><h4>Restauração Standard Bank</h4><p>Maputo — Reforma do edifício sede</p></div></div>
+      </div>
+      <div class="g-item" data-cat="infraestrutura">
+        <img src="imagem_13.jpeg" alt="Petromoc Pemba" loading="lazy">
+        <div class="g-overlay"><div><h4>Terminal Petromoc Pemba</h4><p>Vedação e cerca eléctrica</p></div></div>
+      </div>
+      <div class="g-item" data-cat="infraestrutura">
+        <img src="imagem_18.jpeg" alt="Subestação Muxara" loading="lazy">
+        <div class="g-overlay"><div><h4>Subestação de Muxara</h4><p>Pemba — Vedação e cerca eléctrica</p></div></div>
+      </div>
+      <div class="g-item" data-cat="infraestrutura">
+        <img src="imagem_23.jpeg" alt="Muxara betão" loading="lazy">
+        <div class="g-overlay"><div><h4>Subestação Muxara-Pemba</h4><p>Estrutura e pavimentos de betão armado</p></div></div>
+      </div>
+      <div class="g-item" data-cat="edificios">
+        <img src="imagem_26.jpeg" alt="Hidráulicas" loading="lazy">
+        <div class="g-overlay"><div><h4>Instalações Hidráulicas</h4><p>Trabalhos de picheleiro especializados</p></div></div>
+      </div>
+      <div class="g-item" data-cat="pavimentacao">
+        <img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="Pavimentação" loading="lazy">
+        <div class="g-overlay"><div><h4>Pavimentação Urbana</h4><p>Execução de pavimentos asfálticos</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Modal orçamento
-        const budgetModal = document.getElementById('budgetModal');
-        document.querySelectorAll('#openBudgetBtn2, #openBudgetBtn3, #openBudgetBtn4').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                budgetModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        document.getElementById('closeBudgetBtn').addEventListener('click', () => {
-            budgetModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-        window.addEventListener('click', (e) => {
-            if (e.target === budgetModal) { budgetModal.style.display = 'none'; document.body.style.overflow = 'auto'; }
-        });
+<!-- MISSION -->
+<section class="mission" id="missao">
+  <div class="container">
+    <span class="section-label reveal">Identidade Corporativa</span>
+    <h2 class="reveal" style="font-size:2.4rem;color:var(--navy);transition-delay:0.05s">Missão, Visão e Valores</h2>
+    <p class="reveal" style="color:var(--muted);max-width:520px;transition-delay:0.1s">Os princípios que guiam cada decisão e cada obra que entregamos.</p>
+    <div class="mission-top">
+      <div class="m-card reveal"><div class="m-icon"><i class="fas fa-bullseye"></i></div><h3>Missão</h3><p>Atender com zelo, dedicação e excelência as demandas dos clientes, contribuindo para a melhoria de qualidade de vida e gerando riqueza de forma sustentável.</p></div>
+      <div class="m-card reveal" style="transition-delay:0.07s"><div class="m-icon"><i class="fas fa-eye"></i></div><h3>Visão</h3><p>Tornar-nos uma referência nacional e internacional em construção civil, reconhecidos pela qualidade, inovação e compromisso com o desenvolvimento sustentável.</p></div>
+      <div class="m-card reveal" style="transition-delay:0.14s"><div class="m-icon"><i class="fas fa-handshake"></i></div><h3>Compromisso</h3><p>Superar expectativas, entregando projetos que unem funcionalidade, durabilidade e design inovador, com foco na segurança e satisfação do cliente.</p></div>
+    </div>
+    <div class="values-grid">
+      <div class="v-card reveal"><div class="v-icon"><i class="fas fa-balance-scale"></i></div><div><h4>Integridade</h4><p>Honestidade e transparência em todas as relações.</p></div></div>
+      <div class="v-card reveal" style="transition-delay:0.05s"><div class="v-icon"><i class="fas fa-heart"></i></div><div><h4>Comprometimento</h4><p>Dedicação total a projetos e clientes.</p></div></div>
+      <div class="v-card reveal" style="transition-delay:0.1s"><div class="v-icon"><i class="fas fa-users"></i></div><div><h4>Valorização Humana</h4><p>Respeito às pessoas e à comunidade.</p></div></div>
+      <div class="v-card reveal" style="transition-delay:0.15s"><div class="v-icon"><i class="fas fa-chart-line"></i></div><div><h4>Superação</h4><p>Excelência em cada detalhe dos projetos.</p></div></div>
+      <div class="v-card reveal"><div class="v-icon"><i class="fas fa-sync-alt"></i></div><div><h4>Melhoria Contínua</h4><p>Evolução constante de processos e métodos.</p></div></div>
+      <div class="v-card reveal" style="transition-delay:0.05s"><div class="v-icon"><i class="fas fa-lightbulb"></i></div><div><h4>Inovação</h4><p>Adoção de novas tecnologias e materiais.</p></div></div>
+      <div class="v-card reveal" style="transition-delay:0.1s"><div class="v-icon"><i class="fas fa-leaf"></i></div><div><h4>Sustentabilidade</h4><p>Práticas ambientalmente responsáveis.</p></div></div>
+      <div class="v-card reveal" style="transition-delay:0.15s"><div class="v-icon"><i class="fas fa-shield-alt"></i></div><div><h4>Qualidade</h4><p>Os mais altos padrões em todas as etapas.</p></div></div>
+    </div>
+  </div>
+</section>
 
-        // Form orçamento
-        document.getElementById('budgetForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            showNotification(`Obrigado, ${name}! Entraremos em contato em até 24 horas.`);
-            e.target.reset();
-            budgetModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
+<!-- CTA -->
+<section class="cta-section" id="orcamento">
+  <div class="cta-inner">
+    <span class="section-label">Orçamento</span>
+    <h2>Pronto para iniciar o seu projeto?</h2>
+    <p>Solicite um orçamento gratuito. A nossa equipa responde em até 24 horas com uma proposta personalizada.</p>
+    <div class="cta-features">
+      <span class="cta-feat"><i class="fas fa-check"></i> Orçamento gratuito</span>
+      <span class="cta-feat"><i class="fas fa-check"></i> Resposta em 24h</span>
+      <span class="cta-feat"><i class="fas fa-check"></i> Sem custos ocultos</span>
+      <span class="cta-feat"><i class="fas fa-check"></i> Equipa especializada</span>
+    </div>
+    <button class="btn-primary" style="font-size:1rem;padding:1rem 2.4rem;" id="openModal3">Solicitar Orçamento Gratuito</button>
+  </div>
+</section>
 
-        // Form contato
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('contactName').value;
-            showNotification(`Obrigado, ${name}! Sua mensagem foi enviada com sucesso.`);
-            e.target.reset();
-        });
+<!-- CONTACT -->
+<section class="contact" id="contato">
+  <div class="container">
+    <span class="section-label reveal">Contacto</span>
+    <h2 class="reveal" style="font-size:2.4rem;color:var(--navy);transition-delay:0.05s">Entre em Contacto</h2>
+    <p class="reveal" style="color:var(--muted);transition-delay:0.1s">Estamos à disposição para esclarecer dúvidas e apresentar soluções para o seu projeto.</p>
+    <div class="contact-grid">
+      <div class="contact-info-box reveal">
+        <h3>Informações</h3>
+        <p>Contacte-nos diretamente ou visite as nossas instalações em Pemba.</p>
+        <div class="c-detail"><div class="c-detail-icon"><i class="fas fa-map-marker-alt"></i></div><div><h4>Endereço</h4><p>Av. 25 de Setembro, Bairro de Cimento, Pemba</p></div></div>
+        <div class="c-detail"><div class="c-detail-icon"><i class="fas fa-phone"></i></div><div><h4>Telefone</h4><p>84 263 1768 / 872 261 200</p></div></div>
+        <div class="c-detail"><div class="c-detail-icon"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>construgotica@gmail.com</p></div></div>
+        <div class="c-detail"><div class="c-detail-icon"><i class="fas fa-clock"></i></div><div><h4>Horário</h4><p>Seg–Sex: 8h–18h &nbsp;|&nbsp; Sáb: 8h–13h</p></div></div>
+        <div class="social-row">
+          <a href="#" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal" style="transition-delay:0.1s">
+        <h3>Envie uma Mensagem</h3>
+        <form id="contactForm">
+          <div class="fg"><label>Nome Completo *</label><input type="text" required></div>
+          <div class="form-row"><div class="fg"><label>E-mail *</label><input type="email" required></div><div class="fg"><label>Telefone</label><input type="tel"></div></div>
+          <div class="fg"><label>Assunto *</label><input type="text" required></div>
+          <div class="fg"><label>Mensagem *</label><textarea required></textarea></div>
+          <button type="submit" class="btn-primary" style="width:100%;text-align:center;">Enviar Mensagem</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Notificação
-        function showNotification(msg) {
-            const n = document.getElementById('notification');
-            document.getElementById('notificationText').textContent = msg;
-            n.classList.add('show');
-            setTimeout(() => n.classList.remove('show'), 5000);
-        }
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Gótica SU LDA">
+        <p>Empresa de Construção Civil comprometida com qualidade, inovação e desenvolvimento sustentável. Afirmando-nos no mercado nacional e internacional.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#inicio">Início</a></li><li><a href="#sobre">Sobre Nós</a></li>
+          <li><a href="#servicos">Serviços</a></li><li><a href="#galeria">Projetos</a></li>
+          <li><a href="#missao">Missão</a></li><li><a href="#contato">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Construção</a></li><li><a href="#servicos">Pavimentação</a></li>
+          <li><a href="#servicos">Betão Armado</a></li><li><a href="#servicos">Drenagem</a></li>
+          <li><a href="#servicos">Hidráulica</a></li><li><a href="#servicos">Vedações</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p><i class="fas fa-map-marker-alt"></i>Av. 25 de Setembro, Pemba</p>
+        <p><i class="fas fa-phone"></i>84 263 1768 / 872 261 200</p>
+        <p><i class="fas fa-envelope"></i>construgotica@gmail.com</p>
+        <p><i class="fas fa-clock"></i>Seg-Sex 8h–18h | Sáb 8h–13h</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p>
+      <p>Desenvolvido por HP.</p>
+    </div>
+  </div>
+</footer>
 
-        // Filtro galeria
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const filter = btn.getAttribute('data-filter');
-                galleryItems.forEach(item => {
-                    item.style.display = (filter === 'todos' || item.getAttribute('data-category') === filter) ? 'block' : 'none';
-                });
-                // Reset scroll position
-                document.getElementById('galleryGrid').scrollLeft = 0;
-            });
-        });
+<!-- BUDGET MODAL -->
+<div class="modal-bg" id="budgetModal">
+  <div class="modal-box">
+    <button class="modal-close-btn" id="closeModal"><i class="fas fa-times"></i></button>
+    <h2>Solicitar Orçamento</h2>
+    <p>Preencha o formulário e receba uma proposta personalizada em até 24 horas.</p>
+    <form id="budgetForm">
+      <div class="form-row">
+        <div class="fg"><label>Nome Completo *</label><input id="bName" type="text" required></div>
+        <div class="fg"><label>E-mail *</label><input type="email" required></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Telefone *</label><input type="tel" required></div>
+        <div class="fg"><label>Serviço *</label>
+          <select required>
+            <option value="">Selecione</option>
+            <option>Construção de Edifícios</option><option>Pavimentação</option>
+            <option>Estruturas de Betão Armado</option><option>Sistemas de Drenagem</option>
+            <option>Instalações Hidráulicas</option><option>Vedações e Cercas</option><option>Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Localização do Projeto *</label><input type="text" required></div>
+      <div class="fg"><label>Descrição do Projeto *</label><textarea placeholder="Descreva o seu projeto, área, dimensões..." required></textarea></div>
+      <div class="fg"><label>Prazo Desejado</label>
+        <select>
+          <option value="">Sem preferência</option><option>Urgente (até 1 mês)</option>
+          <option>Curto prazo (1–3 meses)</option><option>Médio prazo (3–6 meses)</option>
+          <option>Longo prazo (+ de 6 meses)</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;text-align:center;padding:1rem;">Enviar Pedido de Orçamento</button>
+    </form>
+  </div>
+</div>
 
-        // Modal galeria
-        const modal = document.getElementById('galleryModal');
-        const modalImg = document.getElementById('modalImg');
-        const modalCaption = document.getElementById('modalCaption');
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                modalImg.src = item.querySelector('img').src;
-                const cap = item.querySelector('.gallery-item-overlay h4').textContent;
-                const desc = item.querySelector('.gallery-item-overlay p')?.textContent || '';
-                modalCaption.innerHTML = `<strong>${cap}</strong><br>${desc}`;
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        document.getElementById('modalClose').addEventListener('click', () => {
-            modal.style.display = 'none'; document.body.style.overflow = 'auto';
-        });
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
-        });
+<!-- IMAGE MODAL -->
+<div class="img-modal-bg" id="imgModal">
+  <div class="img-modal-inner">
+    <button class="img-modal-close" id="imgModalClose"><i class="fas fa-times"></i></button>
+    <img id="imgModalSrc" src="" alt="">
+    <div class="img-modal-cap" id="imgModalCap"></div>
+  </div>
+</div>
 
-        // Scroll suave
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetEl = document.querySelector(targetId);
-                if (targetEl) {
-                    e.preventDefault();
-                    window.scrollTo({ top: targetEl.offsetTop - 70, behavior: 'smooth' });
-                }
-            });
-        });
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
 
-        // ESC fecha modais
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                budgetModal.style.display = 'none';
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-    </script>
+<script>
+// Header scroll
+const hdr = document.getElementById('hdr');
+window.addEventListener('scroll', () => hdr.classList.toggle('elevated', window.scrollY > 40), {passive:true});
+
+// Hamburger / mobile nav
+const ham = document.getElementById('ham');
+const nav = document.getElementById('nav');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  nav.classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+  ham.classList.remove('open'); nav.classList.remove('open');
+}));
+
+// Desktop CTA button
+const desktopBtn = document.getElementById('openModalDesktop');
+if(window.innerWidth > 768) desktopBtn.style.display = 'block';
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); window.scrollTo({top: t.offsetTop - 62, behavior:'smooth'}); }
+  });
+});
+
+// Counters
+function countUp(el, target, dur) {
+  let start = null;
+  const step = ts => {
+    if(!start) start = ts;
+    const p = Math.min((ts - start) / dur, 1);
+    el.textContent = Math.floor(p * target);
+    if(p < 1) requestAnimationFrame(step); else el.textContent = target;
+  };
+  requestAnimationFrame(step);
+}
+let counted = false;
+new IntersectionObserver(([e]) => {
+  if(e.isIntersecting && !counted){
+    counted = true;
+    countUp(document.getElementById('sc1'), 50, 1800);
+    countUp(document.getElementById('sc2'), 15, 1400);
+    countUp(document.getElementById('sc3'), 100, 2000);
+    countUp(document.getElementById('sc4'), 30, 1600);
+  }
+}, {threshold:0.4}).observe(document.querySelector('.hero'));
+
+// Reveal on scroll
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); }});
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Gallery filter
+document.querySelectorAll('.gf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.f;
+    document.querySelectorAll('.g-item').forEach(item => {
+      item.style.display = (f === 'todos' || item.dataset.cat === f) ? 'block' : 'none';
+    });
+    document.getElementById('galleryGrid').scrollLeft = 0;
+  });
+});
+
+// Image modal
+const imgModal = document.getElementById('imgModal');
+function closeImg(){ imgModal.classList.remove('open'); document.body.style.overflow = ''; }
+document.querySelectorAll('.g-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.getElementById('imgModalSrc').src = item.querySelector('img').src;
+    document.getElementById('imgModalCap').textContent = item.querySelector('h4').textContent;
+    imgModal.classList.add('open'); document.body.style.overflow = 'hidden';
+  });
+});
+document.getElementById('imgModalClose').addEventListener('click', closeImg);
+imgModal.addEventListener('click', e => { if(e.target === imgModal) closeImg(); });
+
+// Budget modal
+const budgetModal = document.getElementById('budgetModal');
+function openBudget(){ budgetModal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeBudget(){ budgetModal.classList.remove('open'); document.body.style.overflow = ''; }
+['openModal','openModal2','openModal3','openModalDesktop'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', openBudget);
+});
+document.getElementById('closeModal').addEventListener('click', closeBudget);
+budgetModal.addEventListener('click', e => { if(e.target === budgetModal) closeBudget(); });
+
+// Toast
+function toast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+// Forms
+document.getElementById('budgetForm').addEventListener('submit', e => {
+  e.preventDefault();
+  toast('Obrigado! Entraremos em contacto em até 24 horas.');
+  e.target.reset(); closeBudget();
+});
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  toast('Mensagem enviada com sucesso! Respondemos em breve.');
+  e.target.reset();
+});
+
+// ESC
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeBudget(); closeImg(); }
+});
+</script>
 </body>
 </html>
