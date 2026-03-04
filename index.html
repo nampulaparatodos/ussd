@@ -1,1179 +1,1310 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gótica SU LDA — Construção Civil de Excelência</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,700;1,9..144,200;1,9..144,300&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!--
-╔══════════════════════════════════════════╗
-║  FORMSPREE — ACTIVAR EM 3 PASSOS         ║
-║                                          ║
-║  1. formspree.io → criar conta grátis    ║
-║  2. "New Form" → copiar Form ID          ║
-║  3. Substituir YOUR_FORM_ID abaixo       ║
-║     nos dois <form action="...">         ║
-╚══════════════════════════════════════════╝
--->
-
-<style>
-/* ════════════════════════════════════════
-   DESIGN TOKENS
-════════════════════════════════════════ */
-:root {
-  --g:    #007A38;
-  --g2:   #00A04D;
-  --g3:   rgba(0,122,56,.07);
-  --navy: #08172E;
-  --ink:  #0f0f0f;
-  --body: #3d3d4a;
-  --dim:  #7c7c8a;
-  --line: #E4E7EC;
-  --bg:   #FAFAF8;
-  --w:    #ffffff;
-  --warm: #F5F4F0;
-
-  --serif: 'Fraunces', Georgia, serif;
-  --sans:  'Syne', sans-serif;
-
-  --ease:    cubic-bezier(.16,1,.3,1);
-  --ease-in: cubic-bezier(.4,0,1,1);
-  --spring:  cubic-bezier(.34,1.56,.64,1);
-}
-
-*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; font-size:16px; }
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--body);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  cursor: none;
-}
-img { display:block; max-width:100%; }
-a { text-decoration:none; color:inherit; }
-button { font-family:var(--sans); cursor:none; border:none; background:none; }
-
-/* ── CUSTOM CURSOR ── */
-#cursor-dot {
-  position: fixed; top:0; left:0; z-index:9999;
-  width:8px; height:8px; border-radius:50%;
-  background: var(--g); pointer-events:none;
-  transform: translate(-50%,-50%);
-  transition: transform .15s var(--ease), opacity .3s, background .3s;
-}
-#cursor-ring {
-  position: fixed; top:0; left:0; z-index:9998;
-  width:36px; height:36px; border-radius:50%;
-  border: 1.5px solid rgba(0,122,56,.5); pointer-events:none;
-  transform: translate(-50%,-50%);
-  transition: transform .4s var(--ease), width .3s var(--ease), height .3s var(--ease), border-color .3s, opacity .4s;
-}
-body.hovering #cursor-dot { transform:translate(-50%,-50%) scale(1.8); }
-body.hovering #cursor-ring { width:56px; height:56px; border-color:var(--g); }
-body.clicking #cursor-dot { transform:translate(-50%,-50%) scale(0.6); }
-@media(pointer:coarse){ #cursor-dot,#cursor-ring{ display:none; } body{ cursor:auto; } button,a{ cursor:pointer; } }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width:3px; }
-::-webkit-scrollbar-thumb { background: var(--g); border-radius:2px; }
-
-/* ── UTILITIES ── */
-.wrap { max-width:1240px; margin:0 auto; padding:0 48px; }
-@media(max-width:600px){ .wrap{ padding:0 24px; } }
-section { padding:120px 0; }
-
-.tag {
-  display:inline-flex; align-items:center; gap:10px;
-  font-size:.68rem; font-weight:600; letter-spacing:.22em;
-  text-transform:uppercase; color:var(--g);
-}
-.tag::before { content:''; width:32px; height:1.5px; background:var(--g); }
-
-.display {
-  font-family: var(--serif);
-  font-weight: 200;
-  line-height: 1.05;
-  color: var(--navy);
-}
-.display i { font-style:italic; color:var(--g); }
-.display b { font-weight:700; font-style:normal; }
-
-/* ── BUTTONS ── */
-.btn {
-  display: inline-flex; align-items:center; gap:10px;
-  font-size:.8rem; font-weight:600; letter-spacing:.08em;
-  text-transform:uppercase; padding:0; border:none; cursor:none;
-  position:relative; transition:color .3s;
-}
-.btn-fill {
-  background:var(--g); color:#fff;
-  padding:.9rem 2.2rem; border-radius:3px;
-  overflow:hidden; isolation:isolate;
-}
-.btn-fill::before {
-  content:''; position:absolute; inset:0;
-  background:var(--g2); transform:translateY(100%);
-  transition:transform .4s var(--ease);
-}
-.btn-fill span { position:relative; z-index:1; }
-.btn-fill:hover::before { transform:translateY(0); }
-
-.btn-line {
-  color:var(--navy); gap:12px;
-  padding-bottom:2px; border-bottom:1.5px solid var(--navy);
-}
-.btn-line:hover { color:var(--g); border-color:var(--g); }
-.btn-line i { font-size:.7rem; transition:transform .3s; }
-.btn-line:hover i { transform:translateX(5px); }
-
-.btn-ghost {
-  color:#fff; padding:.9rem 2.2rem; border-radius:3px;
-  border:1.5px solid rgba(255,255,255,.3); overflow:hidden; isolation:isolate;
-}
-.btn-ghost::before { content:''; position:absolute; inset:0; background:rgba(255,255,255,.08); transform:translateY(100%); transition:transform .4s var(--ease); }
-.btn-ghost span { position:relative; z-index:1; }
-.btn-ghost:hover::before { transform:translateY(0); }
-
-/* ── FORM ── */
-.field { margin-bottom:1.4rem; }
-.field label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--navy); margin-bottom:8px; }
-.field input, .field select, .field textarea {
-  width:100%; padding:.85rem 1.1rem;
-  border:none; border-bottom:1.5px solid var(--line);
-  border-radius:0; background:transparent;
-  font-family:var(--sans); font-size:.92rem; color:var(--ink);
-  transition:border-color .3s, box-shadow .3s;
-  cursor:none;
-}
-.field input::placeholder, .field textarea::placeholder { color:var(--dim); font-weight:400; }
-.field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--g); box-shadow:0 1px 0 var(--g); }
-.field textarea { min-height:120px; resize:none; }
-.field select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%237c7c8a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 4px center; }
-.g2 { display:grid; grid-template-columns:1fr 1fr; gap:0 2rem; }
-
-.fstatus { display:none; padding:.85rem 1.1rem; font-size:.82rem; font-weight:500; align-items:center; gap:10px; border-radius:3px; margin-bottom:1.2rem; }
-.fstatus.ok { display:flex; background:rgba(0,122,56,.07); color:var(--g); border:1px solid rgba(0,122,56,.2); }
-.fstatus.err { display:flex; background:rgba(200,0,0,.05); color:#b91c1c; border:1px solid rgba(200,0,0,.15); }
-
-/* ══ HEADER ══ */
-#hdr {
-  position:fixed; top:0; left:0; right:0; z-index:800;
-  mix-blend-mode:normal;
-}
-.hdr-bar {
-  display:flex; align-items:center; justify-content:space-between;
-  height:72px; padding:0 48px;
-  background:rgba(250,250,248,.96);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid transparent;
-  transition:border-color .4s, box-shadow .4s;
-}
-#hdr.stuck .hdr-bar { border-color:var(--line); box-shadow:0 8px 40px rgba(0,0,0,.05); }
-.logo { height:40px; }
-.hnav { display:flex; align-items:center; gap:2.4rem; }
-.hnav a { font-size:.78rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--body); transition:color .25s; position:relative; }
-.hnav a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px; background:var(--g); transition:width .35s var(--ease); }
-.hnav a:hover { color:var(--g); }
-.hnav a:hover::after { width:100%; }
-.hbtn { margin-left:1rem; }
-
-/* Hamburger */
-.ham { display:none; flex-direction:column; gap:5px; width:32px; height:32px; justify-content:center; }
-.ham span { display:block; height:1.5px; background:var(--navy); border-radius:2px; transition:all .4s var(--ease); transform-origin:center; }
-.ham span:nth-child(1) { width:28px; }
-.ham span:nth-child(2) { width:20px; margin-left:auto; }
-.ham span:nth-child(3) { width:14px; margin-left:auto; }
-.ham.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); width:22px; }
-.ham.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
-.ham.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); width:22px; margin-left:0; }
-
-/* Mobile nav fullscreen */
-#mob {
-  position:fixed; inset:0; z-index:700; background:var(--navy);
-  display:flex; flex-direction:column; justify-content:center; padding:56px 48px;
-  clip-path:circle(0% at calc(100% - 60px) 36px);
-  transition:clip-path .7s var(--ease);
-}
-#mob.open { clip-path:circle(150% at calc(100% - 60px) 36px); }
-.mob-link {
-  font-family:var(--serif); font-size:clamp(2.2rem,7vw,4rem);
-  font-weight:200; color:rgba(255,255,255,.5); display:block;
-  padding:.35rem 0; border-bottom:1px solid rgba(255,255,255,.07);
-  transition:color .3s, padding-left .3s;
-}
-.mob-link:hover { color:#fff; padding-left:12px; }
-.mob-cta { margin-top:3rem; }
-.mob-info { position:absolute; bottom:48px; left:48px; color:rgba(255,255,255,.3); font-size:.78rem; }
-
-/* ══ HERO ══ */
-.hero {
-  min-height:100svh; padding-top:72px;
-  display:grid; grid-template-columns:1fr 1fr;
-  background:var(--navy); overflow:hidden;
-  position:relative;
-}
-/* Left panel */
-.h-left {
-  display:flex; flex-direction:column; justify-content:flex-end;
-  padding:80px 60px 80px 48px;
-  position:relative; z-index:2;
-  background:var(--navy);
-}
-.h-kicker {
-  display:flex; align-items:center; gap:10px; margin-bottom:2.5rem;
-  font-size:.68rem; font-weight:600; letter-spacing:.2em;
-  text-transform:uppercase; color:rgba(0,180,90,.8);
-}
-.h-kicker-dot { width:6px; height:6px; border-radius:50%; background:var(--g); animation:blink 2.5s ease infinite; }
-@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
-
-.hero h1 {
-  font-family:var(--serif); font-weight:200;
-  font-size:clamp(3rem,5.5vw,5.2rem);
-  color:#fff; line-height:1.05; margin-bottom:2rem;
-}
-.hero h1 em { font-style:italic; color:var(--g); }
-.hero h1 strong { font-weight:700; display:block; }
-.hero-desc { color:rgba(255,255,255,.5); font-size:.95rem; line-height:1.8; max-width:420px; font-weight:400; margin-bottom:3rem; }
-.h-btns { display:flex; gap:1.2rem; flex-wrap:wrap; margin-bottom:5rem; }
-.h-stats {
-  display:grid; grid-template-columns:repeat(4,1fr);
-  border-top:1px solid rgba(255,255,255,.1); padding-top:2.5rem; gap:0;
-}
-.h-stat { padding-right:1.5rem; }
-.h-stat+.h-stat { padding-left:1.5rem; border-left:1px solid rgba(255,255,255,.1); }
-.h-stat-n { font-family:var(--serif); font-size:2.8rem; font-weight:200; color:#fff; line-height:1; }
-.h-stat-n em { color:var(--g); font-style:normal; }
-.h-stat-l { font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:6px; }
-
-/* Right panel — image with overlay elements */
-.h-right { position:relative; overflow:hidden; }
-.h-img { position:absolute; inset:0; object-fit:cover; width:100%; height:100%; transition:transform 8s ease; }
-.h-img:hover { transform:scale(1.03); }
-.h-overlay {
-  position:absolute; inset:0;
-  background:linear-gradient(to right, var(--navy) 0%, rgba(8,23,46,.35) 40%, transparent 80%);
-}
-/* Floating accent badge */
-.h-float {
-  position:absolute; bottom:80px; right:48px; z-index:5;
-  background:rgba(255,255,255,.08); backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:12px; padding:1.6rem 2rem;
-  display:flex; align-items:center; gap:1.2rem;
-}
-.h-float-ic {
-  width:48px; height:48px; border-radius:10px;
-  background:var(--g); display:flex; align-items:center; justify-content:center;
-}
-.h-float-ic i { color:#fff; font-size:1.2rem; }
-.h-float p { font-size:.72rem; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.08em; margin-bottom:3px; }
-.h-float strong { color:#fff; font-size:.95rem; font-weight:600; }
-/* Year label vertical */
-.h-year {
-  position:absolute; top:50%; right:20px; z-index:5;
-  transform:translateY(-50%) rotate(90deg);
-  font-size:.65rem; font-weight:600; letter-spacing:.25em;
-  text-transform:uppercase; color:rgba(255,255,255,.2);
-}
-
-/* ══ TICKER ══ */
-.ticker { overflow:hidden; background:var(--g); padding:14px 0; }
-.ticker-track { display:flex; white-space:nowrap; animation:tick 25s linear infinite; }
-@keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-.ticker-item { display:inline-flex; align-items:center; gap:2rem; padding:0 2.5rem; font-size:.72rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.7); }
-.ticker-sep { color:rgba(255,255,255,.3); }
-
-/* ══ ABOUT ══ */
-.about { background:var(--bg); }
-.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:center; }
-/* Visual side */
-.about-vis { position:relative; }
-.about-main-img { width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:2px; box-shadow:0 32px 80px rgba(0,0,0,.12); }
-.about-sm-img {
-  position:absolute; bottom:-40px; right:-40px;
-  width:52%; aspect-ratio:1; object-fit:cover;
-  border-radius:2px; box-shadow:0 20px 60px rgba(0,0,0,.15);
-  border:6px solid var(--bg);
-}
-.about-years-badge {
-  position:absolute; top:40px; left:-32px;
-  background:var(--g); color:#fff; text-align:center;
-  padding:1.4rem 1.6rem; border-radius:4px;
-  box-shadow:0 16px 48px rgba(0,122,56,.35);
-}
-.about-years-badge strong { font-family:var(--serif); font-size:2.4rem; font-weight:200; display:block; line-height:1; }
-.about-years-badge sup { font-size:1.1rem; }
-.about-years-badge span { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.8; }
-/* Text side */
-.about-text h2 { font-size:clamp(2.2rem,3.5vw,3.4rem); margin:1.2rem 0 2rem; }
-.about-text p { font-size:.95rem; line-height:1.85; margin-bottom:1.2rem; color:var(--body); }
-.about-text p b { color:var(--navy); font-weight:600; }
-.about-line { width:52px; height:2px; background:var(--g); margin:2.2rem 0; }
-.tags-row { display:flex; flex-wrap:wrap; gap:.5rem; margin:1.8rem 0; }
-.tag-chip { background:var(--g3); border:1px solid rgba(0,122,56,.15); color:var(--g); font-size:.72rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; padding:.4rem 1rem; border-radius:100px; }
-
-/* ══ SERVICES ══ */
-.services { background:var(--warm); overflow:hidden; }
-.svc-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:70px; }
-.svc-head h2 { font-size:clamp(2.2rem,3.5vw,3.4rem); max-width:400px; }
-.svc-grid { display:grid; grid-template-columns:repeat(3,1fr); position:relative; }
-.svc-grid::before { content:''; position:absolute; inset:0; background:var(--line); clip-path:inset(0); pointer-events:none; }
-.sv {
-  background:var(--bg); padding:2.4rem;
-  margin:.75px; position:relative; overflow:hidden;
-  transition:background .4s;
-  display:flex; flex-direction:column;
-}
-.sv::after {
-  content:''; position:absolute; bottom:0; left:0; right:0;
-  height:2.5px; background:var(--g);
-  transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease);
-}
-.sv:hover { background:var(--w); }
-.sv:hover::after { transform:scaleX(1); }
-.sv-num {
-  font-family:var(--serif); font-size:4rem; font-weight:200;
-  color:rgba(0,0,0,.04); line-height:1; margin-bottom:1.5rem;
-  transition:color .4s;
-}
-.sv:hover .sv-num { color:rgba(0,122,56,.06); }
-.sv-icon { width:42px; height:42px; border-radius:8px; background:var(--g3); display:flex; align-items:center; justify-content:center; margin-bottom:1.2rem; }
-.sv-icon i { color:var(--g); font-size:1.05rem; }
-.sv h3 { font-family:var(--serif); font-size:1.25rem; font-weight:300; color:var(--navy); margin-bottom:.7rem; }
-.sv p { font-size:.85rem; color:var(--body); line-height:1.75; font-weight:400; flex:1; }
-.sv-thumb { margin-top:1.6rem; border-radius:4px; overflow:hidden; height:130px; }
-.sv-thumb img { width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease); }
-.sv:hover .sv-thumb img { transform:scale(1.08); }
-
-/* ══ NUMBERS ══ */
-.numbers { padding:0; background:var(--navy); }
-.numbers-inner { display:grid; grid-template-columns:repeat(4,1fr); }
-.num-item {
-  padding:64px 48px; border-right:1px solid rgba(255,255,255,.07);
-  text-align:center; position:relative; overflow:hidden; transition:background .4s;
-}
-.num-item:last-child { border-right:none; }
-.num-item::before { content:''; position:absolute; inset:0; background:var(--g); transform:scaleY(0); transform-origin:bottom; transition:transform .4s var(--ease); }
-.num-item:hover { background:transparent; }
-.num-item:hover::before { transform:scaleY(1); }
-.num-val, .num-lbl { position:relative; z-index:1; }
-.num-val { font-family:var(--serif); font-size:4rem; font-weight:200; color:#fff; line-height:1; margin-bottom:.5rem; }
-.num-val em { font-style:normal; color:var(--g); transition:color .4s; }
-.num-item:hover .num-val em { color:rgba(255,255,255,.6); }
-.num-lbl { font-size:.65rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.35); transition:color .4s; }
-.num-item:hover .num-lbl { color:rgba(255,255,255,.7); }
-
-/* ══ GALLERY ══ */
-.gallery { background:var(--bg); }
-.gal-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; }
-.gal-head h2 { font-size:clamp(2.2rem,3.5vw,3.4rem); }
-.gal-filters { display:flex; gap:.5rem; }
-.gf { padding:.45rem 1.2rem; border-radius:100px; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border:1.5px solid var(--line); background:transparent; color:var(--dim); transition:all .25s; }
-.gf:hover,.gf.on { background:var(--g); color:#fff; border-color:var(--g); }
-/* Desktop masonry-ish */
-.gal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.gi { position:relative; border-radius:4px; overflow:hidden; cursor:zoom-in; background:var(--warm); }
-.gi:nth-child(1) { aspect-ratio:4/5; }
-.gi:nth-child(2) { aspect-ratio:4/3; }
-.gi:nth-child(3) { aspect-ratio:1; }
-.gi:nth-child(4) { aspect-ratio:4/3; }
-.gi:nth-child(5) { aspect-ratio:4/5; }
-.gi:nth-child(6) { aspect-ratio:1; }
-.gi img { width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease), filter .5s; }
-.gi:hover img { transform:scale(1.07); filter:brightness(.8); }
-.gi-cap { position:absolute; inset:0; background:linear-gradient(to top,rgba(8,23,46,.88) 0%,transparent 50%); display:flex; flex-direction:column; justify-content:flex-end; padding:1.6rem; opacity:0; transition:opacity .4s; }
-.gi:hover .gi-cap { opacity:1; }
-.gi-cap h4 { font-family:var(--serif); font-size:1.1rem; font-weight:300; color:#fff; margin-bottom:4px; }
-.gi-cap p { font-size:.75rem; color:rgba(255,255,255,.6); }
-
-/* Mobile gallery horizontal */
-
-/* ══ MISSION ══ */
-.mission { background:var(--warm); }
-.miss-grid { display:grid; grid-template-columns:380px 1fr; gap:80px; }
-.miss-left h2 { font-size:clamp(2.2rem,3.5vw,3.4rem); position:sticky; top:100px; }
-.miss-right { display:flex; flex-direction:column; gap:1px; background:var(--line); border-radius:4px; overflow:hidden; }
-.mc {
-  background:var(--bg); padding:2rem 2.2rem;
-  display:grid; grid-template-columns:52px 1fr; gap:1.4rem;
-  transition:background .3s;
-}
-.mc:hover { background:var(--w); }
-.mc-ic { width:52px; height:52px; border-radius:10px; background:var(--g3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.mc-ic i { color:var(--g); font-size:1.2rem; }
-.mc h3 { font-family:var(--serif); font-size:1.2rem; font-weight:300; color:var(--navy); margin-bottom:.5rem; }
-.mc p { font-size:.88rem; line-height:1.75; color:var(--body); }
-/* Values */
-.vals { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border-radius:4px; overflow:hidden; margin-top:1px; }
-.vc { background:var(--bg); padding:1.2rem 1.4rem; display:flex; align-items:center; gap:.8rem; transition:background .3s; }
-.vc:hover { background:var(--w); }
-.vc-ic { width:32px; height:32px; border-radius:7px; background:var(--g3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.vc-ic i { color:var(--g); font-size:.85rem; }
-.vc span { font-size:.8rem; font-weight:600; color:var(--navy); letter-spacing:.03em; }
-
-/* ══ CTA ══ */
-.cta {
-  padding:140px 0; overflow:hidden; position:relative;
-  background:var(--navy);
-}
-.cta-bg-img { position:absolute; inset:0; object-fit:cover; width:100%; height:100%; opacity:.1; }
-.cta-glow { position:absolute; top:-200px; right:-200px; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(0,122,56,.2) 0%,transparent 70%); pointer-events:none; }
-.cta-inner { position:relative; z-index:1; max-width:680px; }
-.cta-inner h2 { font-size:clamp(2.4rem,4.5vw,4rem); color:#fff; margin:1rem 0 1.4rem; }
-.cta-inner > p { color:rgba(255,255,255,.5); font-size:.95rem; line-height:1.85; margin-bottom:3rem; }
-.cta-feats { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:3.5rem; }
-.cta-feat { display:flex; align-items:center; gap:.8rem; }
-.cta-feat-ic { width:28px; height:28px; border-radius:50%; background:rgba(0,122,56,.2); border:1px solid rgba(0,122,56,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.cta-feat-ic i { color:var(--g); font-size:.7rem; }
-.cta-feat span { font-size:.82rem; color:rgba(255,255,255,.65); }
-.cta-btns { display:flex; gap:1.2rem; flex-wrap:wrap; }
-
-/* ══ CONTACT ══ */
-.contact { background:var(--bg); }
-.cont-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:100px; margin-top:70px; align-items:start; }
-.cont-info { position:sticky; top:100px; }
-.cont-info h3 { font-family:var(--serif); font-size:2rem; font-weight:200; color:var(--navy); margin-bottom:.6rem; }
-.cont-info > p { font-size:.9rem; color:var(--body); margin-bottom:3rem; line-height:1.75; }
-.ci-item { display:flex; gap:1rem; margin-bottom:2rem; }
-.ci-ic { width:44px; height:44px; min-width:44px; border-radius:10px; background:var(--g3); display:flex; align-items:center; justify-content:center; }
-.ci-ic i { color:var(--g); font-size:.95rem; }
-.ci-lbl { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-bottom:4px; }
-.ci-val { font-size:.9rem; color:var(--navy); font-weight:500; }
-.ci-val a { color:var(--navy); transition:color .2s; }
-.ci-val a:hover { color:var(--g); }
-.soc-row { display:flex; gap:.6rem; margin-top:2.5rem; padding-top:2.5rem; border-top:1.5px solid var(--line); }
-.soc { width:40px; height:40px; border-radius:10px; border:1.5px solid var(--line); color:var(--dim); display:flex; align-items:center; justify-content:center; font-size:.9rem; transition:all .25s; }
-.soc:hover { border-color:var(--g); color:var(--g); background:var(--g3); }
-/* Form card */
-.form-panel { background:var(--w); border-radius:6px; padding:3rem; box-shadow:0 4px 40px rgba(0,0,0,.06); border:1.5px solid var(--line); }
-.form-panel h3 { font-family:var(--serif); font-size:1.8rem; font-weight:200; color:var(--navy); margin-bottom:2rem; }
-.submit-btn {
-  width:100%; padding:1rem; font-size:.78rem; font-weight:600;
-  letter-spacing:.12em; text-transform:uppercase; justify-content:center;
-  margin-top:.5rem; border-radius:3px;
-}
-
-/* ══ FOOTER ══ */
-footer { background:var(--navy); padding:80px 0 32px; }
-.ft-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; padding-bottom:60px; border-bottom:1px solid rgba(255,255,255,.07); }
-.ft-logo img { height:36px; margin-bottom:1.6rem; }
-.ft-about { font-size:.85rem; color:rgba(255,255,255,.3); line-height:1.8; max-width:280px; }
-.ft-col h4 { font-size:.65rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:1.6rem; }
-.ft-col ul { list-style:none; }
-.ft-col li { margin-bottom:.7rem; }
-.ft-col a { font-size:.85rem; color:rgba(255,255,255,.28); transition:color .2s; }
-.ft-col a:hover { color:rgba(255,255,255,.75); }
-.ft-col p { font-size:.85rem; color:rgba(255,255,255,.28); line-height:1.9; }
-.ft-col i { color:var(--g); width:16px; margin-right:7px; font-size:.75rem; }
-.ft-bottom { padding-top:28px; display:flex; justify-content:space-between; align-items:center; }
-.ft-bottom p { font-size:.75rem; color:rgba(255,255,255,.2); }
-
-/* ══ MODAL ══ */
-.ov { position:fixed; inset:0; z-index:1000; background:rgba(4,10,20,.9); backdrop-filter:blur(16px); display:flex; align-items:center; justify-content:center; padding:24px; opacity:0; pointer-events:none; transition:opacity .4s var(--ease); }
-.ov.open { opacity:1; pointer-events:all; }
-.modal {
-  background:var(--bg); border-radius:6px; width:100%; max-width:680px;
-  max-height:92vh; overflow-y:auto;
-  transform:translateY(32px) scale(.97);
-  transition:transform .5s var(--ease);
-  box-shadow:0 48px 120px rgba(0,0,0,.35);
-  scrollbar-width:thin; scrollbar-color:var(--g) transparent;
-}
-.ov.open .modal { transform:translateY(0) scale(1); }
-.modal::-webkit-scrollbar { width:3px; }
-.modal::-webkit-scrollbar-thumb { background:var(--g); }
-.mod-top { background:var(--navy); padding:2.5rem 3rem; display:flex; justify-content:space-between; align-items:start; }
-.mod-top h2 { font-family:var(--serif); font-size:2rem; font-weight:200; color:#fff; }
-.mod-top p { font-size:.78rem; color:rgba(255,255,255,.4); margin-top:5px; text-transform:uppercase; letter-spacing:.08em; }
-.mod-x { width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.5); font-size:.9rem; flex-shrink:0; margin-left:1rem; transition:all .25s; cursor:none; }
-.mod-x:hover { border-color:var(--g); color:var(--g); background:rgba(0,122,56,.1); }
-.mod-body { padding:2.5rem 3rem; }
-.mstatus { display:none; padding:.85rem 1.1rem; font-size:.82rem; font-weight:500; align-items:center; gap:10px; border-radius:3px; margin-bottom:1.4rem; }
-.mstatus.ok { display:flex; background:rgba(0,122,56,.07); color:var(--g); border:1px solid rgba(0,122,56,.2); }
-.mstatus.err { display:flex; background:rgba(200,0,0,.05); color:#b91c1c; border:1px solid rgba(200,0,0,.15); }
-
-/* ══ LIGHTBOX ══ */
-.lb { position:fixed; inset:0; z-index:1100; background:rgba(0,0,0,.96); display:flex; align-items:center; justify-content:center; padding:40px; opacity:0; pointer-events:none; transition:opacity .35s; }
-.lb.open { opacity:1; pointer-events:all; }
-.lb img { max-width:900px; width:100%; border-radius:4px; max-height:80vh; object-fit:contain; }
-.lb-cap { color:rgba(255,255,255,.5); text-align:center; margin-top:1.2rem; font-size:.85rem; }
-.lb-x { position:absolute; top:28px; right:28px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem; transition:all .25s; cursor:none; }
-.lb-x:hover { background:var(--g); border-color:var(--g); }
-
-/* ══ TOAST ══ */
-.toast {
-  position:fixed; bottom:32px; right:32px; z-index:2000;
-  background:var(--navy); color:#fff; border-radius:6px;
-  padding:1.1rem 1.6rem; min-width:300px; max-width:400px;
-  display:flex; align-items:center; gap:14px;
-  border-left:3px solid var(--g);
-  box-shadow:0 20px 60px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.05);
-  transform:translateX(120%); opacity:0;
-  transition:all .5s var(--ease);
-}
-.toast.show { transform:translateX(0); opacity:1; }
-.toast-ic { color:var(--g); font-size:1.1rem; flex-shrink:0; }
-.toast-body strong { display:block; color:#fff; font-size:.88rem; margin-bottom:2px; }
-.toast-body span { color:rgba(255,255,255,.45); font-size:.8rem; }
-
-/* ══ REVEAL ══ */
-.r { opacity:0; transform:translateY(36px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
-.r.in { opacity:1; transform:translateY(0); }
-.rf { opacity:0; transition:opacity .9s var(--ease); }
-.rf.in { opacity:1; }
-[data-d="1"]{transition-delay:.12s}[data-d="2"]{transition-delay:.22s}[data-d="3"]{transition-delay:.32s}[data-d="4"]{transition-delay:.44s}
-
-/* btn loading */
-.loading { pointer-events:none; opacity:.6; position:relative; }
-.loading span::after { content:'...'; animation:dots 1.2s steps(3,end) infinite; display:inline-block; width:1.5em; overflow:hidden; vertical-align:bottom; }
-@keyframes dots { 0%{width:0} 100%{width:1.5em} }
-
-/* ══ RESPONSIVE ══ */
-@media(max-width:1100px){
-  .hero{grid-template-columns:1fr}
-  .h-right{display:none}
-  .h-left{padding:70px 48px;min-height:100svh;justify-content:center}
-  .about-grid{grid-template-columns:1fr;gap:48px}
-  .about-sm-img{display:none}
-  .svc-head{flex-direction:column;gap:1.2rem;align-items:flex-start}
-  .svc-grid{grid-template-columns:repeat(2,1fr)}
-  .numbers-inner{grid-template-columns:repeat(2,1fr)}
-  .num-item:nth-child(2){border-right:none}
-  .miss-grid{grid-template-columns:1fr;gap:48px}
-  .miss-left h2{position:static}
-  .cont-grid{grid-template-columns:1fr;gap:48px}
-  .cont-info{position:static}
-  .ft-grid{grid-template-columns:1fr 1fr;gap:40px}
-  .g2{grid-template-columns:1fr}
-}
-@media(max-width:768px){
-  section{padding:80px 0}
-  .ham{display:flex}
-  .hnav,.hbtn{display:none}
-  .hdr-bar{padding:0 24px}
-  .h-left{padding:50px 24px}
-  .hero h1{font-size:2.6rem}
-  .h-stats{grid-template-columns:1fr 1fr;gap:1.2rem;border-top:none;padding-top:0}
-  .h-stat{padding:0;border-left:none!important}
-  .h-btns{flex-direction:column;max-width:280px}
-  .svc-grid{grid-template-columns:1fr}
-  .gal-head{flex-direction:column;gap:1.2rem;align-items:flex-start}
-  .gal-filters{flex-wrap:wrap}
-  .cta-feats{grid-template-columns:1fr}
-  .cta-btns{flex-direction:column;max-width:280px}
-  .ft-grid{grid-template-columns:1fr;gap:32px}
-  .ft-bottom{flex-direction:column;gap:8px;text-align:center}
-  .mod-top,.mod-body{padding:2rem 1.8rem}
-  /* Gallery mobile → horizontal scroll */
-  .gal-grid{
-    display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;gap:10px;padding-bottom:16px;
-    scrollbar-width:thin;scrollbar-color:var(--g) transparent;
-  }
-  .gal-grid::-webkit-scrollbar{height:2px}
-  .gal-grid::-webkit-scrollbar-thumb{background:var(--g)}
-  .gi{flex:0 0 78vw;max-width:320px;scroll-snap-align:start;aspect-ratio:4/3!important}
-  .gi-cap{opacity:1}
-}
-@media(max-width:480px){
-  .h-left{padding:40px 20px}
-  .hero h1{font-size:2.2rem}
-  .about-years-badge{left:-16px}
-  .num-val{font-size:3rem}
-  .num-item{padding:44px 24px}
-  .vals{grid-template-columns:1fr}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gótica SU LDA — Construção de Excelência</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,700;1,9..144,200;1,9..144,300&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ----- VARIÁVEIS ----- */
+    :root {
+      --verde: #007A38;
+      --verde-claro: #00A04D;
+      --verde-bg: rgba(0,122,56,0.07);
+      --navy: #08172E;
+      --bg: #FAFAF8;
+      --warm: #F5F4F0;
+      --branco: #ffffff;
+      --cinza: #3d3d4a;
+      --cinza-claro: #E4E7EC;
+      --serif: 'Fraunces', serif;
+      --sans: 'Syne', sans-serif;
+      --ease: cubic-bezier(0.16,1,0.3,1);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--cinza);
+      overflow-x: hidden;
+      line-height:1.5;
+    }
+    img { display:block; max-width:100%; height:auto; }
+    a { text-decoration:none; color:inherit; }
+    button { background:none; border:none; font-family:var(--sans); cursor:pointer; }
+    /* ----- UTILITÁRIOS ----- */
+    .wrap { max-width:1240px; margin:0 auto; padding:0 48px; }
+    @media (max-width:600px){ .wrap{ padding:0 24px; } }
+    section { padding:100px 0; }
+    .tag {
+      display:inline-flex; align-items:center; gap:10px;
+      font-size:0.7rem; font-weight:600; letter-spacing:0.2em;
+      text-transform:uppercase; color:var(--verde);
+    }
+    .tag::before {
+      content:''; width:32px; height:1.5px;
+      background:currentColor;
+    }
+    .display {
+      font-family:var(--serif);
+      font-weight:200;
+      line-height:1.1;
+      color:var(--navy);
+    }
+    .display i { font-style:italic; color:var(--verde); }
+    .display b { font-weight:700; }
+    /* ----- BOTÕES ----- */
+    .btn {
+      display:inline-flex; align-items:center; gap:10px;
+      font-size:0.8rem; font-weight:600; letter-spacing:0.08em;
+      text-transform:uppercase; transition:color 0.3s;
+    }
+    .btn-fill {
+      background:var(--verde); color:var(--branco);
+      padding:0.9rem 2rem; border-radius:3px;
+      overflow:hidden; position:relative;
+    }
+    .btn-fill::before {
+      content:''; position:absolute; inset:0;
+      background:var(--verde-claro);
+      transform:translateY(100%);
+      transition:transform 0.4s var(--ease);
+    }
+    .btn-fill span { position:relative; z-index:1; }
+    .btn-fill:hover::before { transform:translateY(0); }
+    .btn-line {
+      color:var(--navy); gap:12px;
+      padding-bottom:2px; border-bottom:1.5px solid var(--navy);
+    }
+    .btn-line:hover { color:var(--verde); border-color:var(--verde); }
+    .btn-line i { transition:transform 0.3s; }
+    .btn-line:hover i { transform:translateX(5px); }
+    /* ----- FORMULÁRIOS ----- */
+    .field { margin-bottom:1.2rem; }
+    .field label {
+      display:block; font-size:0.7rem; font-weight:600;
+      letter-spacing:0.12em; text-transform:uppercase;
+      color:var(--navy); margin-bottom:5px;
+    }
+    .field input, .field select, .field textarea {
+      width:100%; padding:0.8rem 1rem;
+      border:none; border-bottom:1.5px solid var(--cinza-claro);
+      background:transparent;
+      font-family:var(--sans); font-size:0.9rem;
+      transition:border-color 0.3s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline:none; border-color:var(--verde);
+    }
+    .field textarea { min-height:100px; resize:vertical; }
+    .g2 { display:grid; grid-template-columns:1fr 1fr; gap:0 2rem; }
+    @media (max-width:600px){ .g2{ grid-template-columns:1fr; } }
+    .fstatus {
+      display:none; padding:0.8rem 1rem;
+      font-size:0.85rem; align-items:center; gap:10px;
+      border-radius:3px; margin-bottom:1rem;
+    }
+    .fstatus.ok { display:flex; background:var(--verde-bg); color:var(--verde); border:1px solid rgba(0,122,56,0.2); }
+    .fstatus.err { display:flex; background:rgba(200,0,0,0.05); color:#b91c1c; border:1px solid rgba(200,0,0,0.15); }
+    /* ----- HEADER ----- */
+    #header {
+      position:fixed; top:0; left:0; right:0; z-index:800;
+    }
+    .header-bar {
+      display:flex; align-items:center; justify-content:space-between;
+      height:72px; padding:0 48px;
+      background:rgba(250,250,248,0.96);
+      backdrop-filter:blur(24px);
+      border-bottom:1px solid transparent;
+      transition:border-color 0.4s, box-shadow 0.4s;
+    }
+    #header.stuck .header-bar { border-color:var(--cinza-claro); box-shadow:0 8px 40px rgba(0,0,0,0.05); }
+    .logo { height:40px; width:auto; }
+    .nav-desktop { display:flex; align-items:center; gap:2.4rem; }
+    .nav-desktop a {
+      font-size:0.8rem; font-weight:600; letter-spacing:0.1em;
+      text-transform:uppercase; color:var(--cinza);
+      position:relative;
+    }
+    .nav-desktop a::after {
+      content:''; position:absolute; bottom:-3px; left:0;
+      width:0; height:1.5px; background:var(--verde);
+      transition:width 0.35s var(--ease);
+    }
+    .nav-desktop a:hover { color:var(--verde); }
+    .nav-desktop a:hover::after { width:100%; }
+    /* menu mobile */
+    .hamburger {
+      display:none; flex-direction:column; gap:5px;
+      width:32px; height:32px; justify-content:center;
+    }
+    .hamburger span {
+      display:block; height:1.5px; background:var(--navy);
+      transition:0.4s;
+    }
+    .hamburger span:nth-child(1) { width:28px; }
+    .hamburger span:nth-child(2) { width:20px; margin-left:auto; }
+    .hamburger span:nth-child(3) { width:14px; margin-left:auto; }
+    .hamburger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); width:22px; }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); width:22px; margin-left:0; }
+    #menu-mobile {
+      position:fixed; inset:0; z-index:700;
+      background:var(--navy);
+      display:flex; flex-direction:column; justify-content:center;
+      padding:56px 48px;
+      clip-path:circle(0% at calc(100% - 60px) 36px);
+      transition:clip-path 0.7s var(--ease);
+    }
+    #menu-mobile.open { clip-path:circle(150% at calc(100% - 60px) 36px); }
+    .mobile-link {
+      font-family:var(--serif); font-size:clamp(2rem,7vw,3.5rem);
+      font-weight:200; color:rgba(255,255,255,0.5);
+      padding:0.35rem 0; border-bottom:1px solid rgba(255,255,255,0.07);
+      transition:color 0.3s, padding-left 0.3s;
+    }
+    .mobile-link:hover { color:#fff; padding-left:12px; }
+    .mobile-info {
+      position:absolute; bottom:48px; left:48px;
+      color:rgba(255,255,255,0.3); font-size:0.8rem;
+    }
+    @media (max-width:768px){
+      .nav-desktop, .header-bar .btn-fill { display:none; }
+      .hamburger { display:flex; }
+    }
+    /* ----- HERO ----- */
+    .hero {
+      min-height:100svh; padding-top:72px;
+      display:grid; grid-template-columns:1fr 1fr;
+      background:var(--navy);
+    }
+    .hero-left {
+      display:flex; flex-direction:column; justify-content:center;
+      padding:80px 60px 80px 48px;
+      background:var(--navy);
+      color:var(--branco);
+    }
+    .hero-kicker {
+      display:flex; align-items:center; gap:10px; margin-bottom:2rem;
+      font-size:0.7rem; font-weight:600; letter-spacing:0.2em;
+      text-transform:uppercase; color:rgba(0,200,90,0.8);
+    }
+    .hero-kicker-dot {
+      width:6px; height:6px; border-radius:50%;
+      background:var(--verde);
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-family:var(--serif); font-weight:200;
+      font-size:clamp(2.8rem,5vw,5rem);
+      color:#fff; line-height:1.05; margin-bottom:1.5rem;
+    }
+    .hero h1 em { font-style:italic; color:var(--verde); }
+    .hero h1 strong { font-weight:700; display:block; }
+    .hero-desc {
+      color:rgba(255,255,255,0.5); font-size:0.95rem;
+      max-width:420px; margin-bottom:2.5rem;
+    }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3rem; }
+    .hero-stats {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      border-top:1px solid rgba(255,255,255,0.1);
+      padding-top:2rem;
+    }
+    .hero-stat { padding-right:1.5rem; }
+    .hero-stat + .hero-stat { padding-left:1.5rem; border-left:1px solid rgba(255,255,255,0.1); }
+    .hero-stat-num {
+      font-family:var(--serif); font-size:2.8rem; font-weight:200;
+      color:#fff; line-height:1;
+    }
+    .hero-stat-num em { color:var(--verde); font-style:normal; }
+    .hero-stat-label {
+      font-size:0.7rem; font-weight:600; letter-spacing:0.1em;
+      text-transform:uppercase; color:rgba(255,255,255,0.35);
+      margin-top:6px;
+    }
+    .hero-right {
+      position:relative; overflow:hidden;
+    }
+    .hero-img {
+      position:absolute; inset:0; object-fit:cover;
+      width:100%; height:100%;
+      transition:transform 8s ease;
+    }
+    .hero-img:hover { transform:scale(1.02); }
+    .hero-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to right, var(--navy) 0%, rgba(8,23,46,0.35) 40%, transparent 80%);
+    }
+    .hero-float {
+      position:absolute; bottom:80px; right:48px;
+      background:rgba(255,255,255,0.08); backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:12px; padding:1.5rem 2rem;
+      display:flex; align-items:center; gap:1.2rem;
+    }
+    .hero-float-ic {
+      width:48px; height:48px; border-radius:10px;
+      background:var(--verde); display:flex; align-items:center; justify-content:center;
+    }
+    .hero-float-ic i { color:#fff; font-size:1.2rem; }
+    .hero-float p { font-size:0.7rem; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom:3px; }
+    .hero-float strong { color:#fff; font-size:0.95rem; font-weight:600; }
+    @media (max-width:1100px){
+      .hero{ grid-template-columns:1fr; }
+      .hero-right{ display:none; }
+    }
+    @media (max-width:768px){
+      .hero-left{ padding:50px 24px; }
+      .hero-stats{ grid-template-columns:1fr 1fr; border-top:none; padding-top:0; gap:1rem; }
+      .hero-stat{ padding:0; border-left:none!important; }
+      .hero-stat + .hero-stat{ border-left:none; }
+    }
+    /* ----- TICKER ----- */
+    .ticker {
+      overflow:hidden; background:var(--verde);
+      padding:14px 0; white-space:nowrap;
+    }
+    .ticker-track {
+      display:inline-block; animation:tick 25s linear infinite;
+    }
+    .ticker-track span {
+      display:inline-block; padding:0 2rem;
+      font-size:0.7rem; font-weight:600; letter-spacing:0.15em;
+      text-transform:uppercase; color:rgba(255,255,255,0.7);
+    }
+    .ticker-track span::after {
+      content:'✦'; margin-left:2rem; color:rgba(255,255,255,0.3);
+    }
+    .ticker-track span:last-child::after { display:none; }
+    @keyframes tick { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+    /* ----- SOBRE ----- */
+    .about-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:80px;
+      align-items:center;
+    }
+    .about-media {
+      position:relative;
+    }
+    .about-media-main {
+      width:100%; aspect-ratio:3/4; object-fit:cover;
+      border-radius:2px; box-shadow:0 32px 80px rgba(0,0,0,0.12);
+    }
+    .about-media-small {
+      position:absolute; bottom:-40px; right:-40px;
+      width:52%; aspect-ratio:1; object-fit:cover;
+      border-radius:2px; box-shadow:0 20px 60px rgba(0,0,0,0.15);
+      border:6px solid var(--bg);
+    }
+    .about-years {
+      position:absolute; top:40px; left:-32px;
+      background:var(--verde); color:#fff; text-align:center;
+      padding:1.4rem 1.6rem; border-radius:4px;
+      box-shadow:0 16px 48px rgba(0,122,56,0.35);
+    }
+    .about-years strong {
+      font-family:var(--serif); font-size:2.4rem; font-weight:200;
+      display:block; line-height:1;
+    }
+    .about-years span {
+      font-size:0.65rem; font-weight:600; letter-spacing:0.12em;
+      text-transform:uppercase; opacity:0.8;
+    }
+    .about-text h2 { font-size:clamp(2rem,3vw,3rem); margin:1.2rem 0 1.5rem; }
+    .about-text p { font-size:0.95rem; line-height:1.8; margin-bottom:1rem; color:var(--cinza); }
+    .about-text p b { color:var(--navy); font-weight:600; }
+    .about-line { width:52px; height:2px; background:var(--verde); margin:2rem 0; }
+    .tags {
+      display:flex; flex-wrap:wrap; gap:0.5rem;
+      margin:1.8rem 0;
+    }
+    .tag-chip {
+      background:var(--verde-bg); border:1px solid rgba(0,122,56,0.15);
+      color:var(--verde); font-size:0.7rem; font-weight:600;
+      text-transform:uppercase; padding:0.4rem 1rem;
+      border-radius:100px;
+    }
+    @media (max-width:1100px){
+      .about-grid{ grid-template-columns:1fr; gap:48px; }
+      .about-media-small{ display:none; }
+    }
+    /* ----- SERVIÇOS ----- */
+    .services { background:var(--warm); }
+    .services-header {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      margin-bottom:60px;
+    }
+    .services-header h2 { font-size:clamp(2rem,3vw,3rem); max-width:400px; }
+    .services-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; background:var(--cinza-claro);
+    }
+    .service-card {
+      background:var(--bg); padding:2rem;
+      position:relative; overflow:hidden;
+      transition:background 0.4s;
+    }
+    .service-card::after {
+      content:''; position:absolute; bottom:0; left:0; right:0;
+      height:2.5px; background:var(--verde);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform 0.5s var(--ease);
+    }
+    .service-card:hover { background:var(--branco); }
+    .service-card:hover::after { transform:scaleX(1); }
+    .service-num {
+      font-family:var(--serif); font-size:4rem; font-weight:200;
+      color:rgba(0,0,0,0.04); line-height:1; margin-bottom:1rem;
+    }
+    .service-icon {
+      width:42px; height:42px; border-radius:8px;
+      background:var(--verde-bg); display:flex;
+      align-items:center; justify-content:center;
+      margin-bottom:1rem;
+    }
+    .service-icon i { color:var(--verde); font-size:1.1rem; }
+    .service-card h3 {
+      font-family:var(--serif); font-size:1.2rem;
+      font-weight:300; color:var(--navy); margin-bottom:0.5rem;
+    }
+    .service-card p {
+      font-size:0.85rem; color:var(--cinza); line-height:1.7;
+      margin-bottom:1.2rem;
+    }
+    .service-thumb {
+      border-radius:4px; overflow:hidden; height:130px;
+    }
+    .service-thumb img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform 0.7s var(--ease);
+    }
+    .service-card:hover .service-thumb img { transform:scale(1.08); }
+    @media (max-width:1100px){
+      .services-grid{ grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px){
+      .services-grid{ grid-template-columns:1fr; }
+    }
+    /* ----- NÚMEROS ----- */
+    .numbers {
+      background:var(--navy);
+      display:grid; grid-template-columns:repeat(4,1fr);
+    }
+    .number-item {
+      padding:64px 48px; text-align:center;
+      border-right:1px solid rgba(255,255,255,0.07);
+      position:relative; overflow:hidden;
+      transition:background 0.4s;
+    }
+    .number-item:last-child { border-right:none; }
+    .number-item::before {
+      content:''; position:absolute; inset:0;
+      background:var(--verde);
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform 0.4s var(--ease);
+    }
+    .number-item:hover::before { transform:scaleY(1); }
+    .number-item > div { position:relative; z-index:1; }
+    .number-value {
+      font-family:var(--serif); font-size:4rem; font-weight:200;
+      color:#fff; line-height:1; margin-bottom:0.5rem;
+    }
+    .number-value em { font-style:normal; color:var(--verde); transition:color 0.4s; }
+    .number-item:hover .number-value em { color:rgba(255,255,255,0.6); }
+    .number-label {
+      font-size:0.65rem; font-weight:600; letter-spacing:0.18em;
+      text-transform:uppercase; color:rgba(255,255,255,0.35);
+      transition:color 0.4s;
+    }
+    .number-item:hover .number-label { color:rgba(255,255,255,0.7); }
+    @media (max-width:1100px){
+      .numbers{ grid-template-columns:repeat(2,1fr); }
+      .number-item:nth-child(2){ border-right:none; }
+    }
+    @media (max-width:768px){
+      .numbers{ grid-template-columns:1fr; }
+      .number-item{ border-right:none; }
+    }
+    /* ----- GALERIA ----- */
+    .gallery-header {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      margin-bottom:48px;
+    }
+    .gallery-header h2 { font-size:clamp(2rem,3vw,3rem); }
+    .gallery-filters {
+      display:flex; gap:0.5rem;
+    }
+    .filter-btn {
+      padding:0.45rem 1.2rem; border-radius:100px;
+      font-size:0.7rem; font-weight:600; letter-spacing:0.1em;
+      text-transform:uppercase; border:1.5px solid var(--cinza-claro);
+      background:transparent; color:var(--cinza);
+      transition:all 0.25s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active { background:var(--verde); color:#fff; border-color:var(--verde); }
+    .gallery-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    .gallery-item {
+      position:relative; border-radius:4px; overflow:hidden;
+      cursor:zoom-in; background:var(--warm);
+    }
+    .gallery-item:nth-child(1) { aspect-ratio:4/5; }
+    .gallery-item:nth-child(2) { aspect-ratio:4/3; }
+    .gallery-item:nth-child(3) { aspect-ratio:1/1; }
+    .gallery-item:nth-child(4) { aspect-ratio:4/3; }
+    .gallery-item:nth-child(5) { aspect-ratio:4/5; }
+    .gallery-item:nth-child(6) { aspect-ratio:1/1; }
+    .gallery-item img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform 0.8s var(--ease), filter 0.5s;
+    }
+    .gallery-item:hover img { transform:scale(1.07); filter:brightness(0.8); }
+    .gallery-caption {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(8,23,46,0.88) 0%, transparent 50%);
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding:1.5rem; opacity:0;
+      transition:opacity 0.4s;
+    }
+    .gallery-item:hover .gallery-caption { opacity:1; }
+    .gallery-caption h4 {
+      font-family:var(--serif); font-size:1.1rem; font-weight:300;
+      color:#fff; margin-bottom:4px;
+    }
+    .gallery-caption p { font-size:0.75rem; color:rgba(255,255,255,0.6); }
+    @media (max-width:768px){
+      .gallery-header{ flex-direction:column; align-items:flex-start; gap:1rem; }
+      .gallery-grid{
+        display:flex; overflow-x:auto; gap:10px;
+        scroll-snap-type:x mandatory;
+        padding-bottom:1rem;
+      }
+      .gallery-item{
+        flex:0 0 80vw; max-width:300px;
+        scroll-snap-align:start;
+        aspect-ratio:4/3 !important;
+      }
+      .gallery-caption{ opacity:1; }
+    }
+    /* ----- MISSÃO ----- */
+    .mission-grid {
+      display:grid; grid-template-columns:380px 1fr;
+      gap:60px;
+    }
+    .mission-left h2 {
+      font-size:clamp(2rem,3vw,3rem);
+      position:sticky; top:100px;
+    }
+    .mission-cards {
+      display:flex; flex-direction:column; gap:1px;
+      background:var(--cinza-claro);
+      border-radius:4px; overflow:hidden;
+    }
+    .mission-card {
+      background:var(--bg); padding:2rem;
+      display:grid; grid-template-columns:52px 1fr;
+      gap:1.4rem;
+      transition:background 0.3s;
+    }
+    .mission-card:hover { background:var(--branco); }
+    .mission-icon {
+      width:52px; height:52px; border-radius:10px;
+      background:var(--verde-bg); display:flex;
+      align-items:center; justify-content:center;
+    }
+    .mission-icon i { color:var(--verde); font-size:1.2rem; }
+    .mission-card h3 {
+      font-family:var(--serif); font-size:1.2rem;
+      font-weight:300; color:var(--navy); margin-bottom:0.5rem;
+    }
+    .mission-card p { font-size:0.9rem; line-height:1.7; color:var(--cinza); }
+    .values-grid {
+      display:grid; grid-template-columns:repeat(2,1fr);
+      gap:1px; background:var(--cinza-claro);
+      border-radius:4px; overflow:hidden; margin-top:1px;
+    }
+    .value-item {
+      background:var(--bg); padding:1.2rem 1.4rem;
+      display:flex; align-items:center; gap:0.8rem;
+      transition:background 0.3s;
+    }
+    .value-item:hover { background:var(--branco); }
+    .value-icon {
+      width:32px; height:32px; border-radius:7px;
+      background:var(--verde-bg); display:flex;
+      align-items:center; justify-content:center;
+    }
+    .value-icon i { color:var(--verde); font-size:0.85rem; }
+    .value-item span { font-size:0.85rem; font-weight:600; color:var(--navy); }
+    @media (max-width:1100px){
+      .mission-grid{ grid-template-columns:1fr; }
+      .mission-left h2{ position:static; }
+    }
+    @media (max-width:768px){
+      .values-grid{ grid-template-columns:1fr; }
+    }
+    /* ----- CTA ----- */
+    .cta {
+      padding:120px 0; position:relative;
+      background:var(--navy);
+      color:#fff;
+    }
+    .cta-bg {
+      position:absolute; inset:0;
+      object-fit:cover; width:100%; height:100%;
+      opacity:0.1;
+    }
+    .cta-glow {
+      position:absolute; top:-200px; right:-200px;
+      width:600px; height:600px; border-radius:50%;
+      background:radial-gradient(circle, rgba(0,122,56,0.2) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .cta-inner {
+      position:relative; z-index:1;
+      max-width:700px;
+    }
+    .cta-inner h2 {
+      font-size:clamp(2.2rem,4vw,3.8rem);
+      color:#fff; margin:1rem 0 1.2rem;
+    }
+    .cta-inner > p {
+      color:rgba(255,255,255,0.5);
+      font-size:0.95rem; line-height:1.8;
+      margin-bottom:2.5rem;
+    }
+    .cta-features {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:0.8rem; margin-bottom:3rem;
+    }
+    .cta-feature {
+      display:flex; align-items:center; gap:0.8rem;
+    }
+    .cta-feature i {
+      width:28px; height:28px; border-radius:50%;
+      background:rgba(0,122,56,0.2);
+      border:1px solid rgba(0,122,56,0.3);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--verde); font-size:0.7rem;
+    }
+    .cta-feature span { font-size:0.85rem; color:rgba(255,255,255,0.7); }
+    .cta-buttons { display:flex; gap:1rem; flex-wrap:wrap; }
+    @media (max-width:768px){
+      .cta-features{ grid-template-columns:1fr; }
+    }
+    /* ----- CONTATO ----- */
+    .contact-grid {
+      display:grid; grid-template-columns:1fr 1.5fr;
+      gap:80px; margin-top:60px;
+    }
+    .contact-info {
+      position:sticky; top:100px;
+    }
+    .contact-info h3 {
+      font-family:var(--serif); font-size:2rem;
+      font-weight:200; color:var(--navy); margin-bottom:0.5rem;
+    }
+    .contact-info > p {
+      font-size:0.9rem; color:var(--cinza);
+      margin-bottom:2rem; line-height:1.7;
+    }
+    .contact-item {
+      display:flex; gap:1rem; margin-bottom:1.8rem;
+    }
+    .contact-icon {
+      width:44px; height:44px; min-width:44px;
+      border-radius:10px; background:var(--verde-bg);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .contact-icon i { color:var(--verde); font-size:1rem; }
+    .contact-label {
+      font-size:0.65rem; font-weight:600; letter-spacing:0.12em;
+      text-transform:uppercase; color:var(--cinza); margin-bottom:4px;
+    }
+    .contact-value {
+      font-size:0.9rem; color:var(--navy); font-weight:500;
+    }
+    .contact-value a { color:inherit; transition:color 0.2s; }
+    .contact-value a:hover { color:var(--verde); }
+    .social-row {
+      display:flex; gap:0.6rem; margin-top:2rem;
+      padding-top:2rem; border-top:1.5px solid var(--cinza-claro);
+    }
+    .social-link {
+      width:40px; height:40px; border-radius:10px;
+      border:1.5px solid var(--cinza-claro);
+      color:var(--cinza); display:flex;
+      align-items:center; justify-content:center;
+      font-size:0.9rem; transition:all 0.25s;
+    }
+    .social-link:hover {
+      border-color:var(--verde); color:var(--verde);
+      background:var(--verde-bg);
+    }
+    .contact-form {
+      background:var(--branco); border-radius:6px;
+      padding:2.5rem; box-shadow:0 4px 40px rgba(0,0,0,0.06);
+      border:1.5px solid var(--cinza-claro);
+    }
+    .contact-form h3 {
+      font-family:var(--serif); font-size:1.8rem;
+      font-weight:200; color:var(--navy); margin-bottom:1.5rem;
+    }
+    @media (max-width:1100px){
+      .contact-grid{ grid-template-columns:1fr; }
+      .contact-info{ position:static; }
+    }
+    /* ----- FOOTER ----- */
+    footer {
+      background:var(--navy); padding:60px 0 32px;
+      color:rgba(255,255,255,0.3);
+    }
+    .footer-grid {
+      display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+      gap:60px; padding-bottom:48px;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .footer-logo img { height:36px; margin-bottom:1.2rem; }
+    .footer-about {
+      font-size:0.85rem; line-height:1.7;
+      max-width:280px;
+    }
+    .footer-col h4 {
+      font-size:0.65rem; font-weight:600; letter-spacing:0.2em;
+      text-transform:uppercase; color:rgba(255,255,255,0.4);
+      margin-bottom:1.5rem;
+    }
+    .footer-col ul { list-style:none; }
+    .footer-col li { margin-bottom:0.7rem; }
+    .footer-col a {
+      font-size:0.85rem; color:rgba(255,255,255,0.28);
+      transition:color 0.2s;
+    }
+    .footer-col a:hover { color:rgba(255,255,255,0.75); }
+    .footer-col p {
+      font-size:0.85rem; color:rgba(255,255,255,0.28);
+      display:flex; align-items:center; gap:8px;
+      margin-bottom:0.7rem;
+    }
+    .footer-col i { color:var(--verde); width:16px; font-size:0.8rem; }
+    .footer-bottom {
+      padding-top:28px;
+      display:flex; justify-content:space-between;
+      font-size:0.75rem; color:rgba(255,255,255,0.2);
+    }
+    @media (max-width:1100px){
+      .footer-grid{ grid-template-columns:1fr 1fr; gap:40px; }
+    }
+    @media (max-width:768px){
+      .footer-grid{ grid-template-columns:1fr; }
+      .footer-bottom{ flex-direction:column; gap:8px; text-align:center; }
+    }
+    /* ----- MODAL ----- */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(4,10,20,0.9); backdrop-filter:blur(16px);
+      display:flex; align-items:center; justify-content:center;
+      padding:24px; opacity:0; pointer-events:none;
+      transition:opacity 0.4s var(--ease);
+    }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal {
+      background:var(--bg); border-radius:6px;
+      width:100%; max-width:680px; max-height:90vh;
+      overflow-y:auto; transform:translateY(32px) scale(0.97);
+      transition:transform 0.5s var(--ease);
+      box-shadow:0 48px 120px rgba(0,0,0,0.35);
+    }
+    .modal-overlay.open .modal { transform:translateY(0) scale(1); }
+    .modal-header {
+      background:var(--navy); padding:2rem 2.5rem;
+      display:flex; justify-content:space-between;
+      align-items:flex-start;
+    }
+    .modal-header h2 {
+      font-family:var(--serif); font-size:2rem;
+      font-weight:200; color:#fff;
+    }
+    .modal-header p {
+      font-size:0.75rem; color:rgba(255,255,255,0.4);
+      text-transform:uppercase; letter-spacing:0.08em;
+      margin-top:5px;
+    }
+    .modal-close {
+      width:36px; height:36px; border-radius:50%;
+      border:1.5px solid rgba(255,255,255,0.15);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.5); font-size:0.9rem;
+      transition:all 0.25s; cursor:pointer;
+    }
+    .modal-close:hover {
+      border-color:var(--verde); color:var(--verde);
+      background:rgba(0,122,56,0.1);
+    }
+    .modal-body { padding:2.5rem; }
+    .mstatus {
+      display:none; padding:0.8rem 1rem;
+      font-size:0.85rem; align-items:center; gap:10px;
+      border-radius:3px; margin-bottom:1.2rem;
+    }
+    .mstatus.ok { display:flex; background:var(--verde-bg); color:var(--verde); border:1px solid rgba(0,122,56,0.2); }
+    .mstatus.err { display:flex; background:rgba(200,0,0,0.05); color:#b91c1c; border:1px solid rgba(200,0,0,0.15); }
+    /* ----- LIGHTBOX ----- */
+    .lightbox {
+      position:fixed; inset:0; z-index:1100;
+      background:rgba(0,0,0,0.96);
+      display:flex; align-items:center; justify-content:center;
+      padding:40px; opacity:0; pointer-events:none;
+      transition:opacity 0.35s;
+    }
+    .lightbox.open { opacity:1; pointer-events:all; }
+    .lightbox img {
+      max-width:min(900px,90vw); max-height:80vh;
+      border-radius:4px; object-fit:contain;
+    }
+    .lightbox-caption {
+      position:absolute; bottom:20px; left:0; right:0;
+      text-align:center; color:rgba(255,255,255,0.5);
+      font-size:0.85rem;
+    }
+    .lightbox-close {
+      position:absolute; top:28px; right:28px;
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(255,255,255,0.08);
+      border:1.5px solid rgba(255,255,255,0.12);
+      color:#fff; display:flex; align-items:center;
+      justify-content:center; font-size:1rem;
+      transition:all 0.25s; cursor:pointer;
+    }
+    .lightbox-close:hover {
+      background:var(--verde); border-color:var(--verde);
+    }
+    /* ----- TOAST ----- */
+    .toast {
+      position:fixed; bottom:32px; right:32px; z-index:2000;
+      background:var(--navy); color:#fff; border-radius:6px;
+      padding:1rem 1.5rem; min-width:280px; max-width:400px;
+      display:flex; align-items:center; gap:14px;
+      border-left:3px solid var(--verde);
+      box-shadow:0 20px 60px rgba(0,0,0,0.25);
+      transform:translateX(120%); opacity:0;
+      transition:all 0.5s var(--ease);
+    }
+    .toast.show { transform:translateX(0); opacity:1; }
+    .toast-icon { color:var(--verde); font-size:1.1rem; }
+    .toast-body strong { display:block; font-size:0.9rem; margin-bottom:2px; }
+    .toast-body span { color:rgba(255,255,255,0.45); font-size:0.8rem; }
+    /* ----- ANIMAÇÕES SCROLL ----- */
+    .reveal {
+      opacity:0; transform:translateY(30px);
+      transition:opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .reveal.in { opacity:1; transform:translateY(0); }
+    .reveal-fast {
+      opacity:0; transition:opacity 0.6s var(--ease);
+    }
+    .reveal-fast.in { opacity:1; }
+    [data-delay="1"]{ transition-delay:0.12s; }
+    [data-delay="2"]{ transition-delay:0.24s; }
+    [data-delay="3"]{ transition-delay:0.36s; }
+  </style>
 </head>
 <body>
+  <!-- CURSOR (opcional, removido para leveza) -->
 
-<!-- CUSTOM CURSOR -->
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-
-<!-- ════════════════════════════════════
-     HEADER
-════════════════════════════════════ -->
-<header id="hdr">
-  <div class="hdr-bar">
-    <a href="#inicio"><img src="logo.png" alt="Gótica SU LDA" class="logo"></a>
-    <nav class="hnav">
-      <a href="#sobre">Sobre</a>
-      <a href="#servicos">Serviços</a>
-      <a href="#galeria">Projetos</a>
-      <a href="#missao">Missão</a>
-      <a href="#contato">Contacto</a>
-    </nav>
-    <button class="btn btn-fill hbtn" id="t0"><span>Solicitar Orçamento</span></button>
-    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</header>
-
-<!-- Mobile Nav -->
-<div id="mob">
-  <a href="#sobre" class="mob-link">Sobre</a>
-  <a href="#servicos" class="mob-link">Serviços</a>
-  <a href="#galeria" class="mob-link">Projetos</a>
-  <a href="#missao" class="mob-link">Missão</a>
-  <a href="#contato" class="mob-link">Contacto</a>
-  <div class="mob-cta"><button class="btn btn-fill" id="t0m" style="width:100%;justify-content:center"><span>Solicitar Orçamento</span></button></div>
-  <div class="mob-info">construgotica@gmail.com &nbsp;·&nbsp; 84 263 1768</div>
-</div>
-
-
-<!-- ════════════════════════════════════
-     HERO
-════════════════════════════════════ -->
-<section class="hero" id="inicio">
-  <div class="h-left">
-    <div class="h-kicker"><div class="h-kicker-dot"></div>Construção Civil · Pemba, Moçambique</div>
-    <h1>
-      Construindo<br>
-      <em>futuros</em> com<br>
-      <strong>excelência</strong>
-    </h1>
-    <p class="hero-desc">Empresa constituída por técnicos altamente qualificados, comprometida com o desenvolvimento sustentável e a satisfação total dos nossos clientes.</p>
-    <div class="h-btns">
-      <button class="btn btn-fill" id="t1"><span>Solicitar Orçamento</span></button>
-      <a href="#servicos" class="btn btn-ghost"><span>Ver Serviços</span></a>
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-bar">
+      <a href="#inicio"><img src="logo.png" alt="Gótica SU LDA" class="logo"></a>
+      <nav class="nav-desktop">
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#galeria">Projetos</a>
+        <a href="#missao">Missão</a>
+        <a href="#contato">Contacto</a>
+      </nav>
+      <button class="btn btn-fill" id="openModalBtn"><span>Solicitar Orçamento</span></button>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
-    <div class="h-stats">
-      <div class="h-stat"><div class="h-stat-n"><span id="c1">0</span><em>+</em></div><div class="h-stat-l">Projetos</div></div>
-      <div class="h-stat"><div class="h-stat-n"><span id="c2">0</span><em>+</em></div><div class="h-stat-l">Anos</div></div>
-      <div class="h-stat"><div class="h-stat-n"><span id="c3">0</span><em>+</em></div><div class="h-stat-l">Clientes</div></div>
-      <div class="h-stat"><div class="h-stat-n"><span id="c4">0</span><em>+</em></div><div class="h-stat-l">Profissionais</div></div>
-    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <div id="menu-mobile">
+    <a href="#sobre" class="mobile-link">Sobre</a>
+    <a href="#servicos" class="mobile-link">Serviços</a>
+    <a href="#galeria" class="mobile-link">Projetos</a>
+    <a href="#missao" class="mobile-link">Missão</a>
+    <a href="#contato" class="mobile-link">Contacto</a>
+    <div class="mobile-info">construgotica@gmail.com · 84 263 1768</div>
   </div>
-  <div class="h-right">
-    <img src="imagem_1.jpeg" alt="Construção" class="h-img">
-    <div class="h-overlay"></div>
-    <div class="h-year">Gótica SU LDA · Est. 2010</div>
-    <div class="h-float">
-      <div class="h-float-ic"><i class="fas fa-award"></i></div>
-      <div><p>Empresa certificada</p><strong>Qualidade Garantida</strong></div>
-    </div>
-  </div>
-</section>
 
-
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <span class="ticker-item">Construção Civil<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Pavimentação<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Betão Armado<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Instalações Hidráulicas<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Sistemas de Drenagem<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Vedações e Cercas<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Gestão de Obras<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Infraestrutura<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Construção Civil<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Pavimentação<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Betão Armado<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Instalações Hidráulicas<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Sistemas de Drenagem<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Vedações e Cercas<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Gestão de Obras<span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">Infraestrutura<span class="ticker-sep">✦</span></span>
-  </div>
-</div>
-
-
-<!-- ════════════════════════════════════
-     ABOUT
-════════════════════════════════════ -->
-<section class="about" id="sobre">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="about-vis rf">
-        <img src="imagem_7.jpeg" alt="Equipa Gótica" class="about-main-img">
-        <img src="imagem_9.jpeg" alt="Projetos" class="about-sm-img">
-        <div class="about-years-badge"><strong>15<sup>+</sup></strong><span>Anos de<br>Experiência</span></div>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-left">
+      <div class="hero-kicker"><span class="hero-kicker-dot"></span>Construção Civil · Pemba</div>
+      <h1>Construindo <em>futuros</em> com <strong>excelência</strong></h1>
+      <p class="hero-desc">Técnicos altamente qualificados, comprometidos com o desenvolvimento sustentável e a satisfação total dos clientes.</p>
+      <div class="hero-btns">
+        <button class="btn btn-fill" id="openModalBtn2"><span>Solicitar Orçamento</span></button>
+        <a href="#servicos" class="btn btn-ghost"><span>Ver Serviços</span></a>
       </div>
-      <div>
-        <span class="tag r">Sobre Nós</span>
-        <h2 class="display r" data-d="1">Uma empresa criada para <i>contribuir</i> para o desenvolvimento</h2>
-        <div class="about-line rf" data-d="2"></div>
-        <p class="r" data-d="2">A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, procurando manter no mercado os standards de <b>rigor, qualidade e capacidade de execução</b> que permitiram afirmar-se a nível nacional e internacional.</p>
-        <p class="r" data-d="3">Com conduta empresarial assente em princípios éticos e uma visão estratégica única e integrada, a Gótica ambiciona tornar-se uma empresa mais <b>internacional, inovadora e competitiva</b> à escala global.</p>
-        <div class="tags-row r" data-d="3">
-          <span class="tag-chip">Equipa Qualificada</span>
-          <span class="tag-chip">Prazos Cumpridos</span>
-          <span class="tag-chip">Transparência Total</span>
-          <span class="tag-chip">Qualidade Garantida</span>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num"><span class="count" data-target="50">0</span><em>+</em></div><div class="hero-stat-label">Projetos</div></div>
+        <div class="hero-stat"><div class="hero-stat-num"><span class="count" data-target="15">0</span><em>+</em></div><div class="hero-stat-label">Anos</div></div>
+        <div class="hero-stat"><div class="hero-stat-num"><span class="count" data-target="100">0</span><em>+</em></div><div class="hero-stat-label">Clientes</div></div>
+        <div class="hero-stat"><div class="hero-stat-num"><span class="count" data-target="30">0</span><em>+</em></div><div class="hero-stat-label">Profissionais</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="imagem_1.jpeg" alt="Construção" class="hero-img" loading="lazy">
+      <div class="hero-overlay"></div>
+      <div class="hero-float">
+        <div class="hero-float-ic"><i class="fas fa-award"></i></div>
+        <div><p>Empresa certificada</p><strong>Qualidade Garantida</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>Construção Civil</span><span>Pavimentação</span><span>Betão Armado</span><span>Instalações Hidráulicas</span><span>Sistemas de Drenagem</span><span>Vedações</span><span>Gestão de Obras</span><span>Infraestrutura</span>
+    </div>
+    <div class="ticker-track" aria-hidden="true">
+      <span>Construção Civil</span><span>Pavimentação</span><span>Betão Armado</span><span>Instalações Hidráulicas</span><span>Sistemas de Drenagem</span><span>Vedações</span><span>Gestão de Obras</span><span>Infraestrutura</span>
+    </div>
+  </div>
+
+  <!-- SOBRE -->
+  <section class="about" id="sobre">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-media reveal-fast">
+          <img src="imagem_7.jpeg" alt="Equipa Gótica" class="about-media-main" loading="lazy">
+          <img src="imagem_9.jpeg" alt="Projetos" class="about-media-small" loading="lazy">
+          <div class="about-years"><strong>15<sup>+</sup></strong><span>Anos de<br>Experiência</span></div>
         </div>
-        <a href="#servicos" class="btn btn-line r" data-d="4" style="margin-top:2.2rem">Ver os Nossos Serviços <i class="fas fa-arrow-right"></i></a>
+        <div class="about-text">
+          <span class="tag reveal">Sobre Nós</span>
+          <h2 class="display reveal" data-delay="1">Uma empresa criada para <i>contribuir</i> para o desenvolvimento</h2>
+          <div class="about-line reveal-fast" data-delay="2"></div>
+          <p class="reveal" data-delay="2">A Gótica é uma empresa criada com o objetivo de contribuir para o desenvolvimento, procurando manter no mercado os standards de <b>rigor, qualidade e capacidade de execução</b> que permitiram afirmar-se a nível nacional e internacional.</p>
+          <p class="reveal" data-delay="3">Com conduta empresarial assente em princípios éticos e uma visão estratégica única e integrada, a Gótica ambiciona tornar-se uma empresa mais <b>internacional, inovadora e competitiva</b> à escala global.</p>
+          <div class="tags reveal" data-delay="3">
+            <span class="tag-chip">Equipa Qualificada</span>
+            <span class="tag-chip">Prazos Cumpridos</span>
+            <span class="tag-chip">Transparência Total</span>
+            <span class="tag-chip">Qualidade Garantida</span>
+          </div>
+          <a href="#servicos" class="btn btn-line reveal" data-delay="4" style="margin-top:2rem">Ver os Nossos Serviços <i class="fas fa-arrow-right"></i></a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- ════════════════════════════════════
-     SERVICES
-════════════════════════════════════ -->
-<section class="services" id="servicos">
-  <div class="wrap">
-    <div class="svc-head">
-      <div><span class="tag r">Serviços</span><h2 class="display r" data-d="1">O Que<br>Fazemos</h2></div>
-      <p class="r" data-d="2" style="max-width:280px;font-size:.9rem;line-height:1.8;color:var(--body)">Soluções técnicas inovadoras em construção civil — do projeto à entrega final.</p>
-    </div>
-    <div class="svc-grid r">
-      <div class="sv"><div class="sv-num">01</div><div class="sv-icon"><i class="fas fa-building"></i></div><h3>Construção de Edifícios</h3><p>Edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade e segurança estrutural.</p><div class="sv-thumb"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="" loading="lazy"></div></div>
-      <div class="sv"><div class="sv-num">02</div><div class="sv-icon"><i class="fas fa-road"></i></div><h3>Pavimentação</h3><p>Pavimentos asfálticos, betão armado e intertravados para vias públicas e áreas de grande circulação.</p><div class="sv-thumb"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg/v1/fill/w_1000,h_748,al_c,q_85/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="" loading="lazy"></div></div>
-      <div class="sv"><div class="sv-num">03</div><div class="sv-icon"><i class="fas fa-layer-group"></i></div><h3>Estruturas de Betão</h3><p>Concepção e execução de estruturas para edifícios, pontes, barragens e infraestruturas de grande envergadura.</p><div class="sv-thumb"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="" loading="lazy"></div></div>
-      <div class="sv"><div class="sv-num">04</div><div class="sv-icon"><i class="fas fa-water"></i></div><h3>Sistemas de Drenagem</h3><p>Valas de drenagem, sistemas de águas pluviais e soluções integradas para gestão eficiente de águas residuais.</p><div class="sv-thumb"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="" loading="lazy"></div></div>
-      <div class="sv"><div class="sv-num">05</div><div class="sv-icon"><i class="fas fa-faucet"></i></div><h3>Instalações Hidráulicas</h3><p>Sistemas hidráulicos completos — abastecimento de água, saneamento e sistemas de combate a incêndios.</p><div class="sv-thumb"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="" loading="lazy"></div></div>
-      <div class="sv"><div class="sv-num">06</div><div class="sv-icon"><i class="fas fa-shield-alt"></i></div><h3>Vedações e Cercas</h3><p>Vedações perimetrais, muros de suporte, cercas elétricas e portões automatizados para total segurança.</p><div class="sv-thumb"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="" loading="lazy"></div></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════
-     NUMBERS
-════════════════════════════════════ -->
-<div class="numbers">
-  <div class="numbers-inner">
-    <div class="num-item r"><div class="num-val"><span id="n1">0</span><em>+</em></div><div class="num-lbl">Projetos Concluídos</div></div>
-    <div class="num-item r" data-d="1"><div class="num-val"><span id="n2">0</span><em>+</em></div><div class="num-lbl">Anos de Experiência</div></div>
-    <div class="num-item r" data-d="2"><div class="num-val"><span id="n3">0</span><em>+</em></div><div class="num-lbl">Clientes Satisfeitos</div></div>
-    <div class="num-item r" data-d="3"><div class="num-val"><span id="n4">0</span><em>+</em></div><div class="num-lbl">Profissionais</div></div>
-  </div>
-</div>
-
-
-<!-- ════════════════════════════════════
-     GALLERY
-════════════════════════════════════ -->
-<section class="gallery" id="galeria">
-  <div class="wrap">
-    <div class="gal-head">
-      <div><span class="tag r">Portfólio</span><h2 class="display r" data-d="1">Nossos Projetos</h2></div>
-      <div class="gal-filters r" data-d="2">
-        <button class="gf on" data-f="todos">Todos</button>
-        <button class="gf" data-f="edificios">Edifícios</button>
-        <button class="gf" data-f="infra">Infraestrutura</button>
-        <button class="gf" data-f="pav">Pavimentação</button>
+  <!-- SERVIÇOS -->
+  <section class="services" id="servicos">
+    <div class="wrap">
+      <div class="services-header">
+        <div><span class="tag reveal">Serviços</span><h2 class="display reveal" data-delay="1">O Que<br>Fazemos</h2></div>
+        <p class="reveal" data-delay="2" style="max-width:280px; font-size:0.9rem; color:var(--cinza)">Soluções técnicas inovadoras em construção civil — do projeto à entrega final.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal"><div class="service-num">01</div><div class="service-icon"><i class="fas fa-building"></i></div><h3>Construção de Edifícios</h3><p>Edifícios residenciais, comerciais e industriais com os mais altos padrões de qualidade.</p><div class="service-thumb"><img src="https://www.ubemixconcreto.com.br/wp-content/uploads/2024/08/Construcao-de-Edificio-Residencial2.jpg" alt="" loading="lazy"></div></div>
+        <div class="service-card reveal" data-delay="1"><div class="service-num">02</div><div class="service-icon"><i class="fas fa-road"></i></div><h3>Pavimentação</h3><p>Pavimentos asfálticos, betão armado e intertravados para vias públicas.</p><div class="service-thumb"><img src="https://static.wixstatic.com/media/a06624_1a4211751409406ab6036bb1247be4f8~mv2.jpg" alt="" loading="lazy"></div></div>
+        <div class="service-card reveal" data-delay="2"><div class="service-num">03</div><div class="service-icon"><i class="fas fa-layer-group"></i></div><h3>Estruturas de Betão</h3><p>Concepção e execução de estruturas para edifícios, pontes e barragens.</p><div class="service-thumb"><img src="https://www.quintadecravel.pt/wp-content/uploads/2022/07/20220722_150211-scaled-e1658756377548-1536x1136.jpg" alt="" loading="lazy"></div></div>
+        <div class="service-card reveal"><div class="service-num">04</div><div class="service-icon"><i class="fas fa-water"></i></div><h3>Sistemas de Drenagem</h3><p>Valas de drenagem, sistemas de águas pluviais e gestão de águas residuais.</p><div class="service-thumb"><img src="https://saneamentobasico.com.br/wp-content/uploads/2024/05/Drenagem.jpg" alt="" loading="lazy"></div></div>
+        <div class="service-card reveal" data-delay="1"><div class="service-num">05</div><div class="service-icon"><i class="fas fa-faucet"></i></div><h3>Instalações Hidráulicas</h3><p>Sistemas hidráulicos completos — abastecimento, saneamento e incêndio.</p><div class="service-thumb"><img src="https://losciviles.wordpress.com/wp-content/uploads/2021/05/08-instalaciones-hidraulicas-y-sanitarias.jpg?w=1024" alt="" loading="lazy"></div></div>
+        <div class="service-card reveal" data-delay="2"><div class="service-num">06</div><div class="service-icon"><i class="fas fa-shield-alt"></i></div><h3>Vedações e Cercas</h3><p>Vedações perimetrais, muros de suporte e portões automatizados.</p><div class="service-thumb"><img src="https://sectronicsistemas.com.br/wp-content/uploads/2023/07/sectronic-blog-interna-2-2.jpg" alt="" loading="lazy"></div></div>
       </div>
     </div>
-    <div class="gal-grid rf" data-d="2" id="gg">
-      <div class="gi" data-cat="edificios"><img src="imagem_9.jpeg" alt="" loading="lazy"><div class="gi-cap"><h4>Restauração Standard Bank</h4><p>Maputo — Reforma completa do edifício</p></div></div>
-      <div class="gi" data-cat="infra"><img src="imagem_13.jpeg" alt="" loading="lazy"><div class="gi-cap"><h4>Terminal Petromoc Pemba</h4><p>Vedação e cerca eléctrica</p></div></div>
-      <div class="gi" data-cat="infra"><img src="imagem_18.jpeg" alt="" loading="lazy"><div class="gi-cap"><h4>Subestação de Muxara</h4><p>Pemba — Vedação e cerca eléctrica</p></div></div>
-      <div class="gi" data-cat="infra"><img src="imagem_23.jpeg" alt="" loading="lazy"><div class="gi-cap"><h4>Subestação Muxara-Pemba</h4><p>Estrutura e pavimentos de betão armado</p></div></div>
-      <div class="gi" data-cat="edificios"><img src="imagem_26.jpeg" alt="" loading="lazy"><div class="gi-cap"><h4>Instalações Hidráulicas</h4><p>Trabalhos de picheleiro especializados</p></div></div>
-      <div class="gi" data-cat="pav"><img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="" loading="lazy"><div class="gi-cap"><h4>Pavimentação Urbana</h4><p>Execução de pavimentos asfálticos</p></div></div>
-    </div>
+  </section>
+
+  <!-- NÚMEROS -->
+  <div class="numbers">
+    <div class="number-item reveal"><div class="number-value"><span class="count" data-target="50">0</span><em>+</em></div><div class="number-label">Projetos Concluídos</div></div>
+    <div class="number-item reveal" data-delay="1"><div class="number-value"><span class="count" data-target="15">0</span><em>+</em></div><div class="number-label">Anos de Experiência</div></div>
+    <div class="number-item reveal" data-delay="2"><div class="number-value"><span class="count" data-target="100">0</span><em>+</em></div><div class="number-label">Clientes Satisfeitos</div></div>
+    <div class="number-item reveal" data-delay="3"><div class="number-value"><span class="count" data-target="30">0</span><em>+</em></div><div class="number-label">Profissionais</div></div>
   </div>
-</section>
-<div class="lb" id="lb"><button class="lb-x" id="lbx"><i class="fas fa-times"></i></button><div><img id="lbi" src="" alt=""><div class="lb-cap" id="lbc"></div></div></div>
 
+  <!-- GALERIA -->
+  <section class="gallery" id="galeria">
+    <div class="wrap">
+      <div class="gallery-header">
+        <div><span class="tag reveal">Portfólio</span><h2 class="display reveal" data-delay="1">Nossos Projetos</h2></div>
+        <div class="gallery-filters reveal" data-delay="2">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="edificios">Edifícios</button>
+          <button class="filter-btn" data-filter="infra">Infraestrutura</button>
+          <button class="filter-btn" data-filter="pav">Pavimentação</button>
+        </div>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="gallery-item" data-category="edificios"><img src="imagem_9.jpeg" alt="" loading="lazy"><div class="gallery-caption"><h4>Restauração Standard Bank</h4><p>Maputo — Reforma completa</p></div></div>
+        <div class="gallery-item" data-category="infra"><img src="imagem_13.jpeg" alt="" loading="lazy"><div class="gallery-caption"><h4>Terminal Petromoc Pemba</h4><p>Vedação e cerca eléctrica</p></div></div>
+        <div class="gallery-item" data-category="infra"><img src="imagem_18.jpeg" alt="" loading="lazy"><div class="gallery-caption"><h4>Subestação de Muxara</h4><p>Pemba — Vedação</p></div></div>
+        <div class="gallery-item" data-category="infra"><img src="imagem_23.jpeg" alt="" loading="lazy"><div class="gallery-caption"><h4>Subestação Muxara</h4><p>Betão armado e pavimentos</p></div></div>
+        <div class="gallery-item" data-category="edificios"><img src="imagem_26.jpeg" alt="" loading="lazy"><div class="gallery-caption"><h4>Instalações Hidráulicas</h4><p>Trabalhos de picheleiro</p></div></div>
+        <div class="gallery-item" data-category="pav"><img src="https://bravaequipamentos.com.br/wp-content/uploads/2024/07/10592.jpg" alt="" loading="lazy"><div class="gallery-caption"><h4>Pavimentação Urbana</h4><p>Execução de asfalto</p></div></div>
+      </div>
+    </div>
+  </section>
 
-<!-- ════════════════════════════════════
-     MISSION & VALUES
-════════════════════════════════════ -->
-<section class="mission" id="missao">
-  <div class="wrap">
-    <div class="miss-grid">
-      <div class="miss-left"><span class="tag r">Identidade</span><h2 class="display r" data-d="1">Missão,<br>Visão &<br><i>Valores</i></h2></div>
-      <div>
-        <div class="miss-right">
-          <div class="mc r"><div class="mc-ic"><i class="fas fa-bullseye"></i></div><div><h3>Nossa Missão</h3><p>Atender com zelo, dedicação e excelência as demandas dos clientes, contribuindo para a melhoria de qualidade de vida das pessoas e gerando riqueza de forma sustentável.</p></div></div>
-          <div class="mc r" data-d="1"><div class="mc-ic"><i class="fas fa-eye"></i></div><div><h3>Nossa Visão</h3><p>Tornar-nos referência nacional e internacional em construção civil, reconhecidos pela qualidade, inovação e compromisso com o desenvolvimento sustentável de Moçambique.</p></div></div>
-          <div class="mc r" data-d="2"><div class="mc-ic"><i class="fas fa-handshake"></i></div><div><h3>Nosso Compromisso</h3><p>Superar expectativas entregando projetos que unem funcionalidade, durabilidade e design inovador, com total foco na segurança e satisfação do cliente.</p></div></div>
-          <div class="vals">
-            <div class="vc r"><div class="vc-ic"><i class="fas fa-balance-scale"></i></div><span>Integridade</span></div>
-            <div class="vc r" data-d="1"><div class="vc-ic"><i class="fas fa-heart"></i></div><span>Comprometimento</span></div>
-            <div class="vc r"><div class="vc-ic"><i class="fas fa-users"></i></div><span>Valorização Humana</span></div>
-            <div class="vc r" data-d="1"><div class="vc-ic"><i class="fas fa-chart-line"></i></div><span>Superação</span></div>
-            <div class="vc r"><div class="vc-ic"><i class="fas fa-sync-alt"></i></div><span>Melhoria Contínua</span></div>
-            <div class="vc r" data-d="1"><div class="vc-ic"><i class="fas fa-lightbulb"></i></div><span>Inovação</span></div>
-            <div class="vc r"><div class="vc-ic"><i class="fas fa-leaf"></i></div><span>Sustentabilidade</span></div>
-            <div class="vc r" data-d="1"><div class="vc-ic"><i class="fas fa-shield-alt"></i></div><span>Qualidade</span></div>
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <!-- MISSÃO -->
+  <section class="mission" id="missao">
+    <div class="wrap">
+      <div class="mission-grid">
+        <div class="mission-left"><span class="tag reveal">Identidade</span><h2 class="display reveal" data-delay="1">Missão,<br>Visão & <i>Valores</i></h2></div>
+        <div>
+          <div class="mission-cards">
+            <div class="mission-card reveal"><div class="mission-icon"><i class="fas fa-bullseye"></i></div><div><h3>Nossa Missão</h3><p>Atender com excelência, contribuindo para a qualidade de vida e gerando riqueza sustentável.</p></div></div>
+            <div class="mission-card reveal" data-delay="1"><div class="mission-icon"><i class="fas fa-eye"></i></div><div><h3>Nossa Visão</h3><p>Referência nacional e internacional em construção civil, reconhecidos pela inovação.</p></div></div>
+            <div class="mission-card reveal" data-delay="2"><div class="mission-icon"><i class="fas fa-handshake"></i></div><div><h3>Compromisso</h3><p>Superar expectativas com funcionalidade, durabilidade e design inovador.</p></div></div>
+          </div>
+          <div class="values-grid">
+            <div class="value-item reveal"><div class="value-icon"><i class="fas fa-balance-scale"></i></div><span>Integridade</span></div>
+            <div class="value-item reveal" data-delay="1"><div class="value-icon"><i class="fas fa-heart"></i></div><span>Comprometimento</span></div>
+            <div class="value-item reveal"><div class="value-icon"><i class="fas fa-users"></i></div><span>Valorização Humana</span></div>
+            <div class="value-item reveal" data-delay="1"><div class="value-icon"><i class="fas fa-chart-line"></i></div><span>Superação</span></div>
+            <div class="value-item reveal"><div class="value-icon"><i class="fas fa-sync-alt"></i></div><span>Melhoria Contínua</span></div>
+            <div class="value-item reveal" data-delay="1"><div class="value-icon"><i class="fas fa-lightbulb"></i></div><span>Inovação</span></div>
+            <div class="value-item reveal"><div class="value-icon"><i class="fas fa-leaf"></i></div><span>Sustentabilidade</span></div>
+            <div class="value-item reveal" data-delay="1"><div class="value-icon"><i class="fas fa-shield-alt"></i></div><span>Qualidade</span></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- ════════════════════════════════════
-     CTA
-════════════════════════════════════ -->
-<section class="cta">
-  <img src="imagem_8.jpeg" alt="" class="cta-bg-img">
-  <div class="cta-glow"></div>
-  <div class="wrap">
-    <div class="cta-inner">
-      <span class="tag r" style="color:rgba(0,200,90,.8)">Orçamento</span>
-      <h2 class="display r" data-d="1" style="color:#fff">Pronto para<br>iniciar o seu <i>projeto?</i></h2>
-      <p class="r" data-d="2">Solicite um orçamento gratuito. A nossa equipa responde em até 24 horas com uma proposta personalizada e sem qualquer compromisso.</p>
-      <div class="cta-feats r" data-d="2">
-        <div class="cta-feat"><div class="cta-feat-ic"><i class="fas fa-check"></i></div><span>Orçamento completamente gratuito</span></div>
-        <div class="cta-feat"><div class="cta-feat-ic"><i class="fas fa-check"></i></div><span>Resposta em até 24 horas</span></div>
-        <div class="cta-feat"><div class="cta-feat-ic"><i class="fas fa-check"></i></div><span>Sem custos ou compromissos ocultos</span></div>
-        <div class="cta-feat"><div class="cta-feat-ic"><i class="fas fa-check"></i></div><span>Equipa técnica especializada</span></div>
-      </div>
-      <div class="cta-btns r" data-d="3">
-        <button class="btn btn-fill" id="t2" style="font-size:.78rem;letter-spacing:.1em"><span>Solicitar Orçamento Gratuito</span></button>
-        <a href="mailto:construgotica@gmail.com" class="btn btn-ghost" style="font-size:.78rem;letter-spacing:.1em"><span>Enviar Email</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ════════════════════════════════════
-     CONTACT
-════════════════════════════════════ -->
-<section class="contact" id="contato">
-  <div class="wrap">
-    <span class="tag r">Contacto</span>
-    <h2 class="display r" data-d="1" style="font-size:clamp(2.2rem,3.5vw,3.4rem);margin-bottom:0">Entre em <i>Contacto</i></h2>
-    <div class="cont-grid">
-      <!-- Info -->
-      <div class="cont-info r">
-        <h3>Fale connosco</h3>
-        <p>Disponíveis para esclarecer dúvidas e apresentar a melhor solução para o seu projeto de construção.</p>
-        <div class="ci-item"><div class="ci-ic"><i class="fas fa-map-marker-alt"></i></div><div><div class="ci-lbl">Endereço</div><div class="ci-val">Av. 25 de Setembro, Bairro de Cimento, Pemba</div></div></div>
-        <div class="ci-item"><div class="ci-ic"><i class="fas fa-phone"></i></div><div><div class="ci-lbl">Telefone</div><div class="ci-val"><a href="tel:+25884263176">84 263 1768 / 872 261 200</a></div></div></div>
-        <div class="ci-item"><div class="ci-ic"><i class="fas fa-envelope"></i></div><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:construgotica@gmail.com">construgotica@gmail.com</a></div></div></div>
-        <div class="ci-item"><div class="ci-ic"><i class="fas fa-clock"></i></div><div><div class="ci-lbl">Horário</div><div class="ci-val">Seg–Sex: 8h–18h &nbsp;·&nbsp; Sáb: 8h–13h</div></div></div>
-        <div class="soc-row">
-          <a href="#" class="soc" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="soc" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" class="soc" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="soc" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <!-- CTA -->
+  <section class="cta">
+    <img src="imagem_8.jpeg" alt="" class="cta-bg" loading="lazy">
+    <div class="cta-glow"></div>
+    <div class="wrap">
+      <div class="cta-inner">
+        <span class="tag reveal" style="color:rgba(0,200,90,0.8)">Orçamento</span>
+        <h2 class="display reveal" data-delay="1" style="color:#fff">Pronto para iniciar o seu <i>projeto?</i></h2>
+        <p class="reveal" data-delay="2">Solicite um orçamento gratuito. Resposta em até 24 horas.</p>
+        <div class="cta-features reveal" data-delay="2">
+          <div class="cta-feature"><i class="fas fa-check"></i><span>Orçamento gratuito</span></div>
+          <div class="cta-feature"><i class="fas fa-check"></i><span>Resposta em 24h</span></div>
+          <div class="cta-feature"><i class="fas fa-check"></i><span>Sem compromissos</span></div>
+          <div class="cta-feature"><i class="fas fa-check"></i><span>Equipa especializada</span></div>
+        </div>
+        <div class="cta-buttons reveal" data-delay="3">
+          <button class="btn btn-fill" id="openModalBtn3"><span>Solicitar Orçamento</span></button>
+          <a href="mailto:construgotica@gmail.com" class="btn btn-ghost"><span>Enviar Email</span></a>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Contact form via Formspree -->
-      <div class="r" data-d="1">
-        <div class="form-panel">
+  <!-- CONTATO -->
+  <section class="contact" id="contato">
+    <div class="wrap">
+      <span class="tag reveal">Contacto</span>
+      <h2 class="display reveal" data-delay="1" style="font-size:clamp(2rem,3vw,3rem);">Entre em <i>Contacto</i></h2>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h3>Fale connosco</h3>
+          <p>Disponíveis para esclarecer dúvidas e apresentar a melhor solução.</p>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div><div class="contact-label">Endereço</div><div class="contact-value">Av. 25 de Setembro, Pemba</div></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div><div class="contact-label">Telefone</div><div class="contact-value"><a href="tel:+25884263176">84 263 1768 / 872 261 200</a></div></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><div class="contact-label">Email</div><div class="contact-value"><a href="mailto:construgotica@gmail.com">construgotica@gmail.com</a></div></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-clock"></i></div><div><div class="contact-label">Horário</div><div class="contact-value">Seg–Sex 8h–18h · Sáb 8h–13h</div></div></div>
+          <div class="social-row">
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="contact-form reveal" data-delay="1">
           <h3>Envie uma mensagem</h3>
           <div class="fstatus" id="cfStatus"><i class="fas fa-check-circle"></i><span id="cfMsg"></span></div>
-          <!--
-            ╔══════════════════════════════════════════╗
-            ║  FORMSPREE — SUBSTITUI YOUR_FORM_ID      ║
-            ║  Ex: https://formspree.io/f/xpzgkabw     ║
-            ╚══════════════════════════════════════════╝
-          -->
           <form id="cfForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-            <input type="hidden" name="_subject" value="Nova mensagem — Gótica SU LDA">
-            <div class="field"><label>Nome Completo *</label><input type="text" name="name" placeholder="O seu nome completo" required></div>
+            <input type="hidden" name="_subject" value="Nova mensagem - Gótica">
+            <div class="field"><label>Nome *</label><input type="text" name="name" placeholder="Seu nome" required></div>
             <div class="g2">
               <div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="email@exemplo.com" required></div>
               <div class="field"><label>Telefone</label><input type="tel" name="phone" placeholder="+258 8x xxx xxxx"></div>
             </div>
-            <div class="field"><label>Assunto *</label><input type="text" name="subject" placeholder="Como podemos ajudar?" required></div>
+            <div class="field"><label>Assunto *</label><input type="text" name="subject" placeholder="Assunto" required></div>
             <div class="field"><label>Mensagem *</label><textarea name="message" placeholder="Descreva a sua necessidade..." required></textarea></div>
             <button type="submit" class="btn btn-fill submit-btn" id="cfBtn"><span>Enviar Mensagem</span></button>
           </form>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- ════════════════════════════════════
-     FOOTER
-════════════════════════════════════ -->
-<footer>
-  <div class="wrap">
-    <div class="ft-grid">
-      <div><div class="ft-logo"><img src="logo.png" alt="Gótica SU LDA"></div><p class="ft-about">Empresa de Construção Civil comprometida com qualidade, inovação e desenvolvimento sustentável em Moçambique. Rigor e excelência em cada obra.</p></div>
-      <div class="ft-col"><h4>Navegação</h4><ul><li><a href="#inicio">Início</a></li><li><a href="#sobre">Sobre Nós</a></li><li><a href="#servicos">Serviços</a></li><li><a href="#galeria">Projetos</a></li><li><a href="#missao">Missão</a></li><li><a href="#contato">Contacto</a></li></ul></div>
-      <div class="ft-col"><h4>Serviços</h4><ul><li><a href="#servicos">Construção</a></li><li><a href="#servicos">Pavimentação</a></li><li><a href="#servicos">Betão Armado</a></li><li><a href="#servicos">Drenagem</a></li><li><a href="#servicos">Hidráulica</a></li><li><a href="#servicos">Vedações</a></li></ul></div>
-      <div class="ft-col"><h4>Contacto</h4><p><i class="fas fa-map-marker-alt"></i>Av. 25 de Setembro, Pemba</p><p><i class="fas fa-phone"></i>84 263 1768 / 872 261 200</p><p><i class="fas fa-envelope"></i>construgotica@gmail.com</p><p><i class="fas fa-clock"></i>Seg–Sex 8h–18h | Sáb 8h–13h</p></div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div><div class="footer-logo"><img src="logo.png" alt="Gótica SU LDA"></div><p class="footer-about">Construção civil com rigor e excelência em Moçambique.</p></div>
+        <div class="footer-col"><h4>Navegação</h4><ul><li><a href="#inicio">Início</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#servicos">Serviços</a></li><li><a href="#galeria">Projetos</a></li><li><a href="#missao">Missão</a></li><li><a href="#contato">Contacto</a></li></ul></div>
+        <div class="footer-col"><h4>Serviços</h4><ul><li><a href="#servicos">Construção</a></li><li><a href="#servicos">Pavimentação</a></li><li><a href="#servicos">Betão Armado</a></li><li><a href="#servicos">Drenagem</a></li><li><a href="#servicos">Hidráulica</a></li><li><a href="#servicos">Vedações</a></li></ul></div>
+        <div class="footer-col"><h4>Contacto</h4><p><i class="fas fa-map-marker-alt"></i>Av. 25 de Setembro, Pemba</p><p><i class="fas fa-phone"></i>84 263 1768</p><p><i class="fas fa-envelope"></i>construgotica@gmail.com</p><p><i class="fas fa-clock"></i>Seg–Sex 8h–18h</p></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p><p>Desenvolvido por HP</p></div>
     </div>
-    <div class="ft-bottom"><p>&copy; 2026 Gótica SU LDA. Todos os direitos reservados.</p><p>Desenvolvido por HP</p></div>
-  </div>
-</footer>
+  </footer>
 
-
-<!-- ════════════════════════════════════
-     BUDGET MODAL via Formspree
-════════════════════════════════════ -->
-<div class="ov" id="ov">
-  <div class="modal">
-    <div class="mod-top">
-      <div><h2>Solicitar Orçamento</h2><p>Gratuito · Resposta em até 24 horas</p></div>
-      <button class="mod-x" id="modx"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="mod-body">
-      <div class="mstatus" id="mStatus"><i class="fas fa-check-circle"></i><span id="mMsg"></span></div>
-      <!--
-        ╔══════════════════════════════════════════╗
-        ║  FORMSPREE — SUBSTITUI YOUR_FORM_ID      ║
-        ║  Podes usar o mesmo ou criar um separado  ║
-        ╚══════════════════════════════════════════╝
-      -->
-      <form id="bForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-        <input type="hidden" name="_subject" value="Pedido de Orçamento — Gótica SU LDA">
-        <div class="g2">
-          <div class="field"><label>Nome Completo *</label><input type="text" name="name" placeholder="O seu nome" required></div>
-          <div class="field"><label>E-mail *</label><input type="email" name="email" placeholder="email@exemplo.com" required></div>
-        </div>
-        <div class="g2">
-          <div class="field"><label>Telefone *</label><input type="tel" name="phone" placeholder="+258 8x xxx xxxx" required></div>
-          <div class="field"><label>Serviço *</label>
-            <select name="service" required>
-              <option value="">Selecione o serviço</option>
-              <option>Construção de Edifícios</option>
-              <option>Pavimentação</option>
-              <option>Estruturas de Betão Armado</option>
-              <option>Sistemas de Drenagem</option>
-              <option>Instalações Hidráulicas</option>
-              <option>Vedações e Cercas Elétricas</option>
-              <option>Outro Serviço</option>
-            </select>
+  <!-- MODAL DE ORÇAMENTO -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h2>Solicitar Orçamento</h2><p>Gratuito · Resposta em 24h</p></div>
+        <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="mstatus" id="mStatus"><i class="fas fa-check-circle"></i><span id="mMsg"></span></div>
+        <form id="bForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="Pedido de Orçamento - Gótica">
+          <div class="g2">
+            <div class="field"><label>Nome *</label><input type="text" name="name" required></div>
+            <div class="field"><label>E-mail *</label><input type="email" name="email" required></div>
           </div>
-        </div>
-        <div class="field"><label>Localização do Projeto *</label><input type="text" name="location" placeholder="Cidade, bairro ou endereço" required></div>
-        <div class="field"><label>Descrição do Projeto *</label><textarea name="message" placeholder="Tipo de obra, dimensões, materiais preferidos, prazo, outros detalhes..." required></textarea></div>
-        <div class="field"><label>Prazo Pretendido</label>
-          <select name="timeline">
-            <option value="">Sem preferência</option>
-            <option>Urgente — até 1 mês</option>
-            <option>Curto prazo — 1 a 3 meses</option>
-            <option>Médio prazo — 3 a 6 meses</option>
-            <option>Longo prazo — mais de 6 meses</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-fill submit-btn" id="bBtn"><span>Enviar Pedido de Orçamento</span></button>
-      </form>
+          <div class="g2">
+            <div class="field"><label>Telefone *</label><input type="tel" name="phone" required></div>
+            <div class="field"><label>Serviço *</label><select name="service" required><option value="">Selecione</option><option>Construção</option><option>Pavimentação</option><option>Betão</option><option>Drenagem</option><option>Hidráulica</option><option>Vedações</option></select></div>
+          </div>
+          <div class="field"><label>Localização *</label><input type="text" name="location" required></div>
+          <div class="field"><label>Descrição *</label><textarea name="message" required></textarea></div>
+          <button type="submit" class="btn btn-fill submit-btn" id="bBtn"><span>Enviar Pedido</span></button>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"><i class="fas fa-check-circle toast-ic"></i><div class="toast-body"><strong id="tT"></strong><span id="tM"></span></div></div>
+  <!-- TOAST -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle toast-icon"></i><div class="toast-body"><strong id="toastTitle"></strong><span id="toastMsg"></span></div></div>
 
-<script>
-/* ════════════════════════════════════════
-   CURSOR
-════════════════════════════════════════ */
-const dot = document.getElementById('cursor-dot');
-const ring = document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  dot.style.left=mx+'px'; dot.style.top=my+'px';
-});
-function animRing(){
-  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(animRing);
-}
-animRing();
-document.querySelectorAll('a,button,.gi,.gf,.soc,.vc,.mc,.sv').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
-});
-document.addEventListener('mousedown',()=>document.body.classList.add('clicking'));
-document.addEventListener('mouseup',()=>document.body.classList.remove('clicking'));
+  <script>
+    (function(){
+      // === UTILITÁRIOS ===
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => document.querySelectorAll(sel);
 
-/* ════════════════════════════════════════
-   HEADER SCROLL
-════════════════════════════════════════ */
-window.addEventListener('scroll',()=>document.getElementById('hdr').classList.toggle('stuck',scrollY>40),{passive:true});
+      // === SCROLL REVEAL ===
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            // contar números
+            if(entry.target.classList.contains('count')){
+              const target = parseInt(entry.target.dataset.target, 10);
+              if(!isNaN(target)) animateCount(entry.target, target);
+            }
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold:0.2, rootMargin:'0px 0px -40px 0px' });
 
-/* ════════════════════════════════════════
-   SMOOTH SCROLL
-════════════════════════════════════════ */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-72,behavior:'smooth'});}
-  });
-});
+      $$('.reveal, .reveal-fast, .count').forEach(el => revealObserver.observe(el));
 
-/* ════════════════════════════════════════
-   HAMBURGER
-════════════════════════════════════════ */
-const ham=document.getElementById('ham'),mob=document.getElementById('mob');
-ham.addEventListener('click',()=>{
-  ham.classList.toggle('open');mob.classList.toggle('open');
-  document.body.style.overflow=mob.classList.contains('open')?'hidden':'';
-});
-mob.querySelectorAll('a,button').forEach(el=>el.addEventListener('click',()=>{
-  ham.classList.remove('open');mob.classList.remove('open');document.body.style.overflow='';
-}));
+      function animateCount(el, target){
+        let current = 0;
+        const step = target / 80; // 80 passos ≈ 1.5s
+        const update = () => {
+          current += step;
+          if(current < target){
+            el.textContent = Math.floor(current);
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = target;
+          }
+        };
+        requestAnimationFrame(update);
+      }
 
-/* ════════════════════════════════════════
-   COUNT UP
-════════════════════════════════════════ */
-function countUp(el,target,dur){
-  let s=null,ease=t=>t<.5?2*t*t:-1+(4-2*t)*t;
-  const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/dur,1);el.textContent=Math.round(ease(p)*target);p<1?requestAnimationFrame(step):el.textContent=target;};
-  requestAnimationFrame(step);
-}
-const counts={c1:50,c2:15,c3:100,c4:30,n1:50,n2:15,n3:100,n4:30};
+      // === HEADER SCROLL ===
+      window.addEventListener('scroll', () => {
+        $('#header').classList.toggle('stuck', window.scrollY > 40);
+      }, { passive:true });
 
-/* ════════════════════════════════════════
-   INTERSECTION OBSERVER
-════════════════════════════════════════ */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(!e.isIntersecting)return;
-    e.target.classList.add('in');
-    if(counts[e.target.id])countUp(e.target,counts[e.target.id],1800);
-    io.unobserve(e.target);
-  });
-},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.r,.rf,[id^="c"],[id^="n"]').forEach(el=>io.observe(el));
+      // === SMOOTH SCROLL ===
+      $$('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+          const target = document.querySelector(anchor.getAttribute('href'));
+          if(target){
+            e.preventDefault();
+            window.scrollTo({ top: target.offsetTop - 72, behavior:'smooth' });
+            // fechar menu mobile
+            $('#menu-mobile').classList.remove('open');
+            $('#hamburger').classList.remove('open');
+            document.body.style.overflow = '';
+          }
+        });
+      });
 
-/* ════════════════════════════════════════
-   GALLERY FILTER
-════════════════════════════════════════ */
-document.querySelectorAll('.gf').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.gf').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    const f=b.dataset.f;
-    document.querySelectorAll('.gi').forEach(i=>{i.style.display=(f==='todos'||i.dataset.cat===f)?'block':'none';});
-    document.getElementById('gg').scrollLeft=0;
-  });
-});
+      // === MENU MOBILE ===
+      const hamburger = $('#hamburger');
+      const menuMobile = $('#menu-mobile');
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        menuMobile.classList.toggle('open');
+        document.body.style.overflow = menuMobile.classList.contains('open') ? 'hidden' : '';
+      });
 
-/* ════════════════════════════════════════
-   LIGHTBOX
-════════════════════════════════════════ */
-const lb=document.getElementById('lb'),lbi=document.getElementById('lbi'),lbc=document.getElementById('lbc');
-function closeLb(){lb.classList.remove('open');document.body.style.overflow='';}
-document.querySelectorAll('.gi').forEach(i=>{
-  i.addEventListener('click',()=>{
-    lbi.src=i.querySelector('img').src;
-    lbc.textContent=i.querySelector('h4')?.textContent||'';
-    lb.classList.add('open');document.body.style.overflow='hidden';
-  });
-});
-document.getElementById('lbx').addEventListener('click',closeLb);
-lb.addEventListener('click',e=>{if(e.target===lb)closeLb();});
+      // === MODAL ===
+      const modal = $('#modalOverlay');
+      const openModalBtns = $$('#openModalBtn, #openModalBtn2, #openModalBtn3');
+      const closeModalBtn = $('#modalClose');
+      openModalBtns.forEach(btn => btn.addEventListener('click', () => {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }));
+      closeModalBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+      function closeModal(){
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        // reset status
+        $('#mStatus').style.display = 'none';
+      }
 
-/* ════════════════════════════════════════
-   MODAL
-════════════════════════════════════════ */
-const ov=document.getElementById('ov');
-function openModal(){ov.classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){ov.classList.remove('open');document.body.style.overflow='';}
-['t0','t0m','t1','t2'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',openModal);});
-document.getElementById('modx').addEventListener('click',closeModal);
-ov.addEventListener('click',e=>{if(e.target===ov)closeModal();});
+      // === LIGHTBOX ===
+      const lightbox = $('#lightbox');
+      const lightboxImg = $('#lightboxImg');
+      const lightboxCaption = $('#lightboxCaption');
+      const lightboxClose = $('#lightboxClose');
+      $$('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const img = item.querySelector('img');
+          const cap = item.querySelector('h4')?.textContent || '';
+          lightboxImg.src = img.src;
+          lightboxCaption.textContent = cap;
+          lightbox.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+      function closeLightbox(){
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+      }
 
-/* ════════════════════════════════════════
-   TOAST
-════════════════════════════════════════ */
-function showToast(title,msg,err=false){
-  const t=document.getElementById('toast');
-  document.getElementById('tT').textContent=title;
-  document.getElementById('tM').textContent=msg;
-  t.style.borderColor=err?'#b91c1c':'var(--g)';
-  t.querySelector('.toast-ic').style.color=err?'#b91c1c':'var(--g)';
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),5500);
-}
+      // === FILTRO GALERIA ===
+      const filterBtns = $$('.filter-btn');
+      const galleryItems = $$('.gallery-item');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+          galleryItems.forEach(item => {
+            item.style.display = (filter === 'all' || item.dataset.category === filter) ? 'block' : 'none';
+          });
+          $('#galleryGrid').scrollLeft = 0;
+        });
+      });
 
-/* ════════════════════════════════════════
-   FORMSPREE HANDLER
-   
-   Como activar:
-   1. formspree.io → criar conta grátis
-   2. "New Form" → copiar Form ID
-   3. Substituir YOUR_FORM_ID nos dois <form action="">
-   4. Confirmar o email que chegará do Formspree
-   5. Pronto — emails chegam directamente!
-════════════════════════════════════════ */
-async function submitFormspree(form, btn, statusEl, statusMsgEl, onSuccess) {
-  // Validação
-  let valid=true;
-  form.querySelectorAll('[required]').forEach(f=>{
-    const empty=!f.value.trim();
-    f.style.borderBottomColor=empty?'#b91c1c':'';
-    if(empty)valid=false;
-  });
-  if(!valid){
-    statusEl.className='fstatus err';
-    statusMsgEl.textContent='Por favor preencha todos os campos obrigatórios.';
-    statusEl.style.display='flex';
-    return;
-  }
+      // === FORMS (Formspree) ===
+      async function submitForm(form, btn, statusEl, msgEl, successCallback){
+        // validação simples
+        let valid = true;
+        form.querySelectorAll('[required]').forEach(f => {
+          if(!f.value.trim()){
+            f.style.borderBottomColor = '#b91c1c';
+            valid = false;
+          } else {
+            f.style.borderBottomColor = '';
+          }
+        });
+        if(!valid){
+          statusEl.className = 'fstatus err';
+          msgEl.textContent = 'Preencha todos os campos obrigatórios.';
+          statusEl.style.display = 'flex';
+          return;
+        }
 
-  // Loading
-  const origHTML=btn.innerHTML;
-  btn.classList.add('loading');
-  btn.innerHTML='<span>A enviar</span>';
-  statusEl.style.display='none';
+        const originalHTML = btn.innerHTML;
+        btn.classList.add('loading');
+        btn.innerHTML = '<span>A enviar</span>';
+        statusEl.style.display = 'none';
 
-  try {
-    const res=await fetch(form.action,{
-      method:'POST',
-      body:new FormData(form),
-      headers:{Accept:'application/json'}
-    });
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+          if(res.ok){
+            statusEl.className = 'fstatus ok';
+            msgEl.textContent = 'Enviado com sucesso!';
+            statusEl.style.display = 'flex';
+            form.reset();
+            successCallback();
+          } else {
+            throw new Error('Erro no envio');
+          }
+        } catch(err){
+          statusEl.className = 'fstatus err';
+          msgEl.textContent = form.action.includes('YOUR_FORM_ID') 
+            ? 'Configure o Formspree ID.' 
+            : 'Erro ao enviar. Tente novamente.';
+          statusEl.style.display = 'flex';
+        } finally {
+          btn.classList.remove('loading');
+          btn.innerHTML = originalHTML;
+        }
+      }
 
-    if(res.ok){
-      statusEl.className='fstatus ok';
-      statusMsgEl.textContent='✓ Enviado com sucesso! Entraremos em contacto em breve.';
-      statusEl.style.display='flex';
-      form.reset();
-      onSuccess();
-    } else {
-      const json=await res.json().catch(()=>({}));
-      if(json.errors){throw new Error(json.errors.map(e=>e.message).join(', '));}
-      throw new Error('Erro ao enviar');
-    }
-  } catch(err){
-    console.error(err);
-    const isConfig=form.action.includes('YOUR_FORM_ID');
-    statusEl.className='fstatus err';
-    statusMsgEl.textContent=isConfig
-      ? '⚠ Configura o Formspree: substitui YOUR_FORM_ID pelo teu ID em formspree.io'
-      : 'Erro ao enviar. Tenta novamente ou contacta-nos directamente.';
-    statusEl.style.display='flex';
-    showToast('Erro ao enviar',isConfig?'Configura o Formspree ID':'Liga-nos directamente.',true);
-  } finally {
-    btn.classList.remove('loading');
-    btn.innerHTML=origHTML;
-  }
-}
+      // Toast
+      function showToast(title, msg, isError = false){
+        const toast = $('#toast');
+        $('#toastTitle').textContent = title;
+        $('#toastMsg').textContent = msg;
+        toast.style.borderColor = isError ? '#b91c1c' : 'var(--verde)';
+        toast.querySelector('.toast-icon').style.color = isError ? '#b91c1c' : 'var(--verde)';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 5000);
+      }
 
-/* Budget form */
-document.getElementById('bForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  submitFormspree(
-    this,
-    document.getElementById('bBtn'),
-    document.getElementById('mStatus'),
-    document.getElementById('mMsg'),
-    ()=>{showToast('Pedido enviado!','Entraremos em contacto em até 24 horas.');setTimeout(closeModal,2800);}
-  );
-});
+      // Formulário de contacto
+      $('#cfForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        submitForm(this, $('#cfBtn'), $('#cfStatus'), $('#cfMsg'), () => {
+          showToast('Mensagem enviada', 'Responderemos em breve.');
+        });
+      });
 
-/* Contact form */
-document.getElementById('cfForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  submitFormspree(
-    this,
-    document.getElementById('cfBtn'),
-    document.getElementById('cfStatus'),
-    document.getElementById('cfMsg'),
-    ()=>showToast('Mensagem enviada!','Respondemos o mais brevemente possível.')
-  );
-});
+      // Formulário de orçamento (modal)
+      $('#bForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        submitForm(this, $('#bBtn'), $('#mStatus'), $('#mMsg'), () => {
+          showToast('Pedido enviado', 'Entraremos em contacto em 24h.');
+          setTimeout(closeModal, 2000);
+        });
+      });
 
-/* ESC */
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeLb();}});
-</script>
+      // === ESC KEY ===
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape'){
+          closeModal();
+          closeLightbox();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
